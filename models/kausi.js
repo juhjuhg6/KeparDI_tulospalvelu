@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const Kilpailu = require('./kilpailu.js')
 
 const KausiSchema = new Schema({
-  nimi: String,
+  nimi: {type: String, required: true},
   kilpailijoidenPisteet: [{nimi: String, pisteet: {type: Map, of: Number}}],
   kilpailut: [Kilpailu]
 })
