@@ -3,10 +3,10 @@ const Schema = mongoose.Schema
 
 const Kilpailu = require('./kilpailu.js')
 
-const VuosiSchema = new Schema({
-  vuosi: Number,
+const KausiSchema = new Schema({
+  nimi: String,
   kilpailijoidenPisteet: [{nimi: String, pisteet: {type: Map, of: Number}}],
   kilpailut: [Kilpailu]
 })
 
-module.exports = Vuosi = mongoose.model('vuosi', VuosiSchema)
+module.exports = Kausi = mongoose.model('kausi', KausiSchema)
