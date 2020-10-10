@@ -8,3 +8,5 @@ const VuosiSchema = new Schema({
   kilpailijoidenPisteet: [{nimi: String, pisteet: {type: Map, of: Number}}],
   kilpailut: [Kilpailu]
 })
+
+module.exports = Vuosi = mongoose.model('vuosi', VuosiSchema)
