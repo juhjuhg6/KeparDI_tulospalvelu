@@ -10,4 +10,4 @@ const MaaliintuloSchema = new Schema({
   maaliintuloaika: Date
 })
 
-module.exports = Maaliintulo = mongoose.model('maaliintulo', MaaliintuloSchema)
+module.exports = MaaliintuloSchema

@@ -8,4 +8,4 @@ const KilpailijaSchema = new Schema({
   muuTulos: String // DNS/DNF/DSQ
 })
 
-module.exports = Kilpailija = mongoose.model('kilpailija', KilpailijaSchema)
+module.exports = KilpailijaSchema
