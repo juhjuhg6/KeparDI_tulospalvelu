@@ -8,6 +8,9 @@ if (process.env.NODE_ENV !== 'production') {
 const app = express()
 const PORT = process.env.PORT || 3000
 
+// middleware
+app.use(express.json())
+
 // yhteys tietokantaan
 const db = process.env.MONGODB_URI
 mongoose
@@ -18,5 +21,8 @@ mongoose
 app.get('/', (req, res) => {
   res.send('Hello, World!')
 })
+
+// routes
+app.use('/api/', require('./routes/api.js'))
 
 app.listen(PORT, () => console.log(`Sovellus käynnissä portissa ${PORT}.`))
