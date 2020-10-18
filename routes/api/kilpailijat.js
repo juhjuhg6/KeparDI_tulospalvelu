@@ -23,6 +23,8 @@ router.post('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
 
     sarja.kilpailijat.push(req.body)
 
+    kausi.tuloksiaPaivitettyViimeksi = new Date()
+
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
       
@@ -46,6 +48,8 @@ router.put('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', (req, res) => {
 
     kilpailija.set(req.body)
 
+    kausi.tuloksiaPaivitettyViimeksi = new Date()
+
     kausi.save(err=> {
       if (err) return handleError(err, res, 'Virhe muokatessa kilpailijaa.')
       
@@ -62,6 +66,8 @@ router.delete('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', (req, res) => {
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
     const sarja = kilpailu.sarjat.id(req.params.sarjaId)
     sarja.kilpailijat.id(req.params.kilpailijaId).remove()
+
+    kausi.tuloksiaPaivitettyViimeksi = new Date()
 
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe muokatessa kilpailijaa.')

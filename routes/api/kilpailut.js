@@ -41,6 +41,8 @@ router.post('/:kausiId', (req, res) => {
 
     kausi.kilpailut.push(req.body)
 
+    kausi.tuloksiaPaivitettyViimeksi = new Date()
+
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe luotaessa uutta kilpailua.')
 
@@ -103,6 +105,8 @@ router.put('/:kausiId/:kilpailuId', (req, res) => {
       })
     }
 
+    kausi.tuloksiaPaivitettyViimeksi = new Date()
+
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe muokatessa kilpailua.')
       
@@ -117,6 +121,9 @@ router.delete('/:kausiId/:kilpailuId', (req, res) => {
     if (err) return handleError(err, res, 'Virhe poistettaessa kilpailua.')
 
     kausi.kilpailut.id(req.params.kilpailuId).remove()
+
+    kausi.tuloksiaPaivitettyViimeksi = new Date()
+
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe poistettaessa kilpailua.')
 
