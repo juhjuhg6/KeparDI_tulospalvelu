@@ -74,7 +74,7 @@ router.get('/kilpailut/:kausiId/nimet', (req, res) => {
     if (err) return handleError(err, res, 'Virhe haettaessa kausien nimiä.')
     
     let kilpailujenNimet = []
-    kausi.kilpailut.forEach(kilpailu => kilpailujenNimet.push({id: kilpailu._id, nimi: kilpailu.nimi}))
+    kausi.kilpailut.forEach(kilpailu => kilpailujenNimet.push({id: kilpailu._id, nimi: kilpailu.nimi, pvm: kilpailu.pvm}))
     res.json(kilpailujenNimet)
   })
 })
@@ -98,11 +98,7 @@ router.post('/kilpailut/:kausiId', (req, res) => {
       return
     }
 
-    kausi.kilpailut.push({
-      nimi: req.body.nimi,
-      sarjat: req.body.sarjat,
-      jarjestajat: req.body.jarjestajat
-    })
+    kausi.kilpailut.push(req.body)
 
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe luotaessa uutta kilpailua.')
@@ -123,6 +119,10 @@ router.put('/kilpailut/:kausiId/:kilpailuId', (req, res) => {
       if (!kausi.kilpailut.some(k => k.nimi === req.body.nimi)) {
         kilpailu.nimi = req.body.nimi
       }
+    }
+
+    if (req.body.pvm) {
+      kilpailu.pvm = req.body.pvm
     }
 
     if (req.body.sarjat) {
