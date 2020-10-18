@@ -7,7 +7,7 @@ const KausiSchema = new Schema({
   nimi: {type: String, required: true, unique: true},
   tuloksiaMuutettuViimeksi: {type: Date, required: true, default: Date.now},
   pisteetPaivitettyViimeksi: {type: Date, required: true, default: Date.now},
-  kilpailijoidenPisteet: {type: Map, of: {type: Map, of: Number}}, // {kilpailija: {kilpailu: pisteet}
+  kilpailijoidenPisteet: [{nimi: String, kilpailut: [{nimi: String, pisteet: Number}]}],
   kilpailut: [Kilpailu]
 })
 
