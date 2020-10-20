@@ -5,9 +5,6 @@ const Kilpailu = require('./kilpailu.js')
 
 const KausiSchema = new Schema({
   nimi: {type: String, required: true, unique: true},
-  tuloksiaMuutettuViimeksi: {type: Date, required: true, default: Date.now},
-  pisteetPaivitettyViimeksi: {type: Date, required: true, default: Date.now},
-  kilpailijoidenPisteet: [{nimi: String, kilpailut: [{nimi: String, pisteet: Number}]}],
   kilpailut: [Kilpailu]
 })
 

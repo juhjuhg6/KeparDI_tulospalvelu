@@ -3,9 +3,12 @@ const Schema = mongoose.Schema
 
 const KilpailijaSchema = new Schema({
   nimi: String,
-  lahtoaika: Date,
-  maaliaika: Date,
-  muuTulos: String // DNS/DNF/DSQ
+  kilpailut: {type: Map, of: {
+    lahtoaika: Date,
+    maaliaika: Date,
+    muuTulos: String, // DNS/DNF/DSQ
+    pisteet: Number
+  }}
 })
 
-module.exports = KilpailijaSchema
+module.exports = Kilpailija = mongoose.model('kilpailija', KilpailijaSchema)
