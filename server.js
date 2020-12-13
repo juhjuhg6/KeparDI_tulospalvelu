@@ -25,7 +25,6 @@ app.get('/', (req, res) => {
 // routes
 app.use('/api/kaudet/', require('./routes/api/kaudet.js'))
 app.use('/api/kilpailut/', require('./routes/api/kilpailut.js'))
-app.use('/api/kilpailijat/', require('./routes/api/kilpailijat.js'))
 app.use('/api/maaliintulot/', require('./routes/api/maaliintulot.js'))
 
 app.listen(PORT, () => console.log(`Sovellus käynnissä portissa ${PORT}.`))

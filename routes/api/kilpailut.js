@@ -14,19 +14,11 @@ const haeKilpailijat = async function(kilpailu) {
   let kilpailijaIdt = []
   kilpailu.sarjat.forEach(sarja => kilpailijaIdt = kilpailijaIdt.concat(sarja.kilpailijat))
 
-  let vastaus = []
-
   await Kilpailija.find({_id: {$in: kilpailijaIdt}}, (err, kilpailijat) => {
     if (err) return vastaus = false
 
-    kilpailijat.forEach(kilpailija => {
-      let kilpailijaVastaus = {_id: kilpailija._id, nimi: kilpailija.nimi}
-      kilpailijaVastaus.kilpailuTiedot = kilpailija.kilpailut.get(kilpailu._id.toString())
-      vastaus.push(kilpailijaVastaus)
-    })
+    return kilpailijat
   })
-
-  return vastaus
 }
 
 // hae kauden kilpailujen nimet
