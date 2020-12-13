@@ -88,19 +88,6 @@ router.put('/:kausiId/:kilpailuId', (req, res) => {
       kilpailu.pvm = req.body.pvm
     }
 
-    if (req.body.jarjestajat) {
-      req.body.jarjestajat.forEach(jarjestaja => {
-        if (jarjestaja.lisaa) {
-          if (!kilpailu.jarjestajat.includes(jarjestaja.nimi)) {
-            kilpailu.jarjestajat.push(jarjestaja.nimi)
-          }
-        } else {
-          const spliceIndex = kilpailu.jarjestajat.indexOf(jarjestaja.nimi)
-          kilpailu.jarjestajat.splice(spliceIndex, 1)
-        }
-      })
-    }
-
     kausi.save(async err => {
       if (err) return handleError(err, res, 'Virhe muokatessa kilpailua.')
 
