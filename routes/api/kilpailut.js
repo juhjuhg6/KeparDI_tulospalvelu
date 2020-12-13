@@ -233,7 +233,7 @@ router.delete('/kilpailijat/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', (req, 
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
     const sarja = kilpailu.sarjat.id(req.params.sarjaId)
 
-    const spliceIndex = sarja.kilpailijat.find(kilpailija => kilpailija === req.params.kilpailijaId)
+    const spliceIndex = sarja.kilpailijat.indexOf(req.params.kilpailijaId)
     sarja.kilpailijat.splice(spliceIndex, 1)
 
     // poista kilpailun tulokset kilpailijalta
@@ -241,12 +241,17 @@ router.delete('/kilpailijat/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', (req, 
       if (err) return handleError(err, res, 'Virhe poistettaessa kilpailun tuloksia kilpailijalta.')
 
       kilpailija.kilpailut.delete(req.params.kilpailuId)
+
+      kilpailija.save(err => {
+        if (err) return handleError(err, res, 'Virhe poistettaessa kilpailua kilpailijalta.')
+      })
     })
 
-    kausi.save(err => {
+    kausi.save(async err => {
       if (err) return handleError(err, res, 'Virhe poistettaessa kilpailijaa kilpailusta.')
 
-      res.json(kilpailu)
+      const kilpailijat = await haeKilpailijat(kilpailu)
+      res.json({kilpailu: kilpailu, kilpailijat: kilpailijat})
     })
   })
 })
