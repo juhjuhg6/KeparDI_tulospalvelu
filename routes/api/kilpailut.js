@@ -41,6 +41,7 @@ router.get('/:kausiId/:kilpailuId', (req, res) => {
     if (err) return handleError(err, res, 'Virhe haettaessa kilpailua.')
 
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
+    if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
     const kilpailijat = await haeKilpailijat(kilpailu)
 
     if (!kilpailijat) return handleError(err, res, 'Virhe haettaessa kilpailijoita.')
@@ -75,6 +76,7 @@ router.put('/:kausiId/:kilpailuId', (req, res) => {
     if (err) return handleError(err, res, 'Virhe muokatessa kilpailua.')
     
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
+    if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailijaId.')
 
     if (req.body.nimi) {
       if (!kausi.kilpailut.some(k => k.nimi === req.body.nimi)) {
@@ -91,6 +93,7 @@ router.put('/:kausiId/:kilpailuId', (req, res) => {
         if (sarja.id) {
           if (sarja.poista) {
             const sarja = kilpailu.sarjat.id(sarja.id)
+            if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
 
             // poista kilpailun tulokset sarjan kilpailijoilta
             Kilpailija.find({_id: {$in: sarja.kilpailijat}}, (err, kilpailijat) => {
@@ -100,7 +103,9 @@ router.put('/:kausiId/:kilpailuId', (req, res) => {
             sarja.remove()
           } else {
             // muokkaa sarjaa
-            kilpailu.sarjat.id(sarja.id).set({nimi: sarja.nimi, lasketaanPisteet: sarja.lasketaanPisteet})
+            const sarja = kilpailu.sarjat.id(sarja.id)
+            if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
+            sarja.set({nimi: sarja.nimi, lasketaanPisteet: sarja.lasketaanPisteet})
           }
         } else {
           // lisää uusi sarja
@@ -141,6 +146,7 @@ router.delete('/:kausiId/:kilpailuId', (req, res) => {
     if (err) return handleError(err, res, 'Virhe poistettaessa kilpailua.')
 
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
+    if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
 
     // poista tulokset kilpailijoilta
     let kilpailijaIdt = []
@@ -191,7 +197,9 @@ router.post('/kilpailijat/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
   const lisääKilpailijaSarjaan = function(kilpailijaId) {
     Kausi.findById(req.params.kausiId, (err, kausi) => {
       const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
+      if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
       const sarja = kilpailu.sarjat.id(req.params.sarjaId)
+      if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
 
       sarja.kilpailijat.push(kilpailijaId)
 
@@ -216,6 +224,7 @@ router.put('/kilpailijat/:kausiId/:kilpailuId/:kilpailijaId', (req, res) => {
 
     let kilpailu
     Kausi.findById(req.params.kausiId, (err, kausi) => kilpailu = kausi.kilpailut.id(req.params.kilpailuId))
+    if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
 
     kilpailija.save(async err => {
       if (err) return handleError(err, res, 'Virhe muutettaessa kilpailijan lähtöaikaa.')
@@ -231,7 +240,9 @@ router.delete('/kilpailijat/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', (req, 
     if (err) return handleError(err, res, 'Virhe poistettaessa kilpailijaa kilpailusta.')
 
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
+    if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
     const sarja = kilpailu.sarjat.id(req.params.sarjaId)
+    if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
 
     const spliceIndex = sarja.kilpailijat.indexOf(req.params.kilpailijaId)
     sarja.kilpailijat.splice(spliceIndex, 1)

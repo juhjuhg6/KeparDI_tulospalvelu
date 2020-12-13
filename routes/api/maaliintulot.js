@@ -15,6 +15,7 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
     if (err) return handleError(err, res, 'Virhe lisättäessä maaliintuloa.')
 
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
+    if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
 
     if (kilpailu.maaliintulot.some(maaliintulo => maaliintulo.nimi === req.body.nimi)) {
       return res.status(400).send('Kilpailijalla on jo maaliaika')
@@ -48,7 +49,9 @@ router.put('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
     if (err) return handleError(err, res, 'Virhe muokattaessa maaliintuloa')
 
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
+    if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
     const maaliintulo = kilpailu.maaliintulot.id(req.params.maaliintuloId)
+    if (!maaliintulo) return handleError(err, res, 'Virheellinen maaliintuloId.')
 
     if (kilpailu.maaliintulot.some(m => m.nimi === req.body.nimi && m.id !== req.params.maaliintuloId)) {
       return res.status(400).send('Kilpailijalla on jo maaliaika')
@@ -82,7 +85,9 @@ router.delete('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
     if (err) return handleError(err, res, 'Vithe poistettaessa maaliintuloa.')
 
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
+    if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
     const maaliintulo = kilpailu.maaliintulot.id(req.params.maaliintuloId)
+    if (!maaliintulo) return handleError(err, res, 'Virheellinen maaliintuloId.')
 
     // poista maaliintuloaika kilpailijalta
     kilpailu.sarjat.forEach(sarja => {
