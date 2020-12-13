@@ -32,7 +32,7 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
       })
     }
 
-    kausi.tuloksiaPaivitettyViimeksi = new Date()
+    kausi.tuloksiaMuutettuViimeksi = new Date()
 
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe lisättäessä maaliintuloa.')
@@ -66,7 +66,7 @@ router.put('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
       })
     }
 
-    kausi.tuloksiaPaivitettyViimeksi = new Date()
+    kausi.tuloksiaMuutettuViimeksi = new Date()
 
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe muokattaessa maaliintuloa.')
@@ -94,7 +94,7 @@ router.delete('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
 
     maaliintulo.remove()
 
-    kausi.tuloksiaPaivitettyViimeksi = new Date()
+    kausi.tuloksiaMuutettuViimeksi = new Date()
 
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe poistettaessa maaliintuloa.')
