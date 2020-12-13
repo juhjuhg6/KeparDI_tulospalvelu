@@ -88,34 +88,6 @@ router.put('/:kausiId/:kilpailuId', (req, res) => {
       kilpailu.pvm = req.body.pvm
     }
 
-    if (req.body.sarjat) {
-      req.body.sarjat.forEach(sarja => {
-        if (sarja.id) {
-          if (sarja.poista) {
-            const sarja = kilpailu.sarjat.id(sarja.id)
-            if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
-
-            // poista kilpailun tulokset sarjan kilpailijoilta
-            Kilpailija.find({_id: {$in: sarja.kilpailijat}}, (err, kilpailijat) => {
-              kilpailijat.forEach(kilpailija => kilpailija.kilpailut.delete(kilpailu._id))
-            })
-
-            sarja.remove()
-          } else {
-            // muokkaa sarjaa
-            const sarja = kilpailu.sarjat.id(sarja.id)
-            if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
-            sarja.set({nimi: sarja.nimi, lasketaanPisteet: sarja.lasketaanPisteet})
-          }
-        } else {
-          // lisää uusi sarja
-          if (!kilpailu.sarjat.some(s => s.nimi === sarja.nimi)) {
-            kilpailu.sarjat.push(sarja)
-          }
-        }
-      })
-    }
-
     if (req.body.jarjestajat) {
       req.body.jarjestajat.forEach(jarjestaja => {
         if (jarjestaja.lisaa) {
