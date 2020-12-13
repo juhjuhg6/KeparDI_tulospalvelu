@@ -116,7 +116,7 @@ router.delete('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', (req, res) => {
     if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
 
     const spliceIndex = sarja.kilpailijat.indexOf(req.params.kilpailijaId)
-    if (spliceIndex != 0 && !spliceIndex) return handleError(err, res, 'Virheellinen kilpailijaId.')
+    if (spliceIndex === -1) return handleError(err, res, 'Virheellinen kilpailijaId.')
     sarja.kilpailijat.splice(spliceIndex, 1)
 
     kausi.save(err => {
