@@ -14,11 +14,14 @@ const haeKilpailijat = async function(kilpailu) {
   let kilpailijaIdt = []
   kilpailu.sarjat.forEach(sarja => kilpailijaIdt = kilpailijaIdt.concat(sarja.kilpailijat))
 
+  let vastaus = []
+
   await Kilpailija.find({_id: {$in: kilpailijaIdt}}, (err, kilpailijat) => {
     if (err) return vastaus = false
 
-    return kilpailijat
+    vastaus = kilpailijat
   })
+  return vastaus
 }
 
 // hae kauden kilpailujen nimet
@@ -34,11 +37,11 @@ router.get('/:kausiId/nimet', (req, res) => {
 
 // hae kilpailu
 router.get('/:kausiId/:kilpailuId', (req, res) => {
-  Kausi.findById(req.params.kausiId, (err, kausi) => {
+  Kausi.findById(req.params.kausiId, async (err, kausi) => {
     if (err) return handleError(err, res, 'Virhe haettaessa kilpailua.')
 
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
-    const kilpailijat = haeKilpailijat(kilpailu)
+    const kilpailijat = await haeKilpailijat(kilpailu)
 
     if (!kilpailijat) return handleError(err, res, 'Virhe haettaessa kilpailijoita.')
     
@@ -121,10 +124,10 @@ router.put('/:kausiId/:kilpailuId', (req, res) => {
       })
     }
 
-    kausi.save(err => {
+    kausi.save(async err => {
       if (err) return handleError(err, res, 'Virhe muokatessa kilpailua.')
 
-      const kilpailijat = haeKilpailijat(kilpailu)
+      const kilpailijat = await haeKilpailijat(kilpailu)
       if (!kilpailijat) return handleError(err, res, 'Virhe haettaessa kilpailijoita.')
       
       res.json({kilpailu: kilpailu, kilpailijat: kilpailijat})
@@ -214,10 +217,10 @@ router.put('/kilpailijat/:kausiId/:kilpailuId/:kilpailijaId', (req, res) => {
     let kilpailu
     Kausi.findById(req.params.kausiId, (err, kausi) => kilpailu = kausi.kilpailut.id(req.params.kilpailuId))
 
-    kilpailija.save(err => {
+    kilpailija.save(async err => {
       if (err) return handleError(err, res, 'Virhe muutettaessa kilpailijan lähtöaikaa.')
 
-      res.json(haeKilpailijat(kilpailu))
+      res.json(await haeKilpailijat(kilpailu))
     })
   })
 })
