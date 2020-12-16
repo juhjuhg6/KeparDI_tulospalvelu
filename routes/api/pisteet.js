@@ -17,8 +17,8 @@ const kilpailijanPisteet = function (voittoAika, kilpailijanAika) {
   return pisteet
 }
 
-const päivitäKilpailunPisteet = function (kilpailu) {
-  kilpailu.sarjat.forEach(sarja => {
+const päivitäKilpailunPisteet = function (kilpailu, seuraava) {
+  kilpailu.sarjat.map(sarja => {
     Kilpailija.find({'_id': {$in: sarja.kilpailijat}}, (err, kilpailijat) => {
       if (err) return handleError(err, res, 'Virhe päivitettäessä pisteitä.')
 
@@ -38,21 +38,100 @@ const päivitäKilpailunPisteet = function (kilpailu) {
         }
       })
 
-      kilpailijoidenAjat.forEach(kilpailijanAika => {
-        Kilpailija.findById(kilpailijanAika.id, (err, kilpailija) => {
-          if (err) return handleError(err, res, 'Virhe päivitettäessä pisteitä.')
+      const asetaPisteet = function (i) {
+        const kilpailijanAika = kilpailijoidenAjat[i]
+        let kilpailija = kilpailijat.find(k => k._id === kilpailijanAika.id)
+        let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
+        kilpailudata.pisteet = kilpailijanPisteet(voittoAika, kilpailijanAika.aika)
+        kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
 
-          let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
-          kilpailudata.pisteet = kilpailijanPisteet(voittoAika, kilpailijanAika.aika)
-          kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+        kilpailija.save(err => {
+          if (err) handleError(err, res, 'Virhe päivitettäessä pisteitä.')
 
-          kilpailija.save(err => {
-            if (err) handleError(err, res, 'Virhe päivitettäessä pisteitä.')
-          })
+          if (i === kilpailijoidenAjat.length-1) {
+            return päivitäJärjestäjienPisteet(kilpailu, seuraava)
+          }
+          return asetaPisteet(i+1)
         })
-      })
+      }
+
+      asetaPisteet(0)
     })
   })
+}
+
+const päivitäJärjestäjienPisteet = function (kilpailu, seuraava) {
+  // lasketaan suurimman sarjan viiden parhaan pisteistä keskiarvo tai jos useampi yhtä suuri
+  // sarja, niin valitaan sarja, josta tulee parhaat pisteet
+  let suurimmatSarjat = []
+
+  kilpailu.sarjat.forEach(sarja => {
+    if (!suurimmatSarjat.length || sarja.kilpailijat.length === suurimmatSarjat[0].kilpailijat.length) {
+      suurimmatSarjat.push(sarja)
+    } else if (sarja.kilpailijat.length > suurimmatSarjat[0].kilpailijat.length) {
+      suurimmatSarjat = []
+      suurimmatSarjat.push(sarja)
+    }
+  })
+
+  let järjestäjienPisteet = 0
+
+  const asetaJärjestäjienPisteet = function () {
+    Kilpailija.find({'_id': {$in: kilpailu.jarjestajat}}, (err, järjestäjät) => {
+      if (err) return console.log(err)
+  
+      const asetaPisteet = function(i, seuraava) {
+        järjestäjä = järjestäjät[i]
+        let kilpailudata = järjestäjä.kilpailut.get(kilpailu._id.toString())
+        kilpailudata.pisteet = järjestäjienPisteet
+        järjestäjä.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+  
+        järjestäjä.save(err => {
+          if (err) return handleError(err, res, 'Virhe päivitettäessä järjestäjien pisteitä.')
+  
+          if (i === järjestäjät.length-1) {
+            return seuraava()
+          }
+          return asetaPisteet(i+1, seuraava)
+        })
+      }
+  
+      asetaPisteet(0, seuraava)
+    })
+  }
+
+  const laskeJärjestäjienPisteet = function (i) {
+    const sarja = suurimmatSarjat[i]
+
+    Kilpailija.find({'_id': {$in: sarja.kilpailijat}}, (err, kilpailijat) => {
+      if (err) handleError(err, res, 'Virhe päivitettäessä järjestäjien pisteitä.')
+
+      let parhaatPisteet = []
+
+      kilpailijat.forEach(kilpailija => {
+        const pisteet = kilpailija.kilpailut.get(kilpailu._id.toString()).pisteet
+        if (parhaatPisteet.length < 5) {
+          parhaatPisteet.push(pisteet)
+          parhaatPisteet.sort()
+        } else if (pisteet > parhaatPisteet[0]) {
+          parhaatPisteet.slice(0, 1)
+          parhaatPisteet.push(pisteet)
+          parhaatPisteet.sort()
+        }
+      })
+
+      const keskiarvo = parhaatPisteet.reduce((sum, num) => sum + num, 0) / parhaatPisteet.length
+      if (keskiarvo > järjestäjienPisteet) {
+        järjestäjienPisteet = Math.round(keskiarvo)
+      }
+    })
+
+    if (i === suurimmatSarjat.length-1) {
+      return asetaJärjestäjienPisteet()
+    }
+  }
+
+  laskeJärjestäjienPisteet(0)
 }
 
 // päivitä kauden kaikkien kilpailujen pisteet
@@ -60,22 +139,34 @@ router.get('/:kausiId', (req, res) => {
   Kausi.findById(req.params.kausiId, (err, kausi) => {
     if (err) return handleError(err, res, 'Virhe päivitettäessä pisteitä.')
 
-    kausi.kilpailut.forEach(kilpailu => {
-      päivitäKilpailunPisteet(kilpailu)
-    })
+    const vastaus = function () {
+      let kaikkiKilpailijat = []
+      kausi.kilpailut.forEach(kilpailu => {
+        kilpailu.sarjat.forEach(sarja => {
+          kaikkiKilpailijat = kaikkiKilpailijat.concat(sarja.kilpailijat)
+        })
 
-    let kaikkiKilpailijat = []
-    kausi.kilpailut.forEach(kilpailu => {
-      kilpailu.sarjat.forEach(sarja => {
-        kaikkiKilpailijat = kaikkiKilpailijat.concat(sarja.kilpailijat)
+        kaikkiKilpailijat = kaikkiKilpailijat.concat(kilpailu.jarjestajat)
       })
-    })
 
-    Kilpailija.find({'_id': {$in: kaikkiKilpailijat}}, (err, kilpailijat) => {
-      if (err) return handleError(err, res, 'Virhe päivitettäessä pisteitä.')
+      Kilpailija.find({'_id': {$in: kaikkiKilpailijat}}, (err, kilpailijat) => {
+        if (err) return handleError(err, res, 'Virhe päivitettäessä pisteitä.')
 
-      res.json(kilpailijat)
-    })
+        res.json(kilpailijat)
+      })
+    }
+
+    let i = 0
+    const kilpailunPisteet = function () {
+      const kilpailu = kausi.kilpailut[i]
+      if (i === kausi.kilpailut.length-1) {
+        i++
+        return päivitäKilpailunPisteet(kilpailu, kilpailunPisteet)
+      }
+      return vastaus()
+    }
+
+    kilpailunPisteet()
   })
 })
 
@@ -87,18 +178,22 @@ router.get('/:kausiId/:kilpailuId', (req, res) => {
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpiuId.')
 
-    päivitäKilpailunPisteet(kilpailu)
+    const vastaus = function () {
+      let kaikkiKilpailijat = []
+      kilpailu.sarjat.forEach(sarja => {
+        kaikkiKilpailijat = kaikkiKilpailijat.concat(sarja.kilpailijat)
+      })
 
-    let kaikkiKilpailijat = []
-    kilpailu.sarjat.forEach(sarja => {
-      kaikkiKilpailijat = kaikkiKilpailijat.concat(sarja.kilpailijat)
-    })
+      kaikkiKilpailijat = kaikkiKilpailijat.concat(kilpailu.jarjestajat)
 
-    Kilpailija.find({'_id': {$in: kaikkiKilpailijat}}, (err, kilpailijat) => {
-      if (err) return handleError(err, res, 'Virhe päivitettäessä kilpailun pisteitä.')
+      Kilpailija.find({'_id': {$in: kaikkiKilpailijat}}, (err, kilpailijat) => {
+        if (err) return handleError(err, res, 'Virhe päivitettäessä kilpailun pisteitä.')
 
-      res.json(kilpailijat)
-    })
+        res.json(kilpailijat)
+      })
+    }
+
+    päivitäKilpailunPisteet(kilpailu, vastaus)
   })
 })
 
