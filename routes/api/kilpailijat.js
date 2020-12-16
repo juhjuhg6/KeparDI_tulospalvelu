@@ -41,14 +41,15 @@ router.post('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
       } else {
         // tarkistetaan onko kilpailija jo jossain kilpailun sarjassa
         const kilpailijaJoKilpailussa = function() {
+          let found = false
           kilpailu.sarjat.forEach(sarja => {
             if (sarja.kilpailijat.some(k => k === kilpailija._id.toString())) {
-              return true
+              found = true
             }
           })
-          return false
+          return found
         }
-        if (kilpailijaJoKilpailussa) return handleError(err, res, 'Kilpailija on jo kilpailussa.')
+        if (kilpailijaJoKilpailussa()) return handleError(err, res, 'Kilpailija on jo kilpailussa.')
 
         sarja.kilpailijat.push(kilpailija._id)
         kausi.save(err => {
