@@ -48,7 +48,7 @@ router.post('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
           })
           return false
         }
-        if (kilpailijaJoKilpailussa) return handleError(err, res, 'Kilpailija on jo kilpailussa.')
+        if (kilpailijaJoKilpailussa()) return handleError(err, res, 'Kilpailija on jo kilpailussa.')
 
         sarja.kilpailijat.push(kilpailija._id)
         kausi.save(err => {
