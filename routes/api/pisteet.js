@@ -18,9 +18,23 @@ const kilpailijanPisteet = function (voittoAika, kilpailijanAika) {
 }
 
 const päivitäKilpailunPisteet = function (kilpailu, seuraava) {
-  kilpailu.sarjat.map(sarja => {
+  if (!kilpailu.sarjat.length) {
+    return seuraava()
+  }
+
+  const sarjanPisteet = function (i) {
+    const sarja = kilpailu.sarjat[i]
+    if (!sarja) {
+      if (kilpailu.jarjestajat.length) {
+        return päivitäJärjestäjienPisteet(kilpailu, seuraava)
+      }
+      return seuraava()
+    }
+
     Kilpailija.find({'_id': {$in: sarja.kilpailijat}}, (err, kilpailijat) => {
       if (err) return handleError(err, res, 'Virhe päivitettäessä pisteitä.')
+
+      if (!kilpailijat.length) return seuraava()
 
       let kilpailijoidenAjat = []
       let voittoAika
@@ -38,8 +52,11 @@ const päivitäKilpailunPisteet = function (kilpailu, seuraava) {
         }
       })
 
-      const asetaPisteet = function (i) {
-        const kilpailijanAika = kilpailijoidenAjat[i]
+      const asetaPisteet = function (j) {
+        const kilpailijanAika = kilpailijoidenAjat[j]
+        if (!kilpailijanAika) {
+          return sarjanPisteet(i+1)
+        }
         let kilpailija = kilpailijat.find(k => k._id === kilpailijanAika.id)
         let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
         kilpailudata.pisteet = kilpailijanPisteet(voittoAika, kilpailijanAika.aika)
@@ -48,16 +65,15 @@ const päivitäKilpailunPisteet = function (kilpailu, seuraava) {
         kilpailija.save(err => {
           if (err) handleError(err, res, 'Virhe päivitettäessä pisteitä.')
 
-          if (i === kilpailijoidenAjat.length-1) {
-            return päivitäJärjestäjienPisteet(kilpailu, seuraava)
-          }
-          return asetaPisteet(i+1)
+          return asetaPisteet(j+1)
         })
       }
 
       asetaPisteet(0)
     })
-  })
+  }
+
+  sarjanPisteet(0)
 }
 
 const päivitäJärjestäjienPisteet = function (kilpailu, seuraava) {
@@ -80,23 +96,23 @@ const päivitäJärjestäjienPisteet = function (kilpailu, seuraava) {
     Kilpailija.find({'_id': {$in: kilpailu.jarjestajat}}, (err, järjestäjät) => {
       if (err) return console.log(err)
   
-      const asetaPisteet = function(i, seuraava) {
+      const asetaPisteet = function(i) {
         järjestäjä = järjestäjät[i]
+        if (!järjestäjä) {
+          return seuraava()
+        }
         let kilpailudata = järjestäjä.kilpailut.get(kilpailu._id.toString())
         kilpailudata.pisteet = järjestäjienPisteet
         järjestäjä.kilpailut.set(kilpailu._id.toString(), kilpailudata)
   
         järjestäjä.save(err => {
           if (err) return handleError(err, res, 'Virhe päivitettäessä järjestäjien pisteitä.')
-  
-          if (i === järjestäjät.length-1) {
-            return seuraava()
-          }
-          return asetaPisteet(i+1, seuraava)
+
+          return asetaPisteet(i+1)
         })
       }
   
-      asetaPisteet(0, seuraava)
+      asetaPisteet(0)
     })
   }
 
@@ -112,11 +128,11 @@ const päivitäJärjestäjienPisteet = function (kilpailu, seuraava) {
         const pisteet = kilpailija.kilpailut.get(kilpailu._id.toString()).pisteet
         if (parhaatPisteet.length < 5) {
           parhaatPisteet.push(pisteet)
-          parhaatPisteet.sort()
-        } else if (pisteet > parhaatPisteet[0]) {
-          parhaatPisteet.slice(0, 1)
+          parhaatPisteet.sort((a, b) => b - a)
+        } else if (pisteet > parhaatPisteet[parhaatPisteet.length-1]) {
+          parhaatPisteet.pop()
           parhaatPisteet.push(pisteet)
-          parhaatPisteet.sort()
+          parhaatPisteet.sort((a, b) => b - a)
         }
       })
 
@@ -124,11 +140,11 @@ const päivitäJärjestäjienPisteet = function (kilpailu, seuraava) {
       if (keskiarvo > järjestäjienPisteet) {
         järjestäjienPisteet = Math.round(keskiarvo)
       }
-    })
 
-    if (i === suurimmatSarjat.length-1) {
-      return asetaJärjestäjienPisteet()
-    }
+      if (i === suurimmatSarjat.length-1) {
+        return asetaJärjestäjienPisteet()
+      }
+    })
   }
 
   laskeJärjestäjienPisteet(0)
@@ -159,7 +175,7 @@ router.get('/:kausiId', (req, res) => {
     let i = 0
     const kilpailunPisteet = function () {
       const kilpailu = kausi.kilpailut[i]
-      if (i === kausi.kilpailut.length-1) {
+      if (kilpailu) {
         i++
         return päivitäKilpailunPisteet(kilpailu, kilpailunPisteet)
       }
