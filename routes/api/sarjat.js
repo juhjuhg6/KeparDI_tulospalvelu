@@ -108,19 +108,37 @@ router.delete('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
     const sarja = kilpailu.sarjat.id(req.params.sarjaId)
     if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
 
-    // positetaan tulokset kaikilta kilpailijoilta
+    let vastaus = {poistettavatKilpailijat: []}
+
+    const poistaSarja = function () {
+      sarja.remove()
+
+      kausi.save(err => {
+        if (err) return handleError(err, res, 'Virhe poistettaessa sarjaa.')
+
+        vastaus.kilpailu = kilpailu
+
+        res.json(vastaus)
+      })
+    }
+
+    // positetaan kilpailu kaikilta sarjan kilpailijoilta
     Kilpailija.find({_id: {$in: sarja.kilpailijat}}, (err, kilpailijat) => {
       if (err) return handleError(err, res, 'Virhe poistettaessa sarjaa.')
 
-      kilpailijat.forEach(kilpailija => kilpailija.kilpailut.delete(kilpailu._id))      
-    })
+      const poistaKilpailuKilpailijalta = function (i) {
+        const kilpailija = kilpailijat[i]
+        if (!kilpailija) {
+          return poistaSarja()
+        }
+        kilpailija.kilpailut.delete(kilpailu._id.toString())
+        vastaus.poistettavatKilpailijat.push(kilpailija._id)
 
-    sarja.remove()
-
-    kausi.save(err => {
-      if (err) return handleError(err, res, 'Virhe poistettaessa sarjaa.')
-
-      res.json(kilpailu)
+        kilpailija.save(err => {
+          poistaKilpailuKilpailijalta(i+1)
+        })
+      }
+      poistaKilpailuKilpailijalta(0)
     })
   })
 })
