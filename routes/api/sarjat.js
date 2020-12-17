@@ -61,7 +61,7 @@ router.put('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
       })
     }
 
-    if (typeof sarja.lasketaanPisteet === 'boolean') {
+    if (typeof req.body.lasketaanPisteet === 'boolean') {
       sarja.lasketaanPisteet = req.body.lasketaanPisteet
 
       if (typeof sarja.lasketaanPisteet === 'boolean' && sarja.lasketaanPisteet === false) {
@@ -94,6 +94,8 @@ router.put('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
       } else {
         tallennaSarja()
       }
+    } else {
+      tallennaSarja()
     }
   })
 })
