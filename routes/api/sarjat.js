@@ -28,7 +28,7 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe luotaessa uutta sarjaa.')
 
-      res.json(kilpailu)
+      res.json({kilpailu: kilpailu})
     })
   })
 })
