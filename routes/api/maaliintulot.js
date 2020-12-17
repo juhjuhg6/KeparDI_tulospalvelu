@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const Kausi = require('../../models/kausi.js')
+const Kilpailija = require('../../models/kilpailija.js')
 
 const handleError = function (err, res, message) {
   console.log('\n', message)
@@ -17,28 +18,37 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
 
-    if (kilpailu.maaliintulot.some(maaliintulo => maaliintulo.nimi === req.body.nimi)) {
+    if (kilpailu.maaliintulot.some(maaliintulo => maaliintulo.kilpailija === req.body.kilpailija)) {
       return res.status(400).send('Kilpailijalla on jo maaliaika')
     }
 
     kilpailu.maaliintulot.push(req.body)
 
-    // aseta maaliintuloaika kyseiselle kilpailijalle
-    if (req.body.nimi) {
-      kilpailu.sarjat.forEach(sarja => {
-        const kilpailija = sarja.kilpailijat.find(k => k.nimi === req.body.nimi)
-        if (kilpailija) {
-          kilpailija.maaliaika = req.body.maaliintuloaika
-        }
-      })
-    }
-
-    kausi.tuloksiaMuutettuViimeksi = new Date()
-
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe lisättäessä maaliintuloa.')
 
-      res.json(kilpailu)
+      if (req.body.kilpailija && req.body.maaliintuloaika) {
+        // päivitetään maaliaika kilpailijalle
+        Kilpailija.findById(req.body.kilpailija, (err, kilpailija) => {
+          if (err) return handleError(err, res, 'Virhe päivitettäessä maaliaikaa.')
+
+          let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
+          kilpailudata.maaliaika = req.body.maaliintuloaika
+          kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+
+          kilpailija.save((err, kilpailija) => {
+            if (err) return handleError(err, res, 'Virhe päivitettäessä maaliaikaa kilpailijalle.')
+
+            // poistetaan muut kilpailijan kilpailut vastausta varten
+            kilpailija.kilpailut.clear()
+            kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+
+            res.json({kilpailu: kilpailu, kilpailijat: [kilpailija]})
+          })
+        })
+      } else {
+        res.json({kilpailu: kilpailu})
+      }
     })
   })
 })
@@ -53,28 +63,77 @@ router.put('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
     const maaliintulo = kilpailu.maaliintulot.id(req.params.maaliintuloId)
     if (!maaliintulo) return handleError(err, res, 'Virheellinen maaliintuloId.')
 
-    if (kilpailu.maaliintulot.some(m => m.nimi === req.body.nimi && m.id !== req.params.maaliintuloId)) {
-      return res.status(400).send('Kilpailijalla on jo maaliaika')
+    // jos kyseisellä kilpailijalla on jo toinen maaliintulo tallennettuna, niin poistetaan
+    // kilpailija siitä maaliintulosta
+    let kilpailijanToinenMaaliintulo = kilpailu.maaliintulot.find(m => m.kilpailija === req.body.kilpailija &&
+      m.id !== req.params.maaliintuloId)
+    if (kilpailijanToinenMaaliintulo) {
+      kilpailijanToinenMaaliintulo.kilpailija = null
     }
 
+    const edellinenKilpailija = maaliintulo.kilpailija
     maaliintulo.set(req.body)
-
-    // päivitä muuttunut maaliintuloaika kyseisen kilpailijan kohdalle
-    if (req.body.maaliintuloaika) {
-      kilpailu.sarjat.forEach(sarja => {
-        const kilpailija = sarja.kilpailijat.find(k => k.nimi === req.body.nimi || k.nimi === maaliintulo.nimi)
-        if (kilpailija) {
-          kilpailija.maaliaika = req.body.maaliintuloaika
-        }
-      })
-    }
-
-    kausi.tuloksiaMuutettuViimeksi = new Date()
 
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe muokattaessa maaliintuloa.')
 
-      res.json(kilpailu)
+      let vastaus = {kilpailu: kilpailu, kilpailijat: []}
+
+      const päivitäEdellinenKilpailija = function () {
+        if (edellinenKilpailija && edellinenKilpailija !== maaliintulo.kilpailija) {
+          Kilpailija.findById(edellinenKilpailija, (err, kilpailija) => {
+            // poistetaan maaliintuloaika mahdolliselta edelliseltä kilpailijalta
+            if (err) return handleError(err, res, 'Virhe päivitettäessä maaliintuloa.')
+
+            let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
+            kilpailudata.maaliaika = null
+            kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+
+            kilpailija.save((err, kilpailija) => {
+              if (err) handleError(err, res, 'Virhe päivitettäessä maaliintuloaikaa.')
+
+              kilpailija.kilpailut.clear()
+              kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+              vastaus.kilpailijat.push(kilpailija)
+              
+              päivitäKilpailija()
+            })
+          })
+        } else {
+          päivitäKilpailija()
+        }
+      }
+
+      const päivitäKilpailija = function () {
+        if (maaliintulo.kilpailija) {
+          // päivitä maaliintuloaika kyseisen kilpailijan kohdalle
+          Kilpailija.findById(maaliintulo.kilpailija, (err, kilpailija) => {
+            if (err) return handleError(err, res, 'Virhe päivitettäessä maaliintuloa.')
+
+            let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
+            kilpailudata.maaliaika = maaliintulo.maaliintuloaika
+            kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+
+            kilpailija.save((err, kilpailija) => {
+              if (err) handleError(err, res, 'Virhe päivitettäessä maaliintuloaikaa.')
+
+              kilpailija.kilpailut.clear()
+              kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+              vastaus.kilpailijat.push(kilpailija)
+
+              lähetäVastaus()
+            })
+          })
+        } else {
+          lähetäVastaus()
+        }
+      }
+
+      const lähetäVastaus = function () {
+        res.json(vastaus)
+      }
+
+      päivitäEdellinenKilpailija()
     })
   })
 })
@@ -89,23 +148,41 @@ router.delete('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
     const maaliintulo = kilpailu.maaliintulot.id(req.params.maaliintuloId)
     if (!maaliintulo) return handleError(err, res, 'Virheellinen maaliintuloId.')
 
-    // poista maaliintuloaika kilpailijalta
-    kilpailu.sarjat.forEach(sarja => {
-      const kilpailija = sarja.kilpailijat.find(k => k.nimi === maaliintulo.nimi)
-      if (kilpailija) {
-        kilpailija.maaliintuloaika = null
-      }
-    })
+    let vastaus = {}
 
-    maaliintulo.remove()
+    const poistaMaaliintulo = function () {
+      maaliintulo.remove()
 
-    kausi.tuloksiaMuutettuViimeksi = new Date()
+      kausi.save(err => {
+        if (err) return handleError(err, res, 'Virhe poistettaessa maaliintuloa.')
 
-    kausi.save(err => {
-      if (err) return handleError(err, res, 'Virhe poistettaessa maaliintuloa.')
+        vastaus.kilpailu = kilpailu
+        res.json(vastaus)
+      })
+    }
 
-      res.json(kilpailu)
-    })
+    if (maaliintulo.kilpailija) {
+      // poista maaliintulo kilpailijalta
+      Kilpailija.findById(maaliintulo.kilpailija, (err, kilpailija) => {
+        if (err) return handleError(err, res, 'Virhe poitettaessa maaliintuloa.')
+
+        let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
+        kilpailudata.maaliaika = null
+        kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+
+        kilpailija.save((err, kilpailija) => {
+          if (err) return handleError(err, res, 'Virhe poistettaessa maaliintuloa.')
+
+          kilpailija.kilpailut.clear()
+          kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+          vastaus.kilpailijat = [kilpailija]
+
+          poistaMaaliintulo()
+        })
+      })
+    } else {
+      poistaMaaliintulo()
+    }
   })
 })
 
