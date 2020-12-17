@@ -107,20 +107,59 @@ router.put('/:kausiId/:kilpailuId', (req, res) => {
       }
     }
 
-    if (req.body.pvm) {
-      kilpailu.pvm = req.body.pvm
+    const tallenna = function () {
+      kausi.save(err => {
+        if (err) return handleError(err, res, 'Virhe muokatessa kilpailua.')
+        
+        const vastaus = function (kilpailijatJaJärjestäjät) {
+          res.json({kilpailu: kilpailu, kilpailijat: kilpailijatJaJärjestäjät.kilpailijat,
+                    järjestäjät: kilpailijatJaJärjestäjät.järjestäjät})
+        }
+
+        haeKilpailijatJaJärjestäjät(kilpailu, vastaus)
+      })
     }
 
-    kausi.save(async err => {
-      if (err) return handleError(err, res, 'Virhe muokatessa kilpailua.')
-      
-      const vastaus = function (kilpailijatJaJärjestäjät) {
-        res.json({kilpailu: kilpailu, kilpailijat: kilpailijatJaJärjestäjät.kilpailijat,
-                  järjestäjät: kilpailijatJaJärjestäjät.järjestäjät})
-      }
+    if (req.body.pvm) {
+      const vanhaPvm = kilpailu.pvm
+      kilpailu.pvm = req.body.pvm
 
-      haeKilpailijatJaJärjestäjät(kilpailu, vastaus)
-    })
+      // muutetaan kilpailijoiden lähtöajat vastaamaan uutta päivämäärää
+      let kilpailijaIdt = []
+      kilpailu.sarjat.forEach(sarja => kilpailijaIdt = kilpailijaIdt.concat(sarja.kilpailijat))
+
+      Kilpailija.find({'_id': {$in: kilpailijaIdt}}, (err, kilpailijat) => {
+        if (err) return handleError(err, res, 'Virhe päivittäessä kilpailijoiden lähtöaikoja.')
+
+        const päivitäLähtoaika = function (i) {
+          let kilpailija = kilpailijat[i]
+          if (!kilpailija) {
+            return tallenna()
+          }
+          
+          let uusiPvm = new Date()
+          uusiPvm.setTime(Date.parse(req.body.pvm))
+          let pvmErotus = uusiPvm - vanhaPvm
+
+          let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
+          if (!kilpailudata.lahtoaika) {
+            päivitäLähtoaika(i+1)
+          }
+          kilpailudata.lahtoaika = kilpailudata.lahtoaika.getTime() + pvmErotus
+          kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+          
+          kilpailija.save(err => {
+            if (err) return handleError(err, res, 'Virhe päivitettäessä lähtöaikoja.')
+
+            päivitäLähtoaika(i+1)
+          })
+        }
+
+        päivitäLähtoaika(0)
+      })
+    } else {
+      tallenna()
+    }
   })
 })
 
