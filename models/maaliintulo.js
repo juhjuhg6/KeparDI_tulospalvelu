@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const MaaliintuloSchema = new Schema({
-  nimi: String,
+  kilpailija: String, // kilpailijan id
   maaliintuloaika: Date
 })
 
