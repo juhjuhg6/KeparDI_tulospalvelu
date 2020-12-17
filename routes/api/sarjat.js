@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const Kausi = require('../../models/kausi.js')
+const kilpailija = require('../../models/kilpailija.js')
 const Kilpailija = require('../../models/kilpailija.js')
 
 const handleError = function (err, res, message) {
@@ -46,18 +47,54 @@ router.put('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
     if (req.body.nimi) {
       sarja.nimi = req.body.nimi
     }
-    if (req.body.lasketaanPisteet) {
-      sarja.lasketaanPisteet = req.body.lasketaanPisteet
-    }
     if (req.body.manuaalisetPisteet) {
       sarja.manuaalisetPisteet = req.body.manuaalisetPisteet
     }
 
-    kausi.save(err => {
-      if (err) return handleError(err, res, 'Virhe muokatessa sarjaa.')
+    let vastaus = {kilpailu: kilpailu, kilpailijat: []}
 
-      res.json(kilpailu)
-    })
+    const tallennaSarja = function () {
+      kausi.save(err => {
+        if (err) return handleError(err, res, 'Virhe muokatessa sarjaa.')
+
+        res.json(vastaus)
+      })
+    }
+
+    if (typeof sarja.lasketaanPisteet === 'boolean') {
+      sarja.lasketaanPisteet = req.body.lasketaanPisteet
+
+      if (typeof sarja.lasketaanPisteet === 'boolean' && sarja.lasketaanPisteet === false) {
+        // poistetaan pisteet sarjan kilpailijoilta
+        Kilpailija.find({'_id': {$in: sarja.kilpailijat}}, (err, kilpailijat) => {
+          if (err) return handleError(err, res, 'Virhe poistettaessa pisteitä kilpailijoilta.')
+
+          const poistaPisteet = function (i) {
+            const kilpailija = kilpailijat[i]
+            if (!kilpailija) {
+              return tallennaSarja()
+            }
+
+            let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
+            kilpailudata.pisteet = 0
+            kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+
+            kilpailija.save((err, kilpailija) => {
+              if (err) return handleError(err, res, 'Virhe poistettaessa pisteitä kilpailijoilta.')
+
+              kilpailija.kilpailut.clear()
+              kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+              vastaus.kilpailijat.push(kilpailija)
+              poistaPisteet(i+1)
+            })
+          }
+
+          poistaPisteet(0)
+        })
+      } else {
+        tallennaSarja()
+      }
+    }
   })
 })
 
