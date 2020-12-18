@@ -3,6 +3,7 @@ const router = express.Router()
 
 const Kausi = require('../../models/kausi.js')
 const Kilpailija = require('../../models/kilpailija.js')
+const lähetäVastaus = require('./vastaus.js')
 
 const handleError = function (err, res, message) {
   console.log('\n', message)
@@ -64,12 +65,7 @@ router.get('/:kausiId/:kilpailuId', (req, res) => {
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
     
-    const vastaus = function (kilpailijatJaJärjestäjät) {
-      res.json({kilpailu: kilpailu, kilpailijat: kilpailijatJaJärjestäjät.kilpailijat,
-                järjestäjät: kilpailijatJaJärjestäjät.järjestäjät})
-    }
-    
-    haeKilpailijatJaJärjestäjät(kilpailu, vastaus)
+    lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
   })
 })
 
@@ -88,7 +84,7 @@ router.post('/:kausiId', (req, res) => {
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe luotaessa uutta kilpailua.')
 
-      res.json(kausi.kilpailut[kausi.kilpailut.length-1])
+      lähetäVastaus(JSON.parse(JSON.stringify(kausi.kilpailut[kausi.kilpailut.length-1])), res)
     })
   })
 })
@@ -110,13 +106,8 @@ router.put('/:kausiId/:kilpailuId', (req, res) => {
     const tallenna = function () {
       kausi.save(err => {
         if (err) return handleError(err, res, 'Virhe muokatessa kilpailua.')
-        
-        const vastaus = function (kilpailijatJaJärjestäjät) {
-          res.json({kilpailu: kilpailu, kilpailijat: kilpailijatJaJärjestäjät.kilpailijat,
-                    järjestäjät: kilpailijatJaJärjestäjät.järjestäjät})
-        }
 
-        haeKilpailijatJaJärjestäjät(kilpailu, vastaus)
+        lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
       })
     }
 

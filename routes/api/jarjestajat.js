@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 
 const Kausi = require('../../models/kausi.js')
+const Kilpailija = require('../../models/kilpailija.js')
+const lähetäVastaus = require('./vastaus.js')
 
 const handleError = function (err, res, message) {
   console.log('\n', message)
@@ -31,8 +33,8 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
           kilpailu.jarjestajat.push(kilpailija._id)
           kausi.save(err => {
             if (err) return handleError(err, res, 'Virhe lisättäessä järjestäjää.')
-      
-            res.json(kilpailu)
+
+            lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
           })
         })
       } else {
@@ -44,14 +46,14 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
         kilpailu.jarjestajat.push(kilpailija._id)
         kausi.save(err => {
           if (err) return handleError(err, res, 'Virhe lisättäessä järjestäjää.')
-    
-          res.json(kilpailu)
-        })
 
-        kilpailija.kilpailut.set(req.params.kilpailuId, {})
+          kilpailija.kilpailut.set(req.params.kilpailuId, {})
+  
+          kilpailija.save(err => {
+            if (err) return handleError(err, res, 'Virhe lisättäessä järjestäjää.')
+          })
 
-        kilpailija.save(err => {
-          if (err) return handleError(err, res, 'Virhe lisättäessä järjestäjää.')
+          lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
         })
       }
     })
@@ -68,12 +70,11 @@ router.delete('/:kausiId/:kilpailuId/:jarjestajaId', (req, res) => {
 
       kilpailija.save(err => {
         if (err) return err
+
+        lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
       })
     })
   }
-
-  const err = poistaKilpailuKilpailijalta()
-  if (err) return handleError(err, res, 'Virhe poistettaessa järjestäjää.')
 
   Kausi.findById(req.params.kausiId, (err, kausi) => {
     if (err) return handleError(err, res, 'Virhe poistettaessa järjestäjää.')
@@ -88,7 +89,7 @@ router.delete('/:kausiId/:kilpailuId/:jarjestajaId', (req, res) => {
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe poistettaessa järjestäjää.')
 
-      res.json(kilpailu)
+      poistaKilpailuKilpailijalta()
     })
   })
 })

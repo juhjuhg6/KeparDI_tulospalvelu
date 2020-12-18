@@ -3,6 +3,7 @@ const router = express.Router()
 
 const Kausi = require('../../models/kausi.js')
 const Kilpailija = require('../../models/kilpailija.js')
+const lähetäVastaus = require('./vastaus.js')
 
 const handleError = function (err, res, message) {
   console.log('\n', message)
@@ -34,8 +35,8 @@ router.post('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
           sarja.kilpailijat.push(kilpailija._id)
           kausi.save(err => {
             if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
-      
-            res.json(kilpailu)
+
+            lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
           })
         })
       } else {
@@ -52,16 +53,17 @@ router.post('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
         if (kilpailijaJoKilpailussa()) return handleError(err, res, 'Kilpailija on jo kilpailussa.')
 
         sarja.kilpailijat.push(kilpailija._id)
-        kausi.save(err => {
-          if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
-    
-          res.json(kilpailu)
-        })
 
         kilpailija.kilpailut.set(req.params.kilpailuId, req.body.kilpailudata)
 
         kilpailija.save(err => {
           if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
+          
+          kausi.save(err => {
+            if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
+
+            lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
+          })
         })
       }
     })
@@ -91,7 +93,7 @@ router.put('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', (req, res) => {
     kilpailija.save((err, kilpailija) => {
       if (err) return handleError(err, res, 'Virhe muokattaessa kilpailijan kilpailudataa.')
 
-      res.json(kilpailija)
+      lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
     })
   })
 })
@@ -105,25 +107,25 @@ router.delete('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', (req, res) => {
 
     kilpailija.save(err => {
       if (err) return handleError(err, res, 'Virhe poistettaessa kilpailijaa kilpailusta.')
-    })
-  })
 
-  Kausi.findById(req.params.kausiId, (err, kausi) => {
-    if (err) return handleError(err, res, 'Virhe poistettaessa kilpailijaa kilpailusta.')
+      Kausi.findById(req.params.kausiId, (err, kausi) => {
+        if (err) return handleError(err, res, 'Virhe poistettaessa kilpailijaa kilpailusta.')
+    
+        const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
+        if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
+        const sarja = kilpailu.sarjat.id(req.params.sarjaId)
+        if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
+    
+        const spliceIndex = sarja.kilpailijat.indexOf(req.params.kilpailijaId)
+        if (spliceIndex === -1) return handleError(err, res, 'Virheellinen kilpailijaId.')
+        sarja.kilpailijat.splice(spliceIndex, 1)
+    
+        kausi.save(err => {
+          if (err) return handleError(err, res, 'Virhe poistettaessa kilpailijaa kilpailusta.')
 
-    const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
-    if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
-    const sarja = kilpailu.sarjat.id(req.params.sarjaId)
-    if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
-
-    const spliceIndex = sarja.kilpailijat.indexOf(req.params.kilpailijaId)
-    if (spliceIndex === -1) return handleError(err, res, 'Virheellinen kilpailijaId.')
-    sarja.kilpailijat.splice(spliceIndex, 1)
-
-    kausi.save(err => {
-      if (err) return handleError(err, res, 'Virhe poistettaessa kilpailijaa kilpailusta.')
-
-      res.json(kilpailu)
+          lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
+        })
+      })
     })
   })
 })

@@ -3,6 +3,7 @@ const router = express.Router()
 
 const Kausi = require('../../models/kausi.js')
 const Kilpailija = require('../../models/kilpailija.js')
+const lähetäVastaus = require('./vastaus.js')
 
 const handleError = function (err, res, message) {
   console.log('\n', message)
@@ -36,18 +37,14 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
           kilpailudata.maaliaika = req.body.maaliintuloaika
           kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
 
-          kilpailija.save((err, kilpailija) => {
+          kilpailija.save(err => {
             if (err) return handleError(err, res, 'Virhe päivitettäessä maaliaikaa kilpailijalle.')
 
-            // poistetaan muut kilpailijan kilpailut vastausta varten
-            kilpailija.kilpailut.clear()
-            kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
-
-            res.json({kilpailu: kilpailu, kilpailijat: [kilpailija]})
+            lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
           })
         })
       } else {
-        res.json({kilpailu: kilpailu})
+        lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
       }
     })
   })
@@ -76,8 +73,6 @@ router.put('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
 
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe muokattaessa maaliintuloa.')
-
-      let vastaus = {kilpailu: kilpailu, kilpailijat: []}
 
       const päivitäEdellinenKilpailija = function () {
         if (edellinenKilpailija && edellinenKilpailija !== maaliintulo.kilpailija) {
@@ -117,20 +112,12 @@ router.put('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
             kilpailija.save((err, kilpailija) => {
               if (err) handleError(err, res, 'Virhe päivitettäessä maaliintuloaikaa.')
 
-              kilpailija.kilpailut.clear()
-              kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
-              vastaus.kilpailijat.push(kilpailija)
-
-              lähetäVastaus()
+              lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
             })
           })
         } else {
-          lähetäVastaus()
+          lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
         }
-      }
-
-      const lähetäVastaus = function () {
-        res.json(vastaus)
       }
 
       päivitäEdellinenKilpailija()
@@ -148,16 +135,13 @@ router.delete('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
     const maaliintulo = kilpailu.maaliintulot.id(req.params.maaliintuloId)
     if (!maaliintulo) return handleError(err, res, 'Virheellinen maaliintuloId.')
 
-    let vastaus = {}
-
     const poistaMaaliintulo = function () {
       maaliintulo.remove()
 
       kausi.save(err => {
         if (err) return handleError(err, res, 'Virhe poistettaessa maaliintuloa.')
 
-        vastaus.kilpailu = kilpailu
-        res.json(vastaus)
+        lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
       })
     }
 

@@ -2,8 +2,8 @@ const express = require('express')
 const router = express.Router()
 
 const Kausi = require('../../models/kausi.js')
-const kilpailija = require('../../models/kilpailija.js')
 const Kilpailija = require('../../models/kilpailija.js')
+const lähetäVastaus = require('./vastaus.js')
 
 const handleError = function (err, res, message) {
   console.log('\n', message)
@@ -29,7 +29,7 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe luotaessa uutta sarjaa.')
 
-      res.json({kilpailu: kilpailu})
+      lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
     })
   })
 })
@@ -51,13 +51,11 @@ router.put('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
       sarja.manuaalisetPisteet = req.body.manuaalisetPisteet
     }
 
-    let vastaus = {kilpailu: kilpailu, kilpailijat: []}
-
     const tallennaSarja = function () {
       kausi.save(err => {
         if (err) return handleError(err, res, 'Virhe muokatessa sarjaa.')
 
-        res.json(vastaus)
+        lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
       })
     }
 
@@ -81,14 +79,10 @@ router.put('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
 
             kilpailija.save((err, kilpailija) => {
               if (err) return handleError(err, res, 'Virhe poistettaessa pisteitä kilpailijoilta.')
-
-              kilpailija.kilpailut.clear()
-              kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
-              vastaus.kilpailijat.push(kilpailija)
+              
               poistaPisteet(i+1)
             })
           }
-
           poistaPisteet(0)
         })
       } else {
@@ -110,17 +104,13 @@ router.delete('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
     const sarja = kilpailu.sarjat.id(req.params.sarjaId)
     if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
 
-    let vastaus = {poistettavatKilpailijat: []}
-
     const poistaSarja = function () {
       sarja.remove()
 
       kausi.save(err => {
         if (err) return handleError(err, res, 'Virhe poistettaessa sarjaa.')
 
-        vastaus.kilpailu = kilpailu
-
-        res.json(vastaus)
+        lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
       })
     }
 
@@ -134,7 +124,6 @@ router.delete('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
           return poistaSarja()
         }
         kilpailija.kilpailut.delete(kilpailu._id.toString())
-        vastaus.poistettavatKilpailijat.push(kilpailija._id)
 
         kilpailija.save(err => {
           poistaKilpailuKilpailijalta(i+1)
