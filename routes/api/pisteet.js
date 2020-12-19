@@ -38,7 +38,11 @@ const päivitäKilpailunPisteet = function (kilpailu, seuraava) {
 
       let kilpailijoidenAjat = []
       let voittoAika
-      kilpailijat.forEach(kilpailija => {
+      const haeKilpailijoidenAjat = function (i) {
+        const kilpailija = kilpailijat[i]
+        if (!kilpailija) {
+          return asetaPisteet(0)
+        }
         const kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
         if (!kilpailudata.muuTulos && kilpailudata.lahtoaika && kilpailudata.maaliaika) {
           const kilpailijanAika = kilpailudata.maaliaika - kilpailudata.lahtoaika
@@ -49,8 +53,21 @@ const päivitäKilpailunPisteet = function (kilpailu, seuraava) {
           } else if (kilpailijanAika < voittoAika) {
             voittoAika = kilpailijanAika
           }
+          return haeKilpailijoidenAjat(i+1)
+        } else if (kilpailudata.muuTulos) {
+          if (kilpailudata.muuTulos === 'DNF') {
+            kilpailudata.pisteet = 1
+          } else {
+            kilpailudata.pisteet = 0
+          }
+          kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+          kilpailija.save(err => {
+            if (err) return handleError(err, res, 'Virhe muutettaessa kilpailijan pisteitä.')
+
+            haeKilpailijoidenAjat(i+1)
+          })
         }
-      })
+      }
 
       const asetaPisteet = function (j) {
         const kilpailijanAika = kilpailijoidenAjat[j]
@@ -69,7 +86,7 @@ const päivitäKilpailunPisteet = function (kilpailu, seuraava) {
         })
       }
 
-      asetaPisteet(0)
+      haeKilpailijoidenAjat(0)
     })
   }
 
