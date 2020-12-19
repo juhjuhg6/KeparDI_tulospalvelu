@@ -24,7 +24,7 @@ const päivitäKilpailunPisteet = function (kilpailu, seuraava) {
 
   const sarjanPisteet = function (i) {
     const sarja = kilpailu.sarjat[i]
-    if (!sarja) {
+    if (!sarja || !sarja.lasketaanPisteet) {
       if (kilpailu.jarjestajat.length) {
         return päivitäJärjestäjienPisteet(kilpailu, seuraava)
       }
