@@ -7,7 +7,7 @@ const KilpailijaSchema = new Schema({
     lahtoaika: Date,
     maaliaika: Date,
     muuTulos: String, // DNS/DNF/DSQ
-    pisteet: Number
+    pisteet: {type: Number, default: 0}
   }}
 })
 
