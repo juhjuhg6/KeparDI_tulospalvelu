@@ -11,7 +11,6 @@ const PORT = process.env.PORT || 3001
 
 // middleware
 app.use(express.json())
-app.use(cors())
 
 // yhteys tietokantaan
 const db = process.env.MONGODB_URI
