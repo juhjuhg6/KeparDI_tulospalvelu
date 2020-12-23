@@ -90,10 +90,16 @@ router.put('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', (req, res) => {
 
     kilpailija.kilpailut.set(req.params.kilpailuId, kilpailudata)
 
-    kilpailija.save((err, kilpailija) => {
+    Kausi.findById(req.params.kausiId, (err, kausi) => {
       if (err) return handleError(err, res, 'Virhe muokattaessa kilpailijan kilpailudataa.')
 
-      lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
+      const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
+      if (!kilpailu) return handleError(err, res, 'Virhe muokattaessa kilpailijan kilpailudataa.')
+
+      kilpailija.save(err => {
+        if (err) return handleError(err, res, 'Virhe muokattaessa kilpailijan kilpailudataa.')
+        lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
+      })
     })
   })
 })
