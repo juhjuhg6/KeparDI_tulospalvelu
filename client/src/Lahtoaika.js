@@ -7,11 +7,17 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja}
 
   const aikaInput = useRef(null)
 
-  const lähtöaikaStr = moment(kilpailija.kilpailut[kilpailu._id.toString()].lahtoaika).format('HH.mm')
+  function lähtöaikaStr() {
+    if (kilpailija.kilpailut[kilpailu._id].lahtoaika) {
+      return moment(kilpailija.kilpailut[kilpailu._id].lahtoaika).format('HH.mm')
+    } else {
+      return ''
+    }
+  }
 
   function muokkaaLähtöaikaa() {
     const lähtöaika = moment(aikaInput.current.value, 'HH.mm')
-    axios.put(`api/kilpailijat/${aktiivinenKausi.id.toString()}/${kilpailu._id.toString()}/${sarja._id.toString()}/${kilpailija._id.toString()}`,
+    axios.put(`api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarja._id}/${kilpailija._id}`,
       {lahtoaika: lähtöaika.add(kilpailu.pvm)})
       .then(vastaus => {
         setKilpailu(vastaus.data)
@@ -22,15 +28,28 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja}
     setMuokkaus(false)
   }
 
+  function poistaKilpailija() {
+    axios.delete(`api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarja._id}/${kilpailija._id}`)
+      .then(vastaus => {
+        setKilpailu(vastaus.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   return(
     <tr>
       <td>{kilpailija.nimi}</td>
       {!muokkaus
       ? <>
-      <td>{lähtöaikaStr}</td>
-      <td><button onClick={() => setMuokkaus(true)}>Muuta lähtöaikaa</button></td>
+      <td>{lähtöaikaStr()}</td>
+      <td>
+        <button onClick={() => setMuokkaus(true)}>Muuta lähtöaikaa</button>
+        <button onClick={poistaKilpailija}>Poista</button>
+      </td>
       </> : <>
-      <td><input ref={aikaInput} type='text' placeholder={lähtöaikaStr} /></td>
+      <td><input ref={aikaInput} type='text' placeholder={lähtöaikaStr()} /></td>
       <td>
         <button onClick={() => setMuokkaus(false)}>Peruuta</button>
         <button onClick={muokkaaLähtöaikaa}>Tallenna</button>
