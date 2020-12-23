@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 3001
 
 // middleware
 app.use(express.json())
+app.use(cors())
 
 // yhteys tietokantaan
 const db = process.env.MONGODB_URI
