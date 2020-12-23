@@ -54,7 +54,11 @@ router.post('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
 
         sarja.kilpailijat.push(kilpailija._id)
 
-        kilpailija.kilpailut.set(req.params.kilpailuId, req.body.kilpailudata)
+        let kilpailudata = {}
+        if (req.body.kilpailudata) {
+          kilpailudata = req.body.kilpailudata
+        }
+        kilpailija.kilpailut.set(req.params.kilpailuId, kilpailudata)
 
         kilpailija.save(err => {
           if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
