@@ -27,7 +27,12 @@ router.post('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
       if (!kilpailija) {
         const uusiKilpailija = new Kilpailija(req.body)
         uusiKilpailija.kilpailut = new Map()
-        uusiKilpailija.kilpailut.set(req.params.kilpailuId, req.body.kilpailudata)
+
+        let kilpailudata = {}
+        if (req.body.kilpailudata) {
+          kilpailudata = req.body.kilpailudata
+        }
+        uusiKilpailija.kilpailut.set(req.params.kilpailuId, kilpailudata)
 
         uusiKilpailija.save((err, kilpailija) => {
           if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
