@@ -11,41 +11,6 @@ const handleError = function (err, res, message) {
   res.status(500).send(message)
 }
 
-const haeKilpailijatJaJärjestäjät = function(kilpailu, seuraava) {
-  let kilpailijaIdt = []
-  kilpailu.sarjat.forEach(sarja => kilpailijaIdt = kilpailijaIdt.concat(sarja.kilpailijat))
-
-  let vastaus = {}
-
-  Kilpailija.find({'_id': {$in: kilpailijaIdt}}, (err, kilpailijat) => {
-    if (err) return vastaus = false
-
-    kilpailijat.forEach(kilpailija => {
-      // jätetään vastausta varten kilpailuihin vain kyseinen kilpailu
-      const kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
-      kilpailija.kilpailut.clear()
-      kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
-    })
-
-    vastaus.kilpailijat = kilpailijat
-
-    Kilpailija.find({'_id': {$in: kilpailu.jarjestajat}}, (err, järjestäjät) => {
-      if (err) return vastaus = false
-
-      järjestäjät.forEach(järjestäjä => {
-        // jätetään vastausta varten kilpailuihin vain kyseinen kilpailu
-        const kilpailudata = järjestäjä.kilpailut.get(kilpailu._id.toString())
-        järjestäjä.kilpailut.clear()
-        järjestäjä.kilpailut.set(kilpailu._id.toString(), kilpailudata)
-      })
-
-      vastaus.järjestäjät = järjestäjät
-
-      seuraava(vastaus)
-    })
-  })
-}
-
 // hae kilpailu
 router.get('/:kausiId/:kilpailuId', (req, res) => {
   Kausi.findById(req.params.kausiId, (err, kausi) => {
