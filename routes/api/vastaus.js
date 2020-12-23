@@ -25,9 +25,7 @@ module.exports = function (kilpailu, res) {
 
   const haeSarjanKilpailijat = function (i) {
     const sarja = kilpailu.sarjat[i]
-    if (!sarja) {
-      return lähetäVastaus()
-    }
+    if (!sarja) return haeMaaliintulojenKilpailijat(0)
 
     Kilpailija.find({'_id': {$in: sarja.kilpailijat}}, (err, kilpailijat) => {
       if (err) handleError(err, res, 'Virhe luotaessa vastausta.')
@@ -41,6 +39,24 @@ module.exports = function (kilpailu, res) {
       kilpailu.sarjat[i].kilpailijat = kilpailijat
 
       haeSarjanKilpailijat(i+1)
+    })
+  }
+
+  const haeMaaliintulojenKilpailijat = function (i) {
+    const maaliintulo = kilpailu.maaliintulot[i]
+    if (!maaliintulo) return lähetäVastaus()
+    if (!maaliintulo.kilpailija) return haeMaaliintulojenKilpailijat(i+1)
+
+    Kilpailija.findById(maaliintulo.kilpailija, (err, kilpailija) => {
+      if (err) return handleError(err, res, 'Virhe haettaessa maaliintulon kilpailijaa vastauksessa.')
+
+      const kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
+      kilpailija.kilpailut.clear()
+      kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+
+      maaliintulo.kilpailija = kilpailija
+
+      haeMaaliintulojenKilpailijat(i+1)
     })
   }
 
