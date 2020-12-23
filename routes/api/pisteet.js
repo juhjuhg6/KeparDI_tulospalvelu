@@ -2,8 +2,8 @@ const express = require('express')
 const router = express.Router()
 
 const Kausi = require('../../models/kausi.js')
-const kilpailija = require('../../models/kilpailija.js')
 const Kilpailija = require('../../models/kilpailija.js')
+const lähetäVastaus = require('./vastaus.js')
 
 const handleError = function (err, res, message) {
   console.log('\n', message)
@@ -211,22 +211,7 @@ router.get('/:kausiId/:kilpailuId', (req, res) => {
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpiuId.')
 
-    const vastaus = function () {
-      let kaikkiKilpailijat = []
-      kilpailu.sarjat.forEach(sarja => {
-        kaikkiKilpailijat = kaikkiKilpailijat.concat(sarja.kilpailijat)
-      })
-
-      kaikkiKilpailijat = kaikkiKilpailijat.concat(kilpailu.jarjestajat)
-
-      Kilpailija.find({'_id': {$in: kaikkiKilpailijat}}, (err, kilpailijat) => {
-        if (err) return handleError(err, res, 'Virhe päivitettäessä kilpailun pisteitä.')
-
-        res.json(kilpailijat)
-      })
-    }
-
-    päivitäKilpailunPisteet(kilpailu, vastaus)
+    päivitäKilpailunPisteet(kilpailu, () => lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res))
   })
 })
 
