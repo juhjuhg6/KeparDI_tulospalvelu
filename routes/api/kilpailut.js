@@ -46,17 +46,6 @@ const haeKilpailijatJaJärjestäjät = function(kilpailu, seuraava) {
   })
 }
 
-// hae kauden kilpailujen nimet
-router.get('/:kausiId/nimet', (req, res) => {
-  Kausi.findById(req.params.kausiId, (err, kausi) => {
-    if (err) return handleError(err, res, 'Virhe haettaessa kausien nimiä.')
-    
-    let kilpailujenNimet = []
-    kausi.kilpailut.forEach(kilpailu => kilpailujenNimet.push({id: kilpailu._id, nimi: kilpailu.nimi, pvm: kilpailu.pvm}))
-    res.json(kilpailujenNimet)
-  })
-})
-
 // hae kilpailu
 router.get('/:kausiId/:kilpailuId', (req, res) => {
   Kausi.findById(req.params.kausiId, (err, kausi) => {

@@ -24,7 +24,11 @@ router.get('/nimet', (req, res) => {
     if (err) return handleError(err, res, 'Virhe haettaessa kausien nimiä.')
     
     let kausienNimet = []
-    kaudet.forEach(kausi => kausienNimet.push({id: kausi._id, nimi: kausi.nimi}))
+    kaudet.forEach(kausi => {
+      let kilpailut = []
+      kausi.kilpailut.forEach(kilpailu => kilpailut.push({id: kilpailu._id, nimi: kilpailu.nimi, pvm: kilpailu.pvm}))
+      kausienNimet.push({id: kausi._id, nimi: kausi.nimi, kilpailut: kilpailut})
+    })
     res.json(kausienNimet)
   })
 })
