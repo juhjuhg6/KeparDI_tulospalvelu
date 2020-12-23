@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import KilpailunValinta from './KilpailunValinta'
+import Kilpailu from './Kilpailu'
 
 function App() {
   const [kausienJaKilpailujenNimet, setKausienJaKilpailujenNimet] = useState([])
@@ -52,7 +53,7 @@ function App() {
         setAktiivinenKilpailu={setAktiivinenKilpailu}
       />
       <h2>{aktiivinenKausi.nimi}</h2>
-      <h3>{kilpailu.nimi}</h3>
+      <Kilpailu aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu} setKilpailu={setKilpailu} />
     </div>
   )
 }
