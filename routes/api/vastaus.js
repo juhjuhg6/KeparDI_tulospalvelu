@@ -25,7 +25,7 @@ module.exports = function (kilpailu, res) {
 
   const haeSarjanKilpailijat = function (i) {
     const sarja = kilpailu.sarjat[i]
-    if (!sarja) return haeMaaliintulojenKilpailijat(0)
+    if (!sarja) return lähetäVastaus()
 
     Kilpailija.find({'_id': {$in: sarja.kilpailijat}}, (err, kilpailijat) => {
       if (err) handleError(err, res, 'Virhe luotaessa vastausta.')
@@ -34,6 +34,8 @@ module.exports = function (kilpailu, res) {
         const kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
         kilpailija.kilpailut.clear()
         kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+
+        kilpailu.kaikkiKilpailijat.push({id: kilpailija._id.toString(), nimi: kilpailija.nimi})
       })
 
       kilpailu.sarjat[i].kilpailijat = kilpailijat
@@ -42,27 +44,10 @@ module.exports = function (kilpailu, res) {
     })
   }
 
-  const haeMaaliintulojenKilpailijat = function (i) {
-    const maaliintulo = kilpailu.maaliintulot[i]
-    if (!maaliintulo) return lähetäVastaus()
-    if (!maaliintulo.kilpailija) return haeMaaliintulojenKilpailijat(i+1)
-
-    Kilpailija.findById(maaliintulo.kilpailija, (err, kilpailija) => {
-      if (err) return handleError(err, res, 'Virhe haettaessa maaliintulon kilpailijaa vastauksessa.')
-
-      const kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
-      kilpailija.kilpailut.clear()
-      kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
-
-      maaliintulo.kilpailija = kilpailija
-
-      haeMaaliintulojenKilpailijat(i+1)
-    })
-  }
-
   const lähetäVastaus = function () {
     res.send(kilpailu)
   }
 
+  kilpailu.kaikkiKilpailijat = []
   haeJärjestäjät()
 } 
