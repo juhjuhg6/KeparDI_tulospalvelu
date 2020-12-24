@@ -84,12 +84,8 @@ router.put('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
             kilpailudata.maaliaika = null
             kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
 
-            kilpailija.save((err, kilpailija) => {
+            kilpailija.save(err => {
               if (err) handleError(err, res, 'Virhe päivitettäessä maaliintuloaikaa.')
-
-              kilpailija.kilpailut.clear()
-              kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
-              vastaus.kilpailijat.push(kilpailija)
               
               päivitäKilpailija()
             })
@@ -109,7 +105,7 @@ router.put('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
             kilpailudata.maaliaika = maaliintulo.maaliintuloaika
             kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
 
-            kilpailija.save((err, kilpailija) => {
+            kilpailija.save(err => {
               if (err) handleError(err, res, 'Virhe päivitettäessä maaliintuloaikaa.')
 
               lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
