@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Lähtöajat from './Lahtoajat'
+import Maaliintulot from './Maaliintulot'
 
 function Kilpailu({aktiivinenKausi, kilpailu, setKilpailu}) {
   const [näytettäväData, setNäytettäväData] = useState('lähtöajat')
@@ -13,7 +14,8 @@ function Kilpailu({aktiivinenKausi, kilpailu, setKilpailu}) {
 
       {näytettäväData === 'lähtöajat' ? <Lähtöajat aktiivinenKausi={aktiivinenKausi}
         kilpailu={kilpailu} setKilpailu={setKilpailu} /> : <></>}
-      {näytettäväData === 'maaliintulot' ? <p>ajanotto</p> : <></>}
+      {näytettäväData === 'maaliintulot' ? <Maaliintulot aktiivinenKausi={aktiivinenKausi}
+        kilpailu={kilpailu} setKilpailu={setKilpailu} /> : <></>}
       {näytettäväData === 'tulokset' ? <p>tulokset</p> : <></>}
     </div>
   )
