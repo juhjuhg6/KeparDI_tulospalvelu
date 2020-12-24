@@ -4,6 +4,7 @@ import moment from 'moment'
 
 function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
   const [muokkaus, setMuokkaus] = useState(false)
+  const [tallentaa, setTallentaa] = useState(false)
 
   const nimiInput = useRef(null)
   const aikaInput = useRef(null)
@@ -25,6 +26,7 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
   }
 
   function muokkaaMaaliaikaa() {
+    setTallentaa(true)
     const kilpailija = kilpailu.kaikkiKilpailijat.find(k => nimiInput.current.value === k.nimi)
     const maaliintuloaika = moment(aikaInput.current.value, 'HH.mm')
 
@@ -32,12 +34,12 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
       {kilpailija: kilpailija ? kilpailija.id : null, maaliintuloaika: maaliintuloaika})
       .then(vastaus => {
         setKilpailu(vastaus.data)
+        setMuokkaus(false)
+        setTallentaa(false)
       })
       .catch(err => {
         console.log(err)
       })
-    
-      setMuokkaus(false)
   }
 
   function poistaMaaliaika() {
@@ -64,8 +66,12 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
       <td><input ref={nimiInput} type='text' defaultValue={kilpailijanNimi(maaliintulo.kilpailija)} /></td>
       <td><input ref={aikaInput} type='text' defaultValue={maaliaikaStr()} /></td>
       <td>
+        {tallentaa
+        ? 'Tallennetaan...'
+        : <>
         <button onClick={() => setMuokkaus(false)}>Peruuta</button>
         <button onClick={muokkaaMaaliaikaa}>Tallenna</button>
+        </>}
       </td>
       </>}
     </tr>

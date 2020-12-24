@@ -4,6 +4,7 @@ import moment from 'moment'
 
 function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja}) {
   const [muokkaus, setMuokkaus] = useState(false)
+  const [tallentaa, setTallentaa] = useState(false)
 
   const aikaInput = useRef(null)
 
@@ -16,16 +17,18 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja}
   }
 
   function muokkaaLähtöaikaa() {
+    setTallentaa(true)
     const lähtöaika = moment(aikaInput.current.value, 'HH.mm')
     axios.put(`api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarja._id}/${kilpailija._id}`,
       {lahtoaika: lähtöaika.add(kilpailu.pvm)})
       .then(vastaus => {
         setKilpailu(vastaus.data)
+        setMuokkaus(false)
+        setTallentaa(false)
       })
       .catch(err => {
         console.log(err)
       })
-    setMuokkaus(false)
   }
 
   function poistaKilpailija() {
@@ -51,8 +54,12 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja}
       </> : <>
       <td><input ref={aikaInput} type='text' placeholder={lähtöaikaStr()} /></td>
       <td>
+        {tallentaa
+        ? 'Tallennetaan...'
+        : <>
         <button onClick={() => setMuokkaus(false)}>Peruuta</button>
         <button onClick={muokkaaLähtöaikaa}>Tallenna</button>
+        </>}
       </td>
       </>}
     </tr>
