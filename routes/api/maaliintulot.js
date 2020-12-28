@@ -153,10 +153,6 @@ router.delete('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
         kilpailija.save((err, kilpailija) => {
           if (err) return handleError(err, res, 'Virhe poistettaessa maaliintuloa.')
 
-          kilpailija.kilpailut.clear()
-          kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
-          vastaus.kilpailijat = [kilpailija]
-
           poistaMaaliintulo()
         })
       })
