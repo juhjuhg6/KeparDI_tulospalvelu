@@ -54,13 +54,19 @@ const päivitäKilpailunPisteet = function (kilpailu, seuraava) {
             voittoAika = kilpailijanAika
           }
           return haeKilpailijoidenAjat(i+1)
-        } else if (kilpailudata.muuTulos) {
-          if (kilpailudata.muuTulos === 'DNF') {
-            kilpailudata.pisteet = 1
-          } else {
-            kilpailudata.pisteet = 0
-          }
+        } else if (kilpailudata.muuTulos === 'DNF') {
+          kilpailudata.pisteet = 1
           kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+
+          kilpailija.save(err => {
+            if (err) return handleError(err, res, 'Virhe muutettaessa kilpailijan pisteitä.')
+
+            haeKilpailijoidenAjat(i+1)
+          })
+        } else {
+          kilpailudata.pisteet = 0
+          kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+
           kilpailija.save(err => {
             if (err) return handleError(err, res, 'Virhe muutettaessa kilpailijan pisteitä.')
 
