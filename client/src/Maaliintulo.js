@@ -11,7 +11,7 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
 
   function maaliaikaStr() {
     if (maaliintulo.maaliintuloaika) {
-      return moment(maaliintulo.maaliintuloaika).format('HH.mm')
+      return moment(maaliintulo.maaliintuloaika).format('HH.mm.ss')
     } else {
       return ''
     }
@@ -28,7 +28,7 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
   function muokkaaMaaliaikaa() {
     setTallentaa(true)
     const kilpailija = kilpailu.kaikkiKilpailijat.find(k => nimiInput.current.value === k.nimi)
-    const maaliintuloaika = moment(aikaInput.current.value, 'HH.mm')
+    const maaliintuloaika = moment(aikaInput.current.value, 'HH.mm.ss')
 
     axios.put(`api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}/${maaliintulo._id}`,
       {kilpailija: kilpailija ? kilpailija.id : null, maaliintuloaika: maaliintuloaika})
