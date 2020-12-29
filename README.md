@@ -1,6 +1,6 @@
 # KeparDI tulospalvelu
 
-Tämä projekti on luotu [KeparDI](webpages.tuni.fi/kepardi)a, eli Tampereen yliopiston suunnistuskerhoa varten. Palvelua käytetään kilpailujen ajanottoon ja lisäksi palvelu laskee [KeparDI-cup](https://webpages.tuni.fi/kepardi/kepardi-cup/)in osakilpailuista cup-pisteet kilpailijoille.
+Tämä projekti on luotu [KeparDI](https://webpages.tuni.fi/kepardi)a, eli Tampereen yliopiston suunnistuskerhoa varten. Palvelua käytetään kilpailujen ajanottoon ja lisäksi palvelu laskee [KeparDI-cup](https://webpages.tuni.fi/kepardi/kepardi-cup/)in osakilpailuista cup-pisteet kilpailijoille.
 
 ## Demo
 
