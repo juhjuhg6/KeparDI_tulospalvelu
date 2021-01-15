@@ -47,7 +47,7 @@ function LisääKausiTaiKilpailu({aktiivinenKausi, päivitäKausienJaKilpailujen
         {lisättävä === 'kilpailu'
         ? <>
           <label htmlFor='pvm'>Päivämäärä:</label>
-          <input ref={pvmInput} id='pvm' type='text'/>
+          <input ref={pvmInput} id='pvm' type='text' placeholder='pp.kk.vvvv'/>
         </> : <></>}
         <button onClick={() => setLisättävä('')}>Peruuta</button>
         <button onClick={tallenna}>Tallenna</button>
