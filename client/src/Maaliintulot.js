@@ -21,7 +21,11 @@ function Maaliintulot({aktiivinenKausi, kilpailu, setKilpailu}) {
 
   function lisääMaaliintulo() {
     const kilpailija = kilpailu.kaikkiKilpailijat.find(k => k.nimi === nimiInput.current.value)
-    const maaliintuloaika = moment(aikaInput.current.value, 'HH.mm.ss')
+    const asetettavaMaaliintuloaika = moment(aikaInput.current.value, 'HH.mm.ss')
+    let maaliintuloaika = moment(kilpailu.pvm)
+    maaliintuloaika.hours(asetettavaMaaliintuloaika.hours())
+    maaliintuloaika.minutes(asetettavaMaaliintuloaika.minutes())
+    maaliintuloaika.seconds(asetettavaMaaliintuloaika.seconds())
     let pyyntö = {}
     if (kilpailija) pyyntö.kilpailija = kilpailija.id
     if (maaliintuloaika) pyyntö.maaliintuloaika = maaliintuloaika

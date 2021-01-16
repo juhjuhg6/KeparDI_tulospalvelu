@@ -18,9 +18,13 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja}
 
   function muokkaaLähtöaikaa() {
     setTallentaa(true)
-    const lähtöaika = moment(aikaInput.current.value, 'HH.mm')
+    const asetettavaLähtöaika = moment(aikaInput.current.value, 'HH.mm')
+    let lähtöaika = moment(kilpailu.pvm)
+    lähtöaika.hours(asetettavaLähtöaika.hours())
+    lähtöaika.minutes(asetettavaLähtöaika.minutes())
+    
     axios.put(`api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarja._id}/${kilpailija._id}`,
-      {lahtoaika: lähtöaika.add(kilpailu.pvm)})
+      {lahtoaika: lähtöaika})
       .then(vastaus => {
         setKilpailu(vastaus.data)
         setMuokkaus(false)
