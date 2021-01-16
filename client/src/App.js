@@ -66,7 +66,8 @@ function App() {
       <LisääKausiTaiKilpailu aktiivinenKausi={aktiivinenKausi}
         päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
       <h2>{aktiivinenKausi.nimi}</h2>
-      <Kilpailu aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu} setKilpailu={setKilpailu} />
+      <Kilpailu aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu} setKilpailu={setKilpailu}
+        päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
     </div>
   )
 }
