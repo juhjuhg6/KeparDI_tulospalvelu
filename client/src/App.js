@@ -9,6 +9,7 @@ function App() {
   const [aktiivinenKausi, setAktiivinenKausi] = useState({})
   const [aktiivinenKilpailu, setAktiivinenKilpailu] = useState({})
   const [kilpailu, setKilpailu] = useState({})
+  const [kilpailuHaettu, setKilpailuHaettu] = useState(false)
 
   useEffect(() => {
     päivitäKausienJaKilpailujenNimet()
@@ -23,10 +24,12 @@ function App() {
 
   useEffect(() => {
     if (!aktiivinenKilpailu || !aktiivinenKausi || !aktiivinenKilpailu.id || !aktiivinenKausi.id) return
+    setKilpailuHaettu(false)
 
     axios.get(`api/kilpailut/${aktiivinenKausi.id}/${aktiivinenKilpailu.id}`)
       .then(vastaus => {
         setKilpailu(vastaus.data)
+        setKilpailuHaettu(true)
       })
       .catch(err => {
         console.log(err)
@@ -66,8 +69,10 @@ function App() {
       <LisääKausiTaiKilpailu aktiivinenKausi={aktiivinenKausi}
         päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
       <h2>{aktiivinenKausi.nimi}</h2>
-      <Kilpailu aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu} setKilpailu={setKilpailu}
+      {kilpailuHaettu
+      ? <Kilpailu aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu} setKilpailu={setKilpailu}
         päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
+      : <></>}
     </div>
   )
 }
