@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Lähtöajat from './Lahtoajat'
 import Maaliintulot from './Maaliintulot'
+import Tulokset from './Tulokset'
 import KilpailunMuokkaus from './KilpailunMuokkaus'
 
 function Kilpailu({aktiivinenKausi, kilpailu, setKilpailu, päivitäKausienJaKilpailujenNimet}) {
@@ -19,7 +20,8 @@ function Kilpailu({aktiivinenKausi, kilpailu, setKilpailu, päivitäKausienJaKil
         kilpailu={kilpailu} setKilpailu={setKilpailu} /> : <></>}
       {näytettäväData === 'maaliintulot' ? <Maaliintulot aktiivinenKausi={aktiivinenKausi}
         kilpailu={kilpailu} setKilpailu={setKilpailu} /> : <></>}
-      {näytettäväData === 'tulokset' ? <p>tulokset</p> : <></>}
+      {näytettäväData === 'tulokset' ? <Tulokset aktiivinenKausi={aktiivinenKausi}
+        kilpailu={kilpailu} setKilpailu={setKilpailu} /> : <></>}
     </div>
   )
 }
