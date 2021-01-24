@@ -99,7 +99,7 @@ Huomautus 1: Jos tieto on pyynnössä merkitty kaarisulkeisiin, se on vapaaehtoi
 Huomautus 2: Osoitteessa kaksoispisteellä alkavat osat ovat parametreja
 
 ### Kaudet
-
+---
 #### Hae kausi
 Pyyntö:
 ```
@@ -109,7 +109,7 @@ Vastaus:
 ```
 [Kausi]
 ```
-
+---
 #### Hae kausien nimet
 Pyyntö:
 ```
@@ -131,7 +131,7 @@ Vastaus:
     }
 ]
 ```
-
+---
 #### Hae kausi
 Pyyntö:
 ```
@@ -141,7 +141,7 @@ Vastaus:
 ```
 Kausi
 ```
-
+---
 #### Luo uusi kausi
 Pyyntö:
 ```
@@ -156,7 +156,7 @@ Vastaus:
 ```
 Kausi
 ```
-
+---
 #### Muuta kauden nimeä
 Pyyntö:
 ```
@@ -171,7 +171,7 @@ Vastaus:
 ```
 Kausi
 ```
-
+---
 #### Poista kausi
 Pyyntö:
 ```
@@ -181,9 +181,9 @@ Vastaus:
 ```
 Kausi
 ```
-
+---
 ### Kilpailut
-
+---
 #### Hae kilpailu
 Pyyntö:
 ```
@@ -193,7 +193,7 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 #### Luo uusi kilpailu
 Pyyntö:
 ```
@@ -209,7 +209,7 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 #### Muokkaa kilpailua
 Pyyntö:
 ```
@@ -225,7 +225,7 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 #### Poista kilpailu
 Pyyntö:
 ```
@@ -235,9 +235,9 @@ Vastaus:
 ```
 Kausi
 ```
-
+---
 ### Sarjat
-
+---
 #### Luo uusi sarja
 Pyyntö:
 ```
@@ -253,7 +253,7 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 #### Muokkaa sarjaa
 Pyyntö:
 ```
@@ -271,7 +271,7 @@ Body:
     ("lasketaanPisteet": boolean)
 }
 ```
-
+---
 #### Poista sarja
 Pyyntö:
 ```
@@ -281,9 +281,9 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 ### Kilpailijat
-
+---
 #### Lisää kilpailija sarjaan
 Pyyntö:
 ```
@@ -298,7 +298,7 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 #### Muokkaa kilpailijan kilpailudataa
 Pyyntö:
 ```
@@ -315,7 +315,7 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 #### Poista kilpailija kilpailusta
 Pyyntö:
 ```
@@ -325,9 +325,9 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 ### Maaliintulot
-
+---
 #### Lisää maaliintulo
 Pyyntö:
 ```
@@ -343,7 +343,7 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 #### Muokkaa maaliintuloa
 Pyyntö:
 ```
@@ -359,7 +359,7 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 #### Poista maaliintulo
 Pyyntö:
 ```
@@ -369,9 +369,9 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 ### Järjestäjät
-
+---
 #### Lisää järjestäjä kilpailuun
 Pyyntö:
 ```
@@ -386,7 +386,7 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 #### Poista järjestäjä kilpailusta
 Pyyntö:
 ```
@@ -396,9 +396,9 @@ Vastaus:
 ```
 Kilpailu
 ```
-
+---
 ### Pisteet
-
+---
 #### Päivitä kauden kaikkien kilpailujen pisteet
 Pyyntö:
 ```
@@ -408,7 +408,7 @@ Vastaus:
 ```
 [Kilpailija]
 ```
-
+---
 #### Päivitä kilpailun pisteet
 Pyyntö:
 ```
