@@ -3,7 +3,7 @@
 ## Skeemat
 
 ### Kausi
-```json
+```
 {
     "_id": string,
     "nimi": string,
@@ -40,7 +40,7 @@
 ```
 
 ### Kilpailu
-```json
+```
 {
     "_id": string,
     "nimi": string,
@@ -77,7 +77,7 @@
 ```
 
 ### Kilpailija
-```json
+```
 {
     "_id": string,
     "nimi": string,
@@ -116,7 +116,7 @@ Pyyntö:
 GET api/kaudet/nimet
 ```
 Vastaus:
-```json
+```
 [
     {
         "id": string,
@@ -144,7 +144,7 @@ Kausi
 
 #### Luo uusi kausi
 Pyyntö:
-```json
+```
 POST api/kaudet
 
 Body:
@@ -159,7 +159,7 @@ Kausi
 
 #### Muuta kauden nimeä
 Pyyntö:
-```json
+```
 PUT api/kaudet/:kausiId
 
 Body:
@@ -196,7 +196,7 @@ Kilpailu
 
 #### Luo uusi kilpailu
 Pyyntö:
-```json
+```
 POST api/kilpailut/:kausiId
 
 Body:
@@ -212,7 +212,7 @@ Kilpailu
 
 #### Muokkaa kilpailua
 Pyyntö:
-```json
+```
 PUT api/kilpailut/:kausiId/:kilpailuId
 
 Body:
@@ -240,7 +240,7 @@ Kausi
 
 #### Luo uusi sarja
 Pyyntö:
-```json
+```
 POST api/sarjat/:kausiId/:kilpailuId
 
 Body:
@@ -256,7 +256,7 @@ Kilpailu
 
 #### Muokkaa sarjaa
 Pyyntö:
-```json
+```
 PUT api/sarjat/:kausiId/:kilpailuId/:sarjaId
 
 Body:
@@ -286,7 +286,7 @@ Kilpailu
 
 #### Lisää kilpailija sarjaan
 Pyyntö:
-```json
+```
 POST api/kilpailijat/:kausiId/:kilpailuId/:sarjaId
 
 Body:
@@ -301,7 +301,7 @@ Kilpailu
 
 #### Muokkaa kilpailijan kilpailudataa
 Pyyntö:
-```json
+```
 PUT api/kilpailijat/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId
 
 Body:
@@ -330,7 +330,7 @@ Kilpailu
 
 #### Lisää maaliintulo
 Pyyntö:
-```json
+```
 POST api/maaliintulot/:kausiId/:kilpailuId
 
 Body:
@@ -346,7 +346,7 @@ Kilpailu
 
 #### Muokkaa maaliintuloa
 Pyyntö:
-```json
+```
 PUT api/maaliintulot/:kausiId/:kilpailuId/:maaliintuloId
 
 Body:
@@ -374,7 +374,7 @@ Kilpailu
 
 #### Lisää järjestäjä kilpailuun
 Pyyntö:
-```json
+```
 POST api/jarjestajat/:kausiId/:kilpailuId
 
 Body:
