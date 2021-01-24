@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const SarjaSchema = new Schema({
   nimi: {type: String, required: true},
   lasketaanPisteet: {type: Boolean, default: true},
-  manuaalisetPisteet: [{nimi: String, pisteet: Number}],
+  manuaalisetPisteet: [{kilpailija: String, pisteet: Number}],
   kilpailijat: [String] // kilpailijaId:t
 })
 
