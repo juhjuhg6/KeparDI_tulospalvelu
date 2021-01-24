@@ -6,6 +6,10 @@ Tämä projekti on luotu [KeparDI](https://webpages.tuni.fi/kepardi)a, eli Tampe
 
 Tulospalvelu ei ole vielä käyttöönottovalmis, mutta aina viimeisimmästä versiosta on vapaasti kokeiltavissa oleva demo osoitteessa https://kepardi-tulospalvelu-demo.herokuapp.com/.
 
+## Rajapintadokumentaatio
+
+Tietokannan rajapinnan dokumentaatio läytyy [täältä](https://github.com/juhjuhg6/KeparDI_tulospalvelu/blob/master/routes/api/Dokumentaatio.md).
+
 ## Ajaminen omalla palvelimella
 
 ### Vaatimukset
