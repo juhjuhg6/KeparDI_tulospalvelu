@@ -13,6 +13,10 @@ function KilpailunValinta({kausienJaKilpailujenNimet,
   }
 
   function aktiivinenKilpailuMuutettu(e) {
+    if (e.target.value === 'Kokonaispisteet') {
+      setAktiivinenKilpailu('Kokonaispisteet')
+      return
+    }
     setAktiivinenKilpailu(JSON.parse(e.target.value))
   }
 
@@ -24,6 +28,7 @@ function KilpailunValinta({kausienJaKilpailujenNimet,
       </select>
       <label htmlFor="valitseKilpailu">Kilpailu:</label>
       <select name="kilpailu" id ="valitseKilpailu" onChange={aktiivinenKilpailuMuutettu}>
+        <option value="Kokonaispisteet">Kokonaispisteet</option>
         {aktiivinenKausi.kilpailut
         ? aktiivinenKausi.kilpailut.map(kilpailu => <option key={kilpailu.id} value={JSON.stringify(kilpailu)}>{kilpailu.nimi}</option>) : <></>}
       </select>

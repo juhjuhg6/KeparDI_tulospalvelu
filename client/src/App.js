@@ -3,11 +3,12 @@ import axios from 'axios'
 import KilpailunValinta from './KilpailunValinta'
 import Kilpailu from './Kilpailu'
 import LisääKausiTaiKilpailu from './LisaaKausiTaiKilpailu'
+import Kokonaispisteet from './Kokonaispisteet'
 
 function App() {
   const [kausienJaKilpailujenNimet, setKausienJaKilpailujenNimet] = useState([])
   const [aktiivinenKausi, setAktiivinenKausi] = useState({})
-  const [aktiivinenKilpailu, setAktiivinenKilpailu] = useState({})
+  const [aktiivinenKilpailu, setAktiivinenKilpailu] = useState()
   const [kilpailu, setKilpailu] = useState({})
   const [kilpailuHaettu, setKilpailuHaettu] = useState(false)
 
@@ -19,10 +20,11 @@ function App() {
   useEffect(() => {
     if (!aktiivinenKausi.id) return
 
-    setAktiivinenKilpailu(aktiivinenKausi.kilpailut[0])
+    setAktiivinenKilpailu('Kokonaispisteet')
   }, [aktiivinenKausi])
 
   useEffect(() => {
+    if (aktiivinenKilpailu === 'Kokonaispisteet') setKilpailuHaettu(false)
     if (!aktiivinenKilpailu || !aktiivinenKausi || !aktiivinenKilpailu.id || !aktiivinenKausi.id) return
     setKilpailuHaettu(false)
 
@@ -69,6 +71,9 @@ function App() {
       <LisääKausiTaiKilpailu aktiivinenKausi={aktiivinenKausi}
         päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
       <h2>{aktiivinenKausi.nimi}</h2>
+      {aktiivinenKilpailu === 'Kokonaispisteet'
+      ? <Kokonaispisteet aktiivinenKausi={aktiivinenKausi} kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} />
+      : <></>}
       {kilpailuHaettu
       ? <Kilpailu aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu} setKilpailu={setKilpailu}
         päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
