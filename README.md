@@ -4,7 +4,7 @@ Tämä projekti on luotu [KeparDI](https://webpages.tuni.fi/kepardi)a, eli Tampe
 
 ## Demo
 
-Tulospalvelu ei ole vielä käyttöönottovalmis, mutta aina viimeisimmästä versiosta on vapaasti kokeiltavissa oleva demo osoitteessa https://kepardi-tulospalvelu-demo.herokuapp.com/.
+Tulospalvelu ei ole vielä käyttöönottovalmis, mutta aina viimeisimmästä versiosta on vapaasti kokeiltavissa oleva demo osoitteessa https://kepardi-tulospalvelu-demo.herokuapp.com/. Demon ensimmäinen lataus saattaa kestää kymmeniä sekunteja, kun palvelin herää, jos sitä ei ole käytetty viimeisen 30 minuutin aikana.
 
 ## Rajapintadokumentaatio
 
