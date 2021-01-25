@@ -1,5 +1,41 @@
 # API Dokumentaatio
 
+## Sisällys
+
+* [Skeemat](#skeemat)
+    * [Kausi](#kausi)
+    * [Kilpailu](#kilpailu)
+    * [Kilpailija](#kilpailija)
+* [Pyynnöt](#pyynnöt)
+    * [Kaudet](#kaudet)
+        * [Hae kausi](#hae-kausi-1)
+        * [Luo uusi kausi](#luo-uusi-kausi)
+        * [Muuta kauden nimeä](#muuta-kauden-nimeä)
+        * [Poista kausi](#poista-kausi)
+    * [Kilpailut](#kilpailut)
+        * [Hae kilpailu](#hae-kilpailu)
+        * [Luo uusi kilpailu](#luo-uusi-kilpailu)
+        * [Muokkaa kilpailua](#muokkaa-kilpailua)
+        * [Poista kilpailu](#poista-kilpailu)
+    * [Sarjat](#sarjat)
+        * [Luo uusi sarja](#luo-uusi-sarja)
+        * [Muokkaa sarjaa](#muokkaa-sarjaa)
+        * [Poista sarja](#poista-sarja)
+    * [Kilpailijat](#kilpailijat)
+        * [Lisää kilpailija sarjaan](#lisää-kilpailija-sarjaan)
+        * [Muokkaa kilpailijan kilpailudataa](#muokkaa-kilpailijan-kilpailudataa)
+        * [Poista kilpailija kilpailusta](#poista-kilpailija-kilpailusta)
+    * [Maaliintulot](#maaliintulot)
+        * [Lisää maaliintulo](#lisää-maaliintulo)
+        * [Muokkaa maaliintuloa](#muokkaa-maaliintuloa)
+        * [Poista maaliintulo](#poista-maaliintulo)
+    * [ Järjestäjät](#järjestäjät)
+        * [Lisää järjestäjä kilpailuun](#lisää-järjestäjä-kilpailuun)
+        * [Poista järjestäjä kilpailusta](#poista-järjestäjä-kilpailusta)
+    * [Pisteet](#pisteet)
+        * [Päivitä kauden kaikkien kilpailujen pisteet](#päivitä-kauden-kaikkien-kilpailujen-pisteet)
+        * [Päivitä kilpailun pisteet](#päivitä-kilpailun-pisteet)
+
 ## Skeemat
 
 ### Kausi
