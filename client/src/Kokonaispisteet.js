@@ -5,15 +5,20 @@ function Kokonaispisteet({aktiivinenKausi, kausienJaKilpailujenNimet}) {
   const [pisteet, setPisteet] = useState()
 
   useEffect(() => {
+    let komponenttiKiinnitetty = true
     setPisteet(false)
     if (!aktiivinenKausi) return
     axios.get(`api/pisteet/${aktiivinenKausi.id}`)
       .then(vastaus => {
-        valmistelePisteet(vastaus.data)
+        if (komponenttiKiinnitetty) {
+          valmistelePisteet(vastaus.data)
+        }
       })
       .catch(err => {
         console.log(err)
       })
+    
+    return () => komponenttiKiinnitetty = false
   }, [aktiivinenKausi])
 
   function valmistelePisteet(valmisteltavatPisteet) {
