@@ -62,7 +62,7 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
 
 // poista järjestäjä kilpailusta
 router.delete('/:kausiId/:kilpailuId/:jarjestajaId', (req, res) => {
-  const poistaKilpailuKilpailijalta = function() {
+  const poistaKilpailuKilpailijalta = function(kilpailu) {
     Kilpailija.findById(req.params.jarjestajaId, (err, kilpailija) => {
       if (err) return err
 
@@ -89,7 +89,7 @@ router.delete('/:kausiId/:kilpailuId/:jarjestajaId', (req, res) => {
     kausi.save(err => {
       if (err) return handleError(err, res, 'Virhe poistettaessa järjestäjää.')
 
-      poistaKilpailuKilpailijalta()
+      poistaKilpailuKilpailijalta(kilpailu)
     })
   })
 })
