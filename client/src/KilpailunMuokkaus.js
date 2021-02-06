@@ -5,6 +5,7 @@ import moment from 'moment'
 function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKausienJaKilpailujenNimet }) {
   const [kilpailunMuokkaus, setKilpailunMuokkaus] = useState(false)
   const [sarjojenMuokkaus, setSarjojenMuokkaus] = useState(false)
+  const [järjestäjienMuokkaus, setJärjestäjienMuokkaus] = useState(false)
   const [muokattavaSarja, setMuokattavaSarja] = useState()
 
   const kilpailunNimiInput = useRef(null)
@@ -13,6 +14,7 @@ function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKa
   const uudenSarjanLasketaanPisteetCheckbox = useRef(null)
   const muokattavanSarjanNimiInput = useRef(null)
   const muokattavanSarjanLasketaanPisteetCheckbox = useRef(null)
+  const järjestäjänNimiInput = useRef(null)
 
   function tyhjennäTekstit() {
     kilpailunNimiInput.current.value = ''
@@ -86,6 +88,28 @@ function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKa
       })
   }
 
+  function lisääJärjestäjä() {
+    const nimi = järjestäjänNimiInput.current.value
+    järjestäjänNimiInput.current.value = ''
+    axios.post(`api/jarjestajat/${aktiivinenKausi.id}/${kilpailu._id}`, {nimi: nimi})
+      .then(vastaus => {
+        setKilpailu(vastaus.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  function poistaJärjestäjä(järjestäjäId) {
+    axios.delete(`api/jarjestajat/${aktiivinenKausi.id}/${kilpailu._id}/${järjestäjäId}`)
+      .then(vastaus => {
+        setKilpailu(vastaus.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   return (
     <div>
       {!kilpailunMuokkaus
@@ -143,6 +167,26 @@ function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKa
               <input ref={uudenSarjanLasketaanPisteetCheckbox} id='lasketaanPisteet' type='checkbox' defaultChecked={true} />
               <label htmlFor='lasketaanPisteet'>Lasketaan pisteet</label>
               <button onClick={lisääSarja}>Tallenna</button>
+            </>}
+
+            {!järjestäjienMuokkaus
+            ? <button onClick={() => setJärjestäjienMuokkaus(true)}>Muokkaa järjestäjiä</button>
+            : <>
+              <button onClick={() => setJärjestäjienMuokkaus(false)}>Päätä järjestäjien muokkaus</button>
+              <table>
+                <thead>
+                  <tr><th>Nimi</th></tr>
+                </thead>
+                <tbody>
+                  {kilpailu.jarjestajat.map(järjestäjä => <tr key={järjestäjä._id}>
+                    <td>{järjestäjä.nimi}</td>
+                    <td><button onClick={() => poistaJärjestäjä(järjestäjä._id)}>Poista järjestäjä</button></td>
+                  </tr>)}
+                </tbody>
+              </table>
+              <label htmlFor='järjestäjänNimi'>Nimi:</label>
+              <input ref={järjestäjänNimiInput} id='järjestäjänNimi' type='text'/>
+              <button onClick={lisääJärjestäjä}>Tallenna</button>
             </>}
           
           <button onClick={poistaKilpailu}>Poista kilpailu</button>
