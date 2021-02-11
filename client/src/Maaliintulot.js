@@ -21,13 +21,23 @@ function Maaliintulot({aktiivinenKausi, kilpailu, setKilpailu}) {
 
   function lisääMaaliintulo() {
     const kilpailija = kilpailu.kaikkiKilpailijat.find(k => k.nimi === nimiInput.current.value)
-    const asetettavaMaaliintuloaika = moment(aikaInput.current.value, 'HH.mm.ss')
-    let maaliintuloaika = moment(kilpailu.pvm)
-    maaliintuloaika.hours(asetettavaMaaliintuloaika.hours())
-    maaliintuloaika.minutes(asetettavaMaaliintuloaika.minutes())
-    maaliintuloaika.seconds(asetettavaMaaliintuloaika.seconds())
+    let maaliintuloaika
+
+    if (aikaInput.current.value !== '') {
+      const asetettavaMaaliintuloaika = moment(aikaInput.current.value, 'HH.mm.ss')
+      maaliintuloaika = moment(kilpailu.pvm)
+      maaliintuloaika.hours(asetettavaMaaliintuloaika.hours())
+      maaliintuloaika.minutes(asetettavaMaaliintuloaika.minutes())
+      maaliintuloaika.seconds(asetettavaMaaliintuloaika.seconds())
+    }
+
     let pyyntö = {}
-    if (kilpailija) pyyntö.kilpailija = kilpailija.id
+    
+    if (kilpailija) {
+      pyyntö.kilpailija = kilpailija.id
+    } else {
+      pyyntö.nimi = nimiInput.current.value
+    }
     if (maaliintuloaika) pyyntö.maaliintuloaika = maaliintuloaika
 
     axios.post(`api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}`, pyyntö)

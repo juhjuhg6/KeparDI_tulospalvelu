@@ -27,15 +27,31 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
 
   function muokkaaMaaliaikaa() {
     setTallentaa(true)
-    const kilpailija = kilpailu.kaikkiKilpailijat.find(k => nimiInput.current.value === k.nimi)
-    const asetettavaMaaliintuloaika = moment(aikaInput.current.value, 'HH.mm.ss')
-    let maaliintuloaika = moment(kilpailu.pvm)
-    maaliintuloaika.hours(asetettavaMaaliintuloaika.hours())
-    maaliintuloaika.minutes(asetettavaMaaliintuloaika.minutes())
-    maaliintuloaika.seconds(asetettavaMaaliintuloaika.seconds())
+    const kilpailija = kilpailu.kaikkiKilpailijat.find(k => k.nimi === nimiInput.current.value)
+    let maaliintuloaika
+    
+    if (aikaInput.current.value !== '') {
+      const asetettavaMaaliintuloaika = moment(aikaInput.current.value, 'HH.mm.ss')
+      maaliintuloaika = moment(kilpailu.pvm)
+      maaliintuloaika.hours(asetettavaMaaliintuloaika.hours())
+      maaliintuloaika.minutes(asetettavaMaaliintuloaika.minutes())
+      maaliintuloaika.seconds(asetettavaMaaliintuloaika.seconds())
+    }
 
-    axios.put(`api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}/${maaliintulo._id}`,
-      {kilpailija: kilpailija ? kilpailija.id : null, maaliintuloaika: maaliintuloaika})
+    let pyyntö = {}
+
+    if (kilpailija) {
+      pyyntö.kilpailija = kilpailija.id
+    } else {
+      pyyntö.nimi = nimiInput.current.value
+    }
+    if (maaliintuloaika) {
+      pyyntö.maaliintuloaika = maaliintuloaika
+    } else {
+      pyyntö.maaliintuloaika = ''
+    }
+
+    axios.put(`api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}/${maaliintulo._id}`, pyyntö)
       .then(vastaus => {
         setKilpailu(vastaus.data)
         setMuokkaus(false)
@@ -60,14 +76,19 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
     <tr>
       {!muokkaus
       ? <>
-      <td>{kilpailijanNimi(maaliintulo.kilpailija)}</td>
+      <td>
+        {maaliintulo.kilpailija 
+          ? kilpailijanNimi(maaliintulo.kilpailija)
+          : maaliintulo.nimi}
+      </td>
       <td>{maaliaikaStr()}</td>
       <td>
         <button onClick={() => setMuokkaus(true)}>Muokkaa</button>
         <button onClick={poistaMaaliaika}>Poista</button>
       </td>
       </> : <>
-      <td><input ref={nimiInput} type='text' defaultValue={kilpailijanNimi(maaliintulo.kilpailija)} /></td>
+      <td><input ref={nimiInput} type='text' defaultValue={maaliintulo.kilpailija
+        ? kilpailijanNimi(maaliintulo.kilpailija) : maaliintulo.nimi} /></td>
       <td><input ref={aikaInput} type='text' defaultValue={maaliaikaStr()} /></td>
       <td>
         {tallentaa

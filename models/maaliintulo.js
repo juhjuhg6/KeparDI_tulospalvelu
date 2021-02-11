@@ -7,7 +7,8 @@ const Schema = mongoose.Schema
 
 const MaaliintuloSchema = new Schema({
   kilpailija: String, // kilpailijan id
-  maaliintuloaika: Date
+  maaliintuloaika: Date,
+  nimi: String  // käytetään vain, jos tallennetaan maaliintulo nimellä, joka ei ole kilpailussa
 })
 
 module.exports = MaaliintuloSchema
