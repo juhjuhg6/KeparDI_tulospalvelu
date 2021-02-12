@@ -1,9 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import moment from 'moment'
 import Lähtöaika from './Lahtoaika'
 import UusiKilpailija from './UusiKilpailija'
 
 function Lähtöajat({aktiivinenKausi, kilpailu, setKilpailu}) {
   const [kilpailijanLisäys, setKilpailijanLisäys] = useState(false)
+  const [momentFormat, setMomentFormat] = useState('HH.mm')
+  
+  useEffect(() => {
+    kilpailu.sarjat.forEach(sarja => {
+      if (sarja.kilpailijat.some(kilpailija => {
+          const lähtöaika = moment(kilpailija.kilpailut[kilpailu._id].lahtoaika)
+          return lähtöaika.seconds() !== 0
+        })) {
+        setMomentFormat('HH.mm.ss')
+      } else {
+        setMomentFormat('HH.mm')
+      }
+    })
+  }, [kilpailu])
 
   return (
     <div>
@@ -18,8 +33,8 @@ function Lähtöajat({aktiivinenKausi, kilpailu, setKilpailu}) {
             <thead><tr><th>Nimi</th><th>Lähtöaika</th></tr></thead>
             <tbody>
               {sarja.kilpailijat.map(kilpailija => <Lähtöaika  key={kilpailija._id}
-                aktiivinenKausi={aktiivinenKausi} kilpailija={kilpailija}
-                kilpailu={kilpailu} setKilpailu={setKilpailu} sarja={sarja} />)}
+                aktiivinenKausi={aktiivinenKausi} kilpailija={kilpailija} kilpailu={kilpailu}
+                setKilpailu={setKilpailu} sarja={sarja} momentFormat={momentFormat} />)}
             </tbody>
           </table>
         </div>

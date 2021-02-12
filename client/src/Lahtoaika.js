@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import axios from 'axios'
 import moment from 'moment'
 
-function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja}) {
+function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja, momentFormat}) {
   const [muokkaus, setMuokkaus] = useState(false)
   const [tallentaa, setTallentaa] = useState(false)
 
@@ -10,7 +10,7 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja}
 
   function lähtöaikaStr() {
     if (kilpailija.kilpailut[kilpailu._id].lahtoaika) {
-      return moment(kilpailija.kilpailut[kilpailu._id].lahtoaika).format('HH.mm')
+      return moment(kilpailija.kilpailut[kilpailu._id].lahtoaika).format(momentFormat)
     } else {
       return ''
     }
@@ -18,10 +18,11 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja}
 
   function muokkaaLähtöaikaa() {
     setTallentaa(true)
-    const asetettavaLähtöaika = moment(aikaInput.current.value, 'HH.mm')
+    const asetettavaLähtöaika = moment(aikaInput.current.value, 'HH.mm.ss')
     let lähtöaika = moment(kilpailu.pvm)
     lähtöaika.hours(asetettavaLähtöaika.hours())
     lähtöaika.minutes(asetettavaLähtöaika.minutes())
+    lähtöaika.seconds(asetettavaLähtöaika.seconds())
     
     axios.put(`api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarja._id}/${kilpailija._id}`,
       {lahtoaika: lähtöaika})
