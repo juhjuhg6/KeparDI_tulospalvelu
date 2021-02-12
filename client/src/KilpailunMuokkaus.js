@@ -31,7 +31,7 @@ function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKa
 
     axios.put(`api/kilpailut/${aktiivinenKausi.id}/${kilpailu._id}`, pyyntöBody)
       .then(vastaus => {
-        setKilpailu(null)
+        setKilpailu(vastaus.data)
       })
       .catch(err => {
         console.log(err)
