@@ -29,12 +29,15 @@
         * [Lisää maaliintulo](#lisää-maaliintulo)
         * [Muokkaa maaliintuloa](#muokkaa-maaliintuloa)
         * [Poista maaliintulo](#poista-maaliintulo)
-    * [ Järjestäjät](#järjestäjät)
+    * [Järjestäjät](#järjestäjät)
         * [Lisää järjestäjä kilpailuun](#lisää-järjestäjä-kilpailuun)
         * [Poista järjestäjä kilpailusta](#poista-järjestäjä-kilpailusta)
     * [Pisteet](#pisteet)
         * [Päivitä kauden kaikkien kilpailujen pisteet](#päivitä-kauden-kaikkien-kilpailujen-pisteet)
         * [Päivitä kilpailun pisteet](#päivitä-kilpailun-pisteet)
+    * [Manuaaliset pisteet](#manuaaliset-pisteet)
+        * [Aseta manuaaliset pisteet](#aseta-manuaaliset-pisteet)
+        * [Poista kilpailun manuaaliset pisteet](#poista-kilpailun-manuaaliset-pisteet)
 
 ## Skeemat
 
@@ -87,12 +90,6 @@
             "nimi": string,
             "kilpailijat": [Kilpailija],
             "lasketaanPisteet": boolean,
-            "manuaalisetPisteet": [
-                {
-                    "kilpailija": string (kilpailijan _id),
-                    "pisteet": number
-                }
-            ]
         }
     ],
     "maaliintulot": [
@@ -104,6 +101,9 @@
         }
     ],
     "jarjestajat": [Kilpailija],
+    "manuaalisetPisteet": {
+        kilpailijaId: number (pisteet)
+    },
     "kaikkiKilpailijat": [
         {
             "id": string (kilpailijan _id),
@@ -452,6 +452,35 @@ Vastaus:
 Pyyntö:
 ```
 GET api/pisteet/:kausiId/:kilpailuId
+```
+Vastaus:
+```
+Kilpailu
+```
+---
+### Manuaaliset Pisteet
+---
+#### Aseta manuaaliset pisteet
+Pyyntö:
+```
+POST api/manuaalisetpisteet/:kausiId/:kilpailuId
+
+Body:
+{
+    manuaalisetPisteet: {
+        kilpailijaId: number
+    }
+}
+```
+Vastaus:
+```
+Kilpailu
+```
+---
+#### Poista kilpailun manuaaliset pisteet
+Pyyntö:
+```
+DELETE api/manuaalisetpisteet/:kausiId/:kilpailuId
 ```
 Vastaus:
 ```

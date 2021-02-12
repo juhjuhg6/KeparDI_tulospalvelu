@@ -15,6 +15,8 @@ module.exports = function (kilpailu, res) {
         const kilpailudata = järjestäjä.kilpailut.get(kilpailu._id.toString())
         järjestäjä.kilpailut.clear()
         järjestäjä.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+        
+        kilpailu.kaikkiKilpailijat.push({id: järjestäjä._id.toString(), nimi: järjestäjä.nimi})
       })
 
       kilpailu.jarjestajat = järjestäjät

@@ -1,12 +1,15 @@
 import React, { useState, useRef } from 'react'
 import axios from 'axios'
 import moment from 'moment'
+import ManuaalisetPisteet from './ManuaalisetPisteet'
 
 function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKausienJaKilpailujenNimet }) {
   const [kilpailunMuokkaus, setKilpailunMuokkaus] = useState(false)
   const [sarjojenMuokkaus, setSarjojenMuokkaus] = useState(false)
   const [järjestäjienMuokkaus, setJärjestäjienMuokkaus] = useState(false)
+  const [pisteidenMuokkaus, setPisteidenMuokkaus] = useState(false)
   const [muokattavaSarja, setMuokattavaSarja] = useState()
+  const [uudetManuaalisetPisteet, setUudetManuaalisetPisteet] = useState({...kilpailu.manuaalisetPisteet})
 
   const kilpailunNimiInput = useRef(null)
   const pvmInput = useRef(null)
@@ -110,6 +113,29 @@ function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKa
       })
   }
 
+  function asetaManuaalisetPisteet() {
+    setPisteidenMuokkaus(false)
+    axios.post(`api/manuaalisetpisteet/${aktiivinenKausi.id}/${kilpailu._id}`,
+      {manuaalisetPisteet: uudetManuaalisetPisteet})
+      .then(vastaus => {
+        setKilpailu(vastaus.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  function poistaManuaalisetPisteet() {
+    setPisteidenMuokkaus(false)
+    axios.delete(`api/manuaalisetpisteet/${aktiivinenKausi.id}/${kilpailu._id}`)
+      .then(vastaus => {
+        setKilpailu(vastaus.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   return (
     <div>
       {!kilpailunMuokkaus
@@ -187,6 +213,25 @@ function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKa
               <label htmlFor='järjestäjänNimi'>Nimi:</label>
               <input ref={järjestäjänNimiInput} id='järjestäjänNimi' type='text'/>
               <button onClick={lisääJärjestäjä}>Tallenna</button>
+            </>}
+            
+            {!pisteidenMuokkaus
+            ? <button onClick={() => setPisteidenMuokkaus(true)}>Aseta manuaaliset pisteet</button>
+            : <>
+              <table>
+                <thead>
+                  <tr><th>Nimi</th><th>Pisteet</th></tr>
+                </thead>
+                <tbody>
+                {kilpailu.kaikkiKilpailijat.map(kilpailija => <ManuaalisetPisteet key={kilpailija.id} kilpailija={kilpailija}
+                  nykyisetPisteet={kilpailu.manuaalisetPisteet[kilpailija.id]} uudetManuaalisetPisteet={uudetManuaalisetPisteet}
+                  setUudetManuaalisetPisteet={setUudetManuaalisetPisteet} />)}
+                </tbody>
+              </table>
+
+              <button onClick={() => setPisteidenMuokkaus(false)}>Peruuta</button>
+              <button onClick={poistaManuaalisetPisteet}>Poista kaikki manuaaliset pisteet</button>
+              <button onClick={asetaManuaalisetPisteet}>Tallenna</button>
             </>}
           
           <button onClick={poistaKilpailu}>Poista kilpailu</button>

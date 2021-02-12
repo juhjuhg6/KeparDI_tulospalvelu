@@ -15,13 +15,21 @@ function Tulokset({aktiivinenKausi, kilpailu, setKilpailu}) {
         setKilpailu(kilpailu)
 
         kilpailu.sarjat.forEach(sarja => {
-          sarja.kilpailijat.sort((a, b) => {
-            if (moment(a.kilpailut[kilpailu._id].maaliaika) - moment(a.kilpailut[kilpailu._id].lahtoaika) <
-            moment(b.kilpailut[kilpailu._id].maaliaika) - moment(b.kilpailut[kilpailu._id].lahtoaika)) return -1
-            if (moment(a.kilpailut[kilpailu._id].maaliaika) - moment(a.kilpailut[kilpailu._id].lahtoaika) >
-            moment(b.kilpailut[kilpailu._id].maaliaika) - moment(b.kilpailut[kilpailu._id].lahtoaika)) return 1
-            return 0
-          })
+          if (Object.keys(kilpailu).length === 0) {
+            sarja.kilpailijat.sort((a, b) => {
+              if (moment(a.kilpailut[kilpailu._id].maaliaika) - moment(a.kilpailut[kilpailu._id].lahtoaika) <
+              moment(b.kilpailut[kilpailu._id].maaliaika) - moment(b.kilpailut[kilpailu._id].lahtoaika)) return -1
+              if (moment(a.kilpailut[kilpailu._id].maaliaika) - moment(a.kilpailut[kilpailu._id].lahtoaika) >
+              moment(b.kilpailut[kilpailu._id].maaliaika) - moment(b.kilpailut[kilpailu._id].lahtoaika)) return 1
+              return 0
+            })
+          } else {
+            sarja.kilpailijat.sort((a, b) => {
+              if (a.kilpailut[kilpailu._id].pisteet < b.kilpailut[kilpailu._id].pisteet) return 1
+              if (a.kilpailut[kilpailu._id].pisteet > b.kilpailut[kilpailu._id].pisteet) return -1
+              return 0
+            })
+          }
         })
 
         kilpailu.sarjat.forEach(sarja => {

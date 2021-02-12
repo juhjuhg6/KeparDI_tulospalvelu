@@ -80,9 +80,16 @@ const päivitäKilpailunPisteet = function (kilpailu, seuraava) {
         if (!kilpailijanAika) {
           return sarjanPisteet(i+1)
         }
+
         let kilpailija = kilpailijat.find(k => k._id === kilpailijanAika.id)
         let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
-        kilpailudata.pisteet = kilpailijanPisteet(voittoAika, kilpailijanAika.aika)
+        
+        if (kilpailu.manuaalisetPisteet.get(kilpailija._id.toString())) {
+          kilpailudata.pisteet = kilpailu.manuaalisetPisteet.get(kilpailija._id.toString())
+        } else {
+          kilpailudata.pisteet = kilpailijanPisteet(voittoAika, kilpailijanAika.aika)
+        }
+
         kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
 
         kilpailija.save(err => {
@@ -124,8 +131,15 @@ const päivitäJärjestäjienPisteet = function (kilpailu, seuraava) {
         if (!järjestäjä) {
           return seuraava()
         }
+
         let kilpailudata = järjestäjä.kilpailut.get(kilpailu._id.toString())
-        kilpailudata.pisteet = järjestäjienPisteet
+
+        if (kilpailu.manuaalisetPisteet.get(järjestäjä._id.toString())) {
+          kilpailudata.pisteet = kilpailu.manuaalisetPisteet.get(järjestäjä._id.toString())
+        } else {
+          kilpailudata.pisteet = järjestäjienPisteet
+        }
+
         järjestäjä.kilpailut.set(kilpailu._id.toString(), kilpailudata)
   
         järjestäjä.save(err => {

@@ -27,6 +27,7 @@ app.use('/api/sarjat/', require('./routes/api/sarjat.js'))
 app.use('/api/kilpailijat/', require('./routes/api/kilpailijat.js'))
 app.use('/api/jarjestajat/', require('./routes/api/jarjestajat.js'))
 app.use('/api/pisteet/', require('./routes/api/pisteet.js'))
+app.use('/api/manuaalisetpisteet/', require('./routes/api/manuaalisetPisteet.js'))
 
 app.use(express.static('client/build'))
 app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')))
