@@ -99,7 +99,8 @@
         {
             "_id": string,
             "kilpailija": string (kilpailijan _id),
-            "maaliintuloaika": string (ISO 8601)
+            "maaliintuloaika": string (ISO 8601),
+            "nimi": string (käytetään vain, jos kilpailijaa ei määritetty)
         }
     ],
     "jarjestajat": [Kilpailija],
