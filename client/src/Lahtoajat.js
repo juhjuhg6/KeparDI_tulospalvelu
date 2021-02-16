@@ -8,16 +8,18 @@ function Lähtöajat({aktiivinenKausi, kilpailu, setKilpailu}) {
   const [momentFormat, setMomentFormat] = useState('HH.mm')
   
   useEffect(() => {
+    let format = 'HH.mm'
     kilpailu.sarjat.forEach(sarja => {
       if (sarja.kilpailijat.some(kilpailija => {
+        if (kilpailija.kilpailut[kilpailu._id].lahtoaika) {
           const lähtöaika = moment(kilpailija.kilpailut[kilpailu._id].lahtoaika)
           return lähtöaika.seconds() !== 0
-        })) {
-        setMomentFormat('HH.mm.ss')
-      } else {
-        setMomentFormat('HH.mm')
+        } else return false
+      })) {
+        return format = 'HH.mm.ss'
       }
     })
+    setMomentFormat(format)
   }, [kilpailu])
 
   return (
