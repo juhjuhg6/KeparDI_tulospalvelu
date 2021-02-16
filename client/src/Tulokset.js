@@ -37,7 +37,7 @@ function Tulokset({aktiivinenKausi, kilpailu, setKilpailu}) {
         kilpailu.sarjat.forEach(sarja => {
           let i = 0
           
-          if (kilpailu.manuaalisetPisteet.length === 0) {
+          if (Object.keys(kilpailu.manuaalisetPisteet).length === 0) {
             let edellinenAika
             let edellinenSija
 
