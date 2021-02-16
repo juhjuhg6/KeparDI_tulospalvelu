@@ -18,11 +18,17 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja,
 
   function muokkaaLähtöaikaa() {
     setTallentaa(true)
-    const asetettavaLähtöaika = moment(aikaInput.current.value, 'HH.mm.ss')
-    let lähtöaika = moment(kilpailu.pvm)
-    lähtöaika.hours(asetettavaLähtöaika.hours())
-    lähtöaika.minutes(asetettavaLähtöaika.minutes())
-    lähtöaika.seconds(asetettavaLähtöaika.seconds())
+    
+    let lähtöaika
+    if (aikaInput.current.value) {
+      const asetettavaLähtöaika = moment(aikaInput.current.value, 'HH.mm.ss')
+      lähtöaika = moment(kilpailu.pvm)
+      lähtöaika.hours(asetettavaLähtöaika.hours())
+      lähtöaika.minutes(asetettavaLähtöaika.minutes())
+      lähtöaika.seconds(asetettavaLähtöaika.seconds())
+    } else {
+      lähtöaika = null
+    }
     
     axios.put(`api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarja._id}/${kilpailija._id}`,
       {lahtoaika: lähtöaika})
