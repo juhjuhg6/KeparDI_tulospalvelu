@@ -23,7 +23,9 @@ function Tulos({kilpailu, kilpailija, sarja}) {
           <td></td>
         </>
       }
-      <td>{kilpailija.kilpailut[kilpailu._id].pisteet}</td>
+      {sarja.lasketaanPisteet
+      ? <td>{kilpailija.kilpailut[kilpailu._id].pisteet}</td>
+      : <></>}
     </tr>
   )
 }

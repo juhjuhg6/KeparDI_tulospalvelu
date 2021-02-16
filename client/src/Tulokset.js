@@ -100,7 +100,12 @@ function Tulokset({aktiivinenKausi, kilpailu, setKilpailu}) {
             <h4>{sarja.nimi}</h4>
             <table>
               <thead>
-                <tr><th>Sija</th><th>Nimi</th><th>Aika</th><th>Ero</th><th>Pisteet</th></tr>
+                <tr>
+                  <th>Sija</th><th>Nimi</th><th>Aika</th><th>Ero</th>
+                  {sarja.lasketaanPisteet
+                  ? <th>Pisteet</th>
+                  : <></>}
+                </tr>
               </thead>
               <tbody>
                 {sarja.kilpailijat.map(kilpailija => <Tulos key={kilpailija._id} kilpailu={kilpailu}
