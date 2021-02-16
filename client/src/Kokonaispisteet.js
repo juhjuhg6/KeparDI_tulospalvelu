@@ -19,13 +19,17 @@ function Kokonaispisteet({aktiivinenKausi, kausienJaKilpailujenNimet}) {
       })
     
     return () => komponenttiKiinnitetty = false
+    // eslint-disable-next-line
   }, [aktiivinenKausi])
 
   function valmistelePisteet(valmisteltavatPisteet) {
     valmisteltavatPisteet.forEach(kilpailija => {
       let kokonaispisteet = 0
+      const kilpailut = kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut
       for (const kilpailu in kilpailija.kilpailut) {
-        kokonaispisteet += kilpailija.kilpailut[kilpailu].pisteet
+        if (kilpailut.some(k => k.id === kilpailu)) {
+          kokonaispisteet += kilpailija.kilpailut[kilpailu].pisteet
+        }
       }
       kilpailija.kokonaispisteet = kokonaispisteet
     })
