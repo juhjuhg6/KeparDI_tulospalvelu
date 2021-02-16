@@ -56,13 +56,7 @@
                     "_id": string,
                     "nimi": string,
                     "lasketaanPisteet": boolean,
-                    "kilpailijat": [string (kilpailijan _id)],
-                    "manuaalisetPisteet": [
-                        {
-                            "kilpailija": string (kilpailijan _id),
-                            "pisteet": number
-                        }
-                    ]
+                    "kilpailijat": [string (kilpailijan _id)]
                 }
             ],
             "maaliintulot": [
@@ -72,7 +66,10 @@
                     "maaliintuloaika": string (ISO 8601)
                 }
             ],
-            "jarjestajat": [string (kilpailijan _id)]
+            "jarjestajat": [string (kilpailijan _id)],
+            "manuaalisetPisteet": {
+                kilpailijaId: number (pisteet)
+            }
         }
     ]
 }
@@ -97,6 +94,7 @@
             "_id": string,
             "kilpailija": string (kilpailijan _id),
             "maaliintuloaika": string (ISO 8601),
+            "muuTulos": string (DNS/DNF/DSQ)
             "nimi": string (käytetään vain, jos kilpailijaa ei määritetty)
         }
     ],
@@ -374,6 +372,7 @@ Body:
 {
     ("kilpailija": string (kilpailijan _id)),
     ("maaliintuloaika": string (ISO 8601),
+    ("muuTulos": string (DNS/DNF/DSQ)),
     ("nimi": string (käytetään vain, jos kilpailijaa ei määritetty))
 }
 ```
@@ -391,6 +390,7 @@ Body:
 {
     ("kilpailija": string (kilpailijan _id)),
     ("maaliintuloaika": string (ISO 8601)),
+    ("muuTulos": string (DNS/DNF/DSQ)),
     ("nimi": string (käytetään vain, jos kilpailijaa ei määritetty))
 }
 ```

@@ -32,12 +32,21 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
           if (req.body.nimi) {
             req.body.nimi = null
           }
+          
           let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
+
           if (req.body.maaliintuloaika) {
             kilpailudata.maaliaika = req.body.maaliintuloaika
           } else {
             kilpailudata.maaliaika = null
           }
+
+          if (req.body.muuTulos) {
+            kilpailudata.muuTulos = req.body.muuTulos
+          } else {
+            kilpailudata.muuTulos = null
+          }
+
           kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
 
           kilpailija.save(err => {
@@ -102,12 +111,21 @@ router.put('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
             if (kilpailija.nimi) {
               req.body.nimi = null
             }
+
             let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
+            
             if (req.body.maaliintuloaika) {
               kilpailudata.maaliaika = req.body.maaliintuloaika
             } else {
               kilpailudata.maaliaika = null
             }
+
+            if (req.body.muuTulos) {
+              kilpailudata.muuTulos = req.body.muuTulos
+            } else {
+              kilpailudata.muuTulos = null
+            }
+            
             kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
 
             kilpailija.save(err => {
@@ -148,6 +166,7 @@ router.put('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
 
         let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
         kilpailudata.maaliaika = null
+        kilpailudata.muuTulos = null
         kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
 
         kilpailija.save(err => {

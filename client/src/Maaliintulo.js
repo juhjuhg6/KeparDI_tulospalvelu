@@ -8,6 +8,7 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
 
   const nimiInput = useRef(null)
   const aikaInput = useRef(null)
+  const muuTulosSelect = useRef(null)
 
   function maaliaikaStr() {
     if (maaliintulo.maaliintuloaika) {
@@ -50,6 +51,7 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
     } else {
       pyyntö.maaliintuloaika = ''
     }
+    pyyntö.muuTulos = muuTulosSelect.current.value
 
     axios.put(`api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}/${maaliintulo._id}`, pyyntö)
       .then(vastaus => {
@@ -82,6 +84,7 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
           : maaliintulo.nimi}
       </td>
       <td>{maaliaikaStr()}</td>
+      <td>{maaliintulo.muuTulos}</td>
       <td>
         <button onClick={() => setMuokkaus(true)}>Muokkaa</button>
         <button onClick={poistaMaaliaika}>Poista</button>
@@ -90,6 +93,14 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
       <td><input ref={nimiInput} type='text' defaultValue={maaliintulo.kilpailija
         ? kilpailijanNimi(maaliintulo.kilpailija) : maaliintulo.nimi} /></td>
       <td><input ref={aikaInput} type='text' defaultValue={maaliaikaStr()} /></td>
+      <td>
+        <select ref={muuTulosSelect} id='muuTulos' defaultValue={maaliintulo.muuTulos}>
+          <option></option>
+          <option value='DNS'>DNS</option>
+          <option value='DNF'>DNF</option>
+          <option value='DSQ'>DSQ</option>
+        </select>
+      </td>
       <td>
         {tallentaa
         ? 'Tallennetaan...'
