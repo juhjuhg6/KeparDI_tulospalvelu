@@ -59,11 +59,11 @@ const päivitäKilpailunPisteet = function (kilpailu, seuraava) {
             kilpailudata.pisteet = kilpailu.manuaalisetPisteet.get(kilpailija._id.toString())
           } else if (kilpailudata.muuTulos === 'DNF') {
             kilpailudata.pisteet = 1
-            kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
           } else {
             kilpailudata.pisteet = 0
-            kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
           }
+          
+          kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
 
           kilpailija.save(err => {
             if (err) return handleError(err, res, 'Virhe muutettaessa kilpailijan pisteitä.')
