@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     if (!aktiivinenKausi.id) return
 
-    if (!aktiivinenKilpailu) {
+    if (!aktiivinenKilpailu || !aktiivinenKausi.kilpailut.find(kilpailu => kilpailu.id === aktiivinenKilpailu.id)) {
       setAktiivinenKilpailu('Kokonaispisteet')
     }
     // eslint-disable-next-line
