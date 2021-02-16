@@ -36,26 +36,49 @@ function Tulokset({aktiivinenKausi, kilpailu, setKilpailu}) {
 
         kilpailu.sarjat.forEach(sarja => {
           let i = 0
-          let edellinenAika
-          let edellinenSija
-          sarja.kilpailijat.forEach(kilpailija => {
-            i++
-            const kilpailijanAika = moment(kilpailija.kilpailut[kilpailu._id].maaliaika) - 
-              moment(kilpailija.kilpailut[kilpailu._id].lahtoaika)
-            kilpailija.aika = kilpailijanAika
-            if (i === 1) {
-              kilpailija.sija = i
-              edellinenSija = i
-              sarja.voittoaika = kilpailijanAika
-              edellinenAika = kilpailijanAika
-            } else if (kilpailijanAika === edellinenAika) {
-              kilpailija.sija = edellinenSija
-            } else {
-              kilpailija.sija = i
-              edellinenSija = i
-              edellinenAika = kilpailijanAika
-            }
-          })
+          
+          if (kilpailu.manuaalisetPisteet.length === 0) {
+            let edellinenAika
+            let edellinenSija
+
+            sarja.kilpailijat.forEach(kilpailija => {
+              i++
+              const kilpailijanAika = moment(kilpailija.kilpailut[kilpailu._id].maaliaika) - 
+                moment(kilpailija.kilpailut[kilpailu._id].lahtoaika)
+              kilpailija.aika = kilpailijanAika
+              if (i === 1) {
+                kilpailija.sija = i
+                edellinenSija = i
+                sarja.voittoaika = kilpailijanAika
+                edellinenAika = kilpailijanAika
+              } else if (kilpailijanAika === edellinenAika) {
+                kilpailija.sija = edellinenSija
+              } else {
+                kilpailija.sija = i
+                edellinenSija = i
+                edellinenAika = kilpailijanAika
+              }
+            })
+          } else {
+            let edellisetPisteet
+            let edellinenSija
+
+            sarja.kilpailijat.forEach(kilpailija => {
+              i++
+              const pisteet = kilpailija.kilpailut[kilpailu._id].pisteet
+              if (i === 1) {
+                kilpailija.sija = i
+                edellinenSija = i
+                edellisetPisteet = pisteet
+              } else if (pisteet === edellisetPisteet) {
+                kilpailija.sija = edellinenSija
+              } else {
+                kilpailija.sija = i
+                edellinenSija = i
+                edellisetPisteet = pisteet
+              }
+            })
+          }
         })
 
         muokattuKilpailu.current = kilpailu

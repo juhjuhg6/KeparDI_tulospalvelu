@@ -8,8 +8,14 @@ function Tulos({kilpailu, kilpailija, sarja}) {
         ? <>
           <td>{kilpailija.sija}.</td>
           <td>{kilpailija.nimi}</td>
-          <td>{moment(kilpailija.aika).utc().format('H.mm.ss')}</td>
-          <td>{moment(kilpailija.aika - sarja.voittoaika).utc().format('H.mm.ss')}</td>
+          {kilpailija.aika
+          ? <>
+            <td>{moment(kilpailija.aika).utc().format('H.mm.ss')}</td>
+            <td>{moment(kilpailija.aika - sarja.voittoaika).utc().format('H.mm.ss')}</td>
+          </> : <>
+            <td></td>
+            <td></td>
+          </>}
         </> : <>
           <td></td>
           <td>{kilpailija.nimi}</td>
