@@ -20,7 +20,10 @@ function App() {
   useEffect(() => {
     if (!aktiivinenKausi.id) return
 
-    setAktiivinenKilpailu('Kokonaispisteet')
+    if (!aktiivinenKilpailu) {
+      setAktiivinenKilpailu('Kokonaispisteet')
+    }
+    // eslint-disable-next-line
   }, [aktiivinenKausi])
 
   useEffect(() => {
