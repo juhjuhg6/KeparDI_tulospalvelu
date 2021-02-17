@@ -1,7 +1,18 @@
-import React, { useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
-function ManuaalisetPisteet({ kilpailija, nykyisetPisteet, uudetManuaalisetPisteet, setUudetManuaalisetPisteet }) {
+function ManuaalisetPisteet({ kilpailu, kilpailija, uudetManuaalisetPisteet, setUudetManuaalisetPisteet }) {
+  const [nykyisetPisteet, setNykyisetPisteet] = useState()
   const pisteInput = useRef(null)
+
+  useEffect(() => {
+    setNykyisetPisteet(kilpailu.manuaalisetPisteet[kilpailija.id])
+    // eslint-disable-next-line
+  }, [kilpailu])
+
+  useEffect(() => {
+    palautaNykyisetPisteet()
+    // eslint-disable-next-line
+  }, [nykyisetPisteet])
 
   function palautaNykyisetPisteet() {
     pisteInput.current.value = nykyisetPisteet || ''
