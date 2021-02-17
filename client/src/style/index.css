@@ -35,7 +35,7 @@ p {
 select {
   font-size: 1.4rem;
   background-color: whitesmoke;
-  border-color: #3e434c;
+  border-color: #ff9900;
   color: #31343b;
   border-radius: 0.4rem;
   margin-right: 0.5rem;
@@ -47,7 +47,7 @@ input {
   color: #31343b;
   border: 1px solid;
   border-radius: 0.4rem;
-  border-color: #3e434c;
+  border-color: #ff9900;
   margin-right: 0.5rem;
 }
 
@@ -76,6 +76,10 @@ button {
   margin: 0.4rem 0.4rem 0.3rem 0rem;
 }
 
+button:focus {
+  outline: none;
+}
+
 .btn-yellow {
   background-color: #FFCC00;
 }
@@ -86,6 +90,10 @@ button {
 
 .btn-red {
   background-color: #e3523b;
+}
+
+.btn-selected {
+  background-color: #ff9900;
 }
 
 h2 {

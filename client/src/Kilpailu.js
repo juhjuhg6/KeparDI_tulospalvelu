@@ -18,11 +18,11 @@ function Kilpailu({aktiivinenKausi, kilpailu, setKilpailu, päivitäKausienJaKil
           <br/>
 
           <button onClick={() => setNäytettäväData('lähtöajat')}
-          className='btn-yellow'>Lähtöajat</button>
+          className={näytettäväData === 'lähtöajat' ? 'btn-selected' : 'btn-yellow'}>Lähtöajat</button>
           <button onClick={() => setNäytettäväData('maaliintulot')}
-          className='btn-yellow'>Ajanotto</button>
+            className={näytettäväData === 'maaliintulot' ? 'btn-selected' : 'btn-yellow'}>Ajanotto</button>
           <button onClick={() => setNäytettäväData('tulokset')}
-          className='btn-yellow'>Tulokset</button>
+            className={näytettäväData === 'tulokset' ? 'btn-selected' : 'btn-yellow'}>Tulokset</button>
 
           {näytettäväData === 'lähtöajat' ? <Lähtöajat aktiivinenKausi={aktiivinenKausi}
             kilpailu={kilpailu} setKilpailu={setKilpailu} /> : <></>}

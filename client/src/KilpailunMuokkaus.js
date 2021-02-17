@@ -67,9 +67,12 @@ function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKa
       <button onClick={poistaKilpailu} className='btn-red'>Poista kilpailu</button>
       <br />
 
-      <button onClick={() => asetaMuokattava('sarjat')} className='btn-yellow'>Muokkaa sarjoja</button>
-      <button onClick={() => asetaMuokattava('järjestäjät')} className='btn-yellow'>Muokkaa järjestäjiä</button>
-      <button onClick={() => asetaMuokattava('pisteet')} className='btn-yellow'>Muokkaa manuaalisia pisteitä</button>
+      <button onClick={() => asetaMuokattava('sarjat')}
+        className={muokattava === 'sarjat' ? 'btn-selected' : 'btn-yellow'}>Muokkaa sarjoja</button>
+      <button onClick={() => asetaMuokattava('järjestäjät')}
+        className={muokattava === 'järjestäjät' ? 'btn-selected' : 'btn-yellow'}>Muokkaa järjestäjiä</button>
+      <button onClick={() => asetaMuokattava('pisteet')}
+        className={muokattava === 'pisteet' ? 'btn-selected' : 'btn-yellow'}>Muokkaa manuaalisia pisteitä</button>
 
       {muokattava === 'sarjat'
         ? <SarjojenMuokkaus kilpailu={kilpailu} setKilpailu={setKilpailu} aktiivinenKausi={aktiivinenKausi} />
