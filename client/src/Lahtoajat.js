@@ -25,23 +25,24 @@ function Lähtöajat({aktiivinenKausi, kilpailu, setKilpailu}) {
   return (
     <div>
       {!kilpailijanLisäys
-      ? <button onClick={() => setKilpailijanLisäys(true)}>Lisää kilpailija</button>
+      ? <button onClick={() => setKilpailijanLisäys(true)} className='btn-yellow'>Lisää kilpailija</button>
       : <UusiKilpailija aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu}
           setKilpailu={setKilpailu} setKilpailijanLisäys={setKilpailijanLisäys} />}
-      {kilpailu.sarjat
-      ? kilpailu.sarjat.map(sarja => <div key={sarja._id}>
-          <h4>{sarja.nimi}</h4>
-          <table>
-            <thead><tr><th>Nimi</th><th>Lähtöaika</th></tr></thead>
-            <tbody>
-              {sarja.kilpailijat.map(kilpailija => <Lähtöaika  key={kilpailija._id}
-                aktiivinenKausi={aktiivinenKausi} kilpailija={kilpailija} kilpailu={kilpailu}
-                setKilpailu={setKilpailu} sarja={sarja} momentFormat={momentFormat} />)}
-            </tbody>
-          </table>
-        </div>
-        )
-      : <></>}
+      <div className='flex-container'>
+        {kilpailu.sarjat
+        ? kilpailu.sarjat.map(sarja => <div key={sarja._id}>
+            <h4>{sarja.nimi}</h4>
+            <table>
+              <thead><tr><th>Nimi</th><th>Lähtöaika</th><th></th></tr></thead>
+              <tbody>
+                {sarja.kilpailijat.map(kilpailija => <Lähtöaika  key={kilpailija._id}
+                  aktiivinenKausi={aktiivinenKausi} kilpailija={kilpailija} kilpailu={kilpailu}
+                  setKilpailu={setKilpailu} sarja={sarja} momentFormat={momentFormat} />)}
+              </tbody>
+            </table>
+          </div>)
+        : <></>}
+      </div>
     </div>
   )
 }

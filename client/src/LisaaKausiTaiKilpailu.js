@@ -39,18 +39,18 @@ function LisääKausiTaiKilpailu({aktiivinenKausi, päivitäKausienJaKilpailujen
     <div>
       {!lisättävä
       ? <>
-        <button onClick={() => setLisättävä('kausi')}>Lisää kausi</button>
-        <button onClick={() => setLisättävä('kilpailu')}>Lisää kilpailu</button>
+        <button onClick={() => setLisättävä('kausi')} className='btn-yellow'>Lisää kausi</button>
+        <button onClick={() => setLisättävä('kilpailu')} className='btn-yellow'>Lisää kilpailu</button>
       </> : <>
         <label htmlFor='nimi'>Nimi:</label>
-        <input ref={nimiInput} id='nimi' type='text'/>
+        <input ref={nimiInput} id='nimi' type='text' className='nimi'/>
         {lisättävä === 'kilpailu'
         ? <>
           <label htmlFor='pvm'>Päivämäärä:</label>
-          <input ref={pvmInput} id='pvm' type='text' placeholder='pp.kk.vvvv'/>
+          <input ref={pvmInput} id='pvm' type='text' placeholder='pp.kk.vvvv' className='input-pvm'/>
         </> : <></>}
-        <button onClick={() => setLisättävä('')}>Peruuta</button>
-        <button onClick={tallenna}>Tallenna</button>
+        <button onClick={() => setLisättävä('')} className='btn-yellow'>Peruuta</button>
+        <button onClick={tallenna} className='btn-green'>Tallenna</button>
       </>}
     </div>
   )

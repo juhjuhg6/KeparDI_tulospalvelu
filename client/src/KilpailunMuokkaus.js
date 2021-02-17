@@ -140,87 +140,94 @@ function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKa
     <div>
       {!kilpailunMuokkaus
         ? <>
-          <button onClick={() => setKilpailunMuokkaus(true)}>Muokkaa kilpailua</button>
+          <button onClick={() => setKilpailunMuokkaus(true)} className='btn-yellow'>Muokkaa kilpailua</button>
         </> : <>
           <label htmlFor='nimi'>Nimi:</label>
-          <input ref={kilpailunNimiInput} id='nimi' type='text' placeholder={kilpailu.nimi} />
+          <input ref={kilpailunNimiInput} id='nimi' type='text' placeholder={kilpailu.nimi} className='nimi' />
           <label htmlFor='pvm'>Päviämäärä:</label>
-          <input ref={pvmInput} id='pvm' type='text' placeholder={moment(kilpailu.pvm).format('DD.MM.YYYY')} />
-          <button onClick={() => tyhjennäTekstit()}>Tyhjennä</button>
-          <button onClick={päivitäKilpailu}>Tallenna</button><br />
+          <input ref={pvmInput} id='pvm' type='text' placeholder={moment(kilpailu.pvm).format('DD.MM.YYYY')}
+          className='input-pvm' />
+          <button onClick={() => tyhjennäTekstit()} className='btn-yellow'>Tyhjennä</button>
+          <button onClick={päivitäKilpailu} className='btn-green'>Tallenna</button><br />
 
           {!sarjojenMuokkaus
-            ? <>
-              <button onClick={() => setSarjojenMuokkaus(true)}>Muokkaa sarjoja</button>
-            </> : <>
-              <button onClick={() => setSarjojenMuokkaus(false)}>Päätä sarjojen muokkaus</button>
-              <h5>Sarjat:</h5>
+            ? !järjestäjienMuokkaus && !pisteidenMuokkaus
+              ? <button onClick={() => setSarjojenMuokkaus(true)} className='btn-yellow'>Muokkaa sarjoja</button>
+              : <></>
+            : <>
+              <button onClick={() => setSarjojenMuokkaus(false)} className='btn-yellow'>Päätä sarjojen muokkaus</button>
+              <h4>Sarjat</h4>
               <table>
                 <thead>
                   <tr>
-                    <th>Nimi</th><th>Lasketaan pisteet</th>
+                    <th>Nimi</th><th>Lasketaan pisteet</th><th></th>
                   </tr>
                 </thead>
                 <tbody>
                   {kilpailu.sarjat.map(sarja => <tr key={sarja._id}>
                     {muokattavaSarja !== sarja._id
                       ? <>
-                        <td>{sarja.nimi}</td>
+                        <td className='nimi'>{sarja.nimi}</td>
                         <td>{sarja.lasketaanPisteet ? 'kyllä' : 'ei'}</td>
                         <td>
-                          <button onClick={() => setMuokattavaSarja(sarja._id)}>Muokkaa sarjaa</button>
-                          <button onClick={() => poistaSarja(sarja._id)}>Poista sarja</button>
+                          <button onClick={() => setMuokattavaSarja(sarja._id)} className='btn-yellow'>Muokkaa sarjaa</button>
+                          <button onClick={() => poistaSarja(sarja._id)} className='btn-red'>Poista sarja</button>
                         </td>
                       </> : <>
-                        <td><input ref={muokattavanSarjanNimiInput} type='text' placeholder={sarja.nimi} /></td>
+                        <td><input ref={muokattavanSarjanNimiInput} type='text' placeholder={sarja.nimi}
+                          className='nimi' /></td>
                         <td>
                           <input ref={muokattavanSarjanLasketaanPisteetCheckbox} type='checkbox' id='muokattavanLasketaanPisteet'
                             defaultChecked={sarja.lasketaanPisteet} />
                           <label htmlFor='muokattavanLasketaanPisteet'>Lasketaan pisteet</label>
                         </td>
                         <td>
-                          <button onClick={() => setMuokattavaSarja(null)}>Peruuta</button>
-                          <button onClick={() => muokkaaSarjaa(sarja._id)}>Tallenna</button>
+                          <button onClick={() => setMuokattavaSarja(null)} className='btn-yellow'>Peruuta</button>
+                          <button onClick={() => muokkaaSarjaa(sarja._id)} className='btn-green'>Tallenna</button>
                         </td>
                       </>}
                   </tr>)}
                 </tbody>
               </table>
 
-              <h5>Lisää sarja:</h5>
+              <h4>Lisää sarja:</h4>
               <label htmlFor='sarjanNimi'>Nimi:</label>
-              <input ref={uudenSarjanNimiInput} id='sarjanNimi' type='text' />
+              <input ref={uudenSarjanNimiInput} id='sarjanNimi' type='text' className='nimi' />
               <input ref={uudenSarjanLasketaanPisteetCheckbox} id='lasketaanPisteet' type='checkbox' defaultChecked={true} />
               <label htmlFor='lasketaanPisteet'>Lasketaan pisteet</label>
-              <button onClick={lisääSarja}>Tallenna</button>
+              <button onClick={lisääSarja} className='btn-green'>Tallenna</button>
             </>}
 
             {!järjestäjienMuokkaus
-            ? <button onClick={() => setJärjestäjienMuokkaus(true)}>Muokkaa järjestäjiä</button>
+            ? !sarjojenMuokkaus && !pisteidenMuokkaus
+              ? <button onClick={() => setJärjestäjienMuokkaus(true)} className='btn-yellow'>Muokkaa järjestäjiä</button>
+              : <></>
             : <>
-              <button onClick={() => setJärjestäjienMuokkaus(false)}>Päätä järjestäjien muokkaus</button>
+              <button onClick={() => setJärjestäjienMuokkaus(false)} className='btn-yellow'>Päätä järjestäjien muokkaus</button>
               <table>
                 <thead>
-                  <tr><th>Nimi</th></tr>
+                  <tr><th>Nimi</th><th></th></tr>
                 </thead>
                 <tbody>
                   {kilpailu.jarjestajat.map(järjestäjä => <tr key={järjestäjä._id}>
-                    <td>{järjestäjä.nimi}</td>
-                    <td><button onClick={() => poistaJärjestäjä(järjestäjä._id)}>Poista järjestäjä</button></td>
+                    <td className='nimi'>{järjestäjä.nimi}</td>
+                    <td><button onClick={() => poistaJärjestäjä(järjestäjä._id)} className='btn-red'>Poista järjestäjä</button></td>
                   </tr>)}
                 </tbody>
               </table>
               <label htmlFor='järjestäjänNimi'>Nimi:</label>
-              <input ref={järjestäjänNimiInput} id='järjestäjänNimi' type='text'/>
-              <button onClick={lisääJärjestäjä}>Tallenna</button>
+              <input ref={järjestäjänNimiInput} id='järjestäjänNimi' type='text' className='nimi'/>
+              <button onClick={lisääJärjestäjä} className='btn-green'>Tallenna</button>
             </>}
             
             {!pisteidenMuokkaus
-            ? <button onClick={() => setPisteidenMuokkaus(true)}>Aseta manuaaliset pisteet</button>
+            ? !sarjojenMuokkaus && !järjestäjienMuokkaus
+              ? <button onClick={() => setPisteidenMuokkaus(true)} className='btn-yellow'>Aseta manuaaliset pisteet</button>
+              : <></>
             : <>
               <table>
                 <thead>
-                  <tr><th>Nimi</th><th>Pisteet</th></tr>
+                  <tr><th>Nimi</th><th>Pisteet</th><th></th></tr>
                 </thead>
                 <tbody>
                 {kilpailu.kaikkiKilpailijat.map(kilpailija => <ManuaalisetPisteet key={kilpailija.id} kilpailija={kilpailija}
@@ -229,13 +236,14 @@ function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKa
                 </tbody>
               </table>
 
-              <button onClick={() => setPisteidenMuokkaus(false)}>Peruuta</button>
-              <button onClick={poistaManuaalisetPisteet}>Poista kaikki manuaaliset pisteet</button>
-              <button onClick={asetaManuaalisetPisteet}>Tallenna</button>
+              <button onClick={() => setPisteidenMuokkaus(false)} className='btn-yellow'>Peruuta</button>
+              <button onClick={poistaManuaalisetPisteet} className='btn-red'>Poista kaikki manuaaliset pisteet</button>
+              <button onClick={asetaManuaalisetPisteet} className='btn-green'>Tallenna</button>
             </>}
           
-          <button onClick={poistaKilpailu}>Poista kilpailu</button>
-          <button onClick={() => setKilpailunMuokkaus(false)}>Lopeta kilpailun muokkaus</button>
+          <br/>
+          <button onClick={poistaKilpailu} className='btn-red'>Poista kilpailu</button>
+          <button onClick={() => setKilpailunMuokkaus(false)} className='btn-yellow'>Lopeta kilpailun muokkaus</button>
         </>}
     </div>
   )

@@ -15,9 +15,10 @@ function ManuaalisetPisteet({ kilpailija, nykyisetPisteet, uudetManuaalisetPiste
 
   return (
     <tr>
-      <td>{kilpailija.nimi}</td>
-      <td><input ref={pisteInput} type='number' defaultValue={nykyisetPisteet} onChange={päivitäPisteet}/></td>
-      <td><button onClick={palautaNykyisetPisteet}>Palauta</button></td>
+      <td className='nimi'>{kilpailija.nimi}</td>
+      <td><input ref={pisteInput} type='number' defaultValue={nykyisetPisteet} onChange={päivitäPisteet}
+      className='input-piste'/></td>
+      <td><button onClick={palautaNykyisetPisteet} className='btn-yellow'>Palauta</button></td>
     </tr>
   )
 }

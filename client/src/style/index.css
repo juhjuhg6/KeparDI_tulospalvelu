@@ -1,0 +1,133 @@
+html {
+  font-size: 10px;
+}
+
+body {
+  background-color: #31343b;
+  color: #3e434c;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  font-family: 'Roboto', sans-serif;
+}
+
+#root {
+  background-color: whitesmoke;
+  padding: 1rem;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+label {
+  font-size: 1.6rem;
+  margin-right: 0.6rem
+}
+
+p {
+  font-size: 1.6rem;
+  margin: 0.3rem 0px;
+}
+
+select {
+  font-size: 1.4rem;
+  background-color: whitesmoke;
+  border-color: #3e434c;
+  color: #31343b;
+  border-radius: 0.4rem;
+  margin-right: 0.5rem;
+}
+
+input {
+  font-size: 1.4rem;
+  background-color: whitesmoke;
+  color: #31343b;
+  border: 1px solid;
+  border-radius: 0.4rem;
+  border-color: #3e434c;
+  margin-right: 0.5rem;
+}
+
+.input-aika {
+  width: 6.5rem;
+}
+
+.input-pvm {
+  width: 8rem;
+}
+
+.nimi {
+  width: 15rem;
+}
+
+button {
+  color: #31343b;
+  border: 0px;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  padding: 0.3rem 0.6rem;
+  margin: 0.4rem 0.4rem 0.3rem 0rem;
+}
+
+.btn-yellow {
+  background-color: #FFCC00;
+}
+
+.btn-green {
+  background-color: #6cad5c;
+}
+
+.btn-red {
+  background-color: #e3523b;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0.5rem 0rem;
+}
+
+h3 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0.5rem 0rem;
+}
+
+h4 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin: 1rem 0rem;
+}
+
+table {
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+thead {
+  background-color: #FFCC00;
+  color: #31343b;
+}
+
+th {
+  font-weight: 500;
+  border: 2px solid #FFCC00;
+}
+
+tr:nth-child(even) {
+  background-color: #FFF18D;
+}
+
+th {
+  font-size: 1.6rem;
+  text-align: left;
+  padding: 0.2rem 0.3rem;
+}
+
+td {
+  font-size: 1.6rem;
+  padding: 0px 0.3rem;
+}

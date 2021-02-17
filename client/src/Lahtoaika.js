@@ -54,22 +54,22 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja,
 
   return(
     <tr>
-      <td>{kilpailija.nimi}</td>
+      <td className='nimi'>{kilpailija.nimi}</td>
       {!muokkaus
       ? <>
       <td>{lähtöaikaStr()}</td>
       <td>
-        <button onClick={() => setMuokkaus(true)}>Muuta lähtöaikaa</button>
-        <button onClick={poistaKilpailija}>Poista</button>
+        <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muuta lähtöaikaa</button>
+        <button onClick={poistaKilpailija} className='btn-red'>Poista</button>
       </td>
       </> : <>
-      <td><input ref={aikaInput} type='text' placeholder={lähtöaikaStr()} /></td>
+      <td><input ref={aikaInput} type='text' placeholder={lähtöaikaStr()} className='input-aika' /></td>
       <td>
         {tallentaa
         ? 'Tallennetaan...'
         : <>
-        <button onClick={() => setMuokkaus(false)}>Peruuta</button>
-        <button onClick={muokkaaLähtöaikaa}>Tallenna</button>
+        <button onClick={() => setMuokkaus(false)} className='btn-yellow'>Peruuta</button>
+        <button onClick={muokkaaLähtöaikaa} className='btn-green'>Tallenna</button>
         </>}
       </td>
       </>}

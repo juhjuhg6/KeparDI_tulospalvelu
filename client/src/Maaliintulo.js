@@ -78,7 +78,7 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
     <tr>
       {!muokkaus
       ? <>
-      <td>
+      <td className='nimi'>
         {maaliintulo.kilpailija 
           ? kilpailijanNimi(maaliintulo.kilpailija)
           : maaliintulo.nimi}
@@ -86,13 +86,13 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
       <td>{maaliaikaStr()}</td>
       <td>{maaliintulo.muuTulos}</td>
       <td>
-        <button onClick={() => setMuokkaus(true)}>Muokkaa</button>
-        <button onClick={poistaMaaliaika}>Poista</button>
+        <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muokkaa</button>
+        <button onClick={poistaMaaliaika} className='btn-red'>Poista</button>
       </td>
       </> : <>
       <td><input ref={nimiInput} type='text' defaultValue={maaliintulo.kilpailija
-        ? kilpailijanNimi(maaliintulo.kilpailija) : maaliintulo.nimi} /></td>
-      <td><input ref={aikaInput} type='text' defaultValue={maaliaikaStr()} /></td>
+        ? kilpailijanNimi(maaliintulo.kilpailija) : maaliintulo.nimi} className='nimi' /></td>
+      <td><input ref={aikaInput} type='text' defaultValue={maaliaikaStr()} className='input-aika' /></td>
       <td>
         <select ref={muuTulosSelect} id='muuTulos' defaultValue={maaliintulo.muuTulos}>
           <option></option>
@@ -105,8 +105,8 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
         {tallentaa
         ? 'Tallennetaan...'
         : <>
-        <button onClick={() => setMuokkaus(false)}>Peruuta</button>
-        <button onClick={muokkaaMaaliaikaa}>Tallenna</button>
+        <button onClick={() => setMuokkaus(false)} className='btn-yellow'>Peruuta</button>
+        <button onClick={muokkaaMaaliaikaa} className='btn-green'>Tallenna</button>
         </>}
       </td>
       </>}

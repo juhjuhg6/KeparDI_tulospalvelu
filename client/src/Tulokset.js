@@ -92,7 +92,7 @@ function Tulokset({aktiivinenKausi, kilpailu, setKilpailu}) {
   }, [])
 
   return (
-    <div>
+    <div className='flex-container'>
       {!pisteetLaskettu
       ? <p>Pisteitä lasketaan...</p>
       : kilpailu.sarjat.map(sarja =>
@@ -124,7 +124,7 @@ function Tulokset({aktiivinenKausi, kilpailu, setKilpailu}) {
           <tbody>
             {muokattuKilpailu.current.jarjestajat.map(järjestäjä => 
               <tr key={järjestäjä._id}>
-                <td>{järjestäjä.nimi}</td><td>{järjestäjä.kilpailut[kilpailu._id].pisteet}</td>
+                <td className='td-tulokset nimi'>{järjestäjä.nimi}</td><td>{järjestäjä.kilpailut[kilpailu._id].pisteet}</td>
               </tr>
             )}
           </tbody>

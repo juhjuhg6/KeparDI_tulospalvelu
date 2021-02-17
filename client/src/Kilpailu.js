@@ -12,9 +12,12 @@ function Kilpailu({aktiivinenKausi, kilpailu, setKilpailu, päivitäKausienJaKil
       <h3>{kilpailu.nimi}</h3>
       <KilpailunMuokkaus aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu} setKilpailu={setKilpailu}
         päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
-      <button onClick={() => setNäytettäväData('lähtöajat')}>Lähtöajat</button>
-      <button onClick={() => setNäytettäväData('maaliintulot')}>Ajanotto</button>
-      <button onClick={() => setNäytettäväData('tulokset')}>Tulokset</button>
+      <button onClick={() => setNäytettäväData('lähtöajat')}
+      className='btn-yellow'>Lähtöajat</button>
+      <button onClick={() => setNäytettäväData('maaliintulot')}
+      className='btn-yellow'>Ajanotto</button>
+      <button onClick={() => setNäytettäväData('tulokset')}
+      className='btn-yellow'>Tulokset</button>
 
       {näytettäväData === 'lähtöajat' ? <Lähtöajat aktiivinenKausi={aktiivinenKausi}
         kilpailu={kilpailu} setKilpailu={setKilpailu} /> : <></>}

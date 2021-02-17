@@ -68,10 +68,10 @@ function Maaliintulot({aktiivinenKausi, kilpailu, setKilpailu}) {
     <div>
       <p>Uusi maaliintulo:</p>
       <label htmlFor='nimi'>Nimi:</label>
-      <input ref={nimiInput} id='nimi'/>
+      <input ref={nimiInput} id='nimi' className='nimi'/>
       <label htmlFor='maaliintuloaika'>Maaliintuloaika:</label>
-      <input ref={aikaInput} id='maaliintuloaika' placeholder={aika.format('HH.mm.ss')}/>
-      <button onClick={asetaMaaliaika}>Nyt</button>
+      <input ref={aikaInput} id='maaliintuloaika' placeholder={aika.format('HH.mm.ss')} className='input-aika'/>
+      <button onClick={asetaMaaliaika} className='btn-yellow'>Nyt</button>
       <label htmlFor='muuTulos'>Muu tulos:</label>
       <select ref={muuTulosSelect} id='muuTulos'>
         <option></option>
@@ -79,20 +79,23 @@ function Maaliintulot({aktiivinenKausi, kilpailu, setKilpailu}) {
         <option value='DNF'>DNF</option>
         <option value='DSQ'>DSQ</option>
       </select>
-      <button onClick={lisääMaaliintulo}>Tallenna uusi maaliintulo</button>
-      <table>
-        <thead>
-          <tr>
-            <th>Nimi</th><th>Maaliintuloaika</th>
-            {muuTulosSarake ? <th>Muu tulos</th> : <></>}
-          </tr>
-        </thead>
-        <tbody>
-          {kilpailu.maaliintulot.map(maaliintulo => <Maaliintulo key={maaliintulo._id}
-            maaliintulo={maaliintulo} aktiivinenKausi={aktiivinenKausi}
-            kilpailu={kilpailu} setKilpailu={setKilpailu} />)}
-        </tbody>
-      </table>
+      <button onClick={lisääMaaliintulo} className='btn-green'>Tallenna uusi maaliintulo</button>
+      <div className='flex-container'>
+        <table>
+          <thead>
+            <tr>
+              <th>Nimi</th><th>Maaliintuloaika</th>
+              {muuTulosSarake ? <th>Muu tulos</th> : <th></th>}
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {kilpailu.maaliintulot.map(maaliintulo => <Maaliintulo key={maaliintulo._id}
+              maaliintulo={maaliintulo} aktiivinenKausi={aktiivinenKausi}
+              kilpailu={kilpailu} setKilpailu={setKilpailu} />)}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
