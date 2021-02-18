@@ -42,6 +42,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
 
   return(
     <div>
+      <h3>{aktiivinenKausi.nimi}</h3>
       <h3>Kokonaispisteet</h3>
       {pisteet
       ?

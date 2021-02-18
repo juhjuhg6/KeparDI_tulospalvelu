@@ -7,7 +7,7 @@ import Tulokset from './Tulokset'
 import KilpailunMuokkaus from '../kilpailunMuokkaus/KilpailunMuokkaus'
 
 function Kilpailu({ päivitäKausienJaKilpailujenNimet }) {
-  const { kilpailu, kirjauduttu, setKirjauduttu } = useContext(Context)
+  const { kilpailu, kirjauduttu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
 
   const [näytettäväData, setNäytettäväData] = useState('lähtöajat')
   const [kilpailunMuokkaus, setKilpailunMuokkaus] = useState(false)
@@ -19,6 +19,7 @@ function Kilpailu({ päivitäKausienJaKilpailujenNimet }) {
 
   return(
     <div>
+      <h3>{aktiivinenKausi.nimi}</h3>
       <h3>{kilpailu.nimi}</h3>
 
       {!kilpailunMuokkaus
