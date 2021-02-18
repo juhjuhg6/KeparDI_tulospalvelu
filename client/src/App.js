@@ -84,7 +84,6 @@ function App() {
       {kirjauduttu
         ? <>
           <LisääKausiTaiKilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
-          <h2>{aktiivinenKausi.nimi}</h2>
         </> : <></>}
 
       {aktiivinenKilpailu === 'Kokonaispisteet'
