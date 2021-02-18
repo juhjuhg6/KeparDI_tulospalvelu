@@ -4,6 +4,7 @@ import Context from '../Context'
 
 function Kirjautuminen() {
   const { kirjauduttu, setKirjauduttu } = useContext(Context)
+  
   const [kirjautuminen, setKirjautuminen] = useState(false)
 
   const salasanaInput = useRef(null)

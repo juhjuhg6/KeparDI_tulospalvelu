@@ -1,7 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useContext } from 'react'
+import Context from '../Context'
 
-function KilpailunValinta({kausienJaKilpailujenNimet,
-  aktiivinenKausi, setAktiivinenKausi, setAktiivinenKilpailu}) {
+function KilpailunValinta({ kausienJaKilpailujenNimet, setAktiivinenKausi, setAktiivinenKilpailu }) {
+  const { aktiivinenKausi } = useContext(Context)
+
   const kausiSelect = useRef(null)
 
   useEffect(() => {

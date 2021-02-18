@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import moment from 'moment'
+import Context from '../Context'
 
-function Tulos({kilpailu, kilpailija, sarja}) {
+function Tulos({ kilpailija, sarja }) {
+  const { kilpailu } = useContext(Context)
+
   return (
     <tr>
       {!kilpailija.kilpailut[kilpailu._id].muuTulos

@@ -3,9 +3,11 @@ import axios from 'axios'
 import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 
-function UusiKilpailija({aktiivinenKausi, kilpailu, setKilpailu, setKilpailijanLisäys}) {
-  const { setKirjauduttu } = useContext(Context)
+function UusiKilpailija({ setKilpailijanLisäys }) {
+  const { kilpailu, setKilpailu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
+
   const [tallentaa, setTallentaa] = useState(false)
+
   const nimiInput = useRef(null)
   const sarjaSelect = useRef(null)
 

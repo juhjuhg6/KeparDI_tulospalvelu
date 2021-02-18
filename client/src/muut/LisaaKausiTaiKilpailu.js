@@ -4,8 +4,8 @@ import moment from 'moment'
 import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 
-function LisääKausiTaiKilpailu({aktiivinenKausi, päivitäKausienJaKilpailujenNimet}) {
-  const { setKirjauduttu } = useContext(Context)
+function LisääKausiTaiKilpailu({ päivitäKausienJaKilpailujenNimet }) {
+  const { aktiivinenKausi, setKirjauduttu } = useContext(Context)
   const [lisättävä, setLisättävä] = useState('')
 
   const nimiInput = useRef(null)

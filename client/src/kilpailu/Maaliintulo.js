@@ -4,8 +4,8 @@ import moment from 'moment'
 import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 
-function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
-  const { setKirjauduttu } = useContext(Context)
+function Maaliintulo({ maaliintulo }) {
+  const { aktiivinenKausi, kilpailu, setKilpailu, setKirjauduttu } = useContext(Context)
   
   const [muokkaus, setMuokkaus] = useState(false)
   const [tallentaa, setTallentaa] = useState(false)

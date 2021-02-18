@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
+import Context from '../Context'
 
-function Kokonaispisteet({aktiivinenKausi, kausienJaKilpailujenNimet}) {
+function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
+  const { aktiivinenKausi } = useContext(Context)
+
   const [pisteet, setPisteet] = useState()
 
   useEffect(() => {

@@ -3,8 +3,8 @@ import axios from 'axios'
 import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 
-function SarjojenMuokkaus({ kilpailu, setKilpailu, aktiivinenKausi }) {
-  const { setKirjauduttu } = useContext(Context)
+function SarjojenMuokkaus() {
+  const { kilpailu, setKilpailu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
 
   const [muokattavaSarja, setMuokattavaSarja] = useState()
 

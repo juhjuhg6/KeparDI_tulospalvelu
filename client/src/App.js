@@ -74,26 +74,24 @@ function App() {
   }
 
   return (
-    <Context.Provider value={{kirjauduttu, setKirjauduttu}}>
+    <Context.Provider value={{ kilpailu, setKilpailu, aktiivinenKausi, kirjauduttu, setKirjauduttu }}>
       <KilpailunValinta
           kausienJaKilpailujenNimet={kausienJaKilpailujenNimet}
-          aktiivinenKausi={aktiivinenKausi} setAktiivinenKausi={setAktiivinenKausi}
+          setAktiivinenKausi={setAktiivinenKausi}
           setAktiivinenKilpailu={setAktiivinenKilpailu}
         />
 
       {kirjauduttu
         ? <>
-          <LisääKausiTaiKilpailu aktiivinenKausi={aktiivinenKausi}
-            päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
+          <LisääKausiTaiKilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
           <h2>{aktiivinenKausi.nimi}</h2>
         </> : <></>}
 
       {aktiivinenKilpailu === 'Kokonaispisteet'
-      ? <Kokonaispisteet aktiivinenKausi={aktiivinenKausi} kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} />
+      ? <Kokonaispisteet kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} />
       : <></>}
       {kilpailuHaettu
-      ? <Kilpailu aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu} setKilpailu={setKilpailu}
-        päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
+      ? <Kilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
       : <></>}
 
       <Kirjautuminen />

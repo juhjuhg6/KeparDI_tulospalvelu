@@ -4,8 +4,8 @@ import moment from 'moment'
 import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 
-function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja, momentFormat}) {
-  const { kirjauduttu, setKirjauduttu } = useContext(Context)
+function Lähtöaika({ kilpailija, sarja, momentFormat }) {
+  const { kilpailu, setKilpailu, aktiivinenKausi, kirjauduttu, setKirjauduttu } = useContext(Context)
 
   const [muokkaus, setMuokkaus] = useState(false)
   const [tallentaa, setTallentaa] = useState(false)

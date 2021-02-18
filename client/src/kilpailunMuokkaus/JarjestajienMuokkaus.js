@@ -3,8 +3,9 @@ import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 import axios from 'axios'
 
-function JärjestäjienMuokkaus({ kilpailu, setKilpailu, aktiivinenKausi }) {
-  const { setKirjauduttu } = useContext(Context)
+function JärjestäjienMuokkaus() {
+  const { kilpailu, setKilpailu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
+
   const järjestäjänNimiInput = useRef(null)
 
   function lisääJärjestäjä() {

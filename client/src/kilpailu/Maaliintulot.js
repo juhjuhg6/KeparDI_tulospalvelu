@@ -5,8 +5,8 @@ import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 import Maaliintulo from './Maaliintulo.js'
 
-function Maaliintulot({aktiivinenKausi, kilpailu, setKilpailu}) {
-  const { kirjauduttu, setKirjauduttu } = useContext(Context)
+function Maaliintulot() {
+  const { kilpailu, setKilpailu, aktiivinenKausi, kirjauduttu, setKirjauduttu } = useContext(Context)
 
   const [aika, setAika] = useState(moment())
   const [muuTulosSarake, setMuuTulosSarake] = useState(false)
@@ -109,8 +109,7 @@ function Maaliintulot({aktiivinenKausi, kilpailu, setKilpailu}) {
           </thead>
           <tbody>
             {kilpailu.maaliintulot.map(maaliintulo => <Maaliintulo key={maaliintulo._id}
-              maaliintulo={maaliintulo} aktiivinenKausi={aktiivinenKausi}
-              kilpailu={kilpailu} setKilpailu={setKilpailu} />)}
+              maaliintulo={maaliintulo} />)}
           </tbody>
         </table>
       </div>

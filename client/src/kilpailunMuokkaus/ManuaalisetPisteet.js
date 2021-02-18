@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
+import Context from '../Context'
 
-function ManuaalisetPisteet({ kilpailu, kilpailija, uudetManuaalisetPisteet, setUudetManuaalisetPisteet }) {
+function ManuaalisetPisteet({ kilpailija, uudetManuaalisetPisteet, setUudetManuaalisetPisteet }) {
+  const { kilpailu } = useContext(Context)
+
   const [nykyisetPisteet, setNykyisetPisteet] = useState()
+
   const pisteInput = useRef(null)
 
   useEffect(() => {

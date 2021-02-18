@@ -4,8 +4,8 @@ import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 import ManuaalisetPisteet from './ManuaalisetPisteet.js'
 
-function ManuaalistenPisteidenMuokkaus({ kilpailu, setKilpailu, aktiivinenKausi }) {
-  const { setKirjauduttu } = useContext(Context)
+function ManuaalistenPisteidenMuokkaus() {
+  const { kilpailu, setKilpailu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
 
   const [uudetManuaalisetPisteet, setUudetManuaalisetPisteet] = useState({ ...kilpailu.manuaalisetPisteet })
 
@@ -62,7 +62,7 @@ function ManuaalistenPisteidenMuokkaus({ kilpailu, setKilpailu, aktiivinenKausi 
           <tr><th>Nimi</th><th>Pisteet</th><th></th></tr>
         </thead>
         <tbody>
-          {kilpailu.kaikkiKilpailijat.map(kilpailija => <ManuaalisetPisteet key={kilpailija.id} kilpailu={kilpailu}
+          {kilpailu.kaikkiKilpailijat.map(kilpailija => <ManuaalisetPisteet key={kilpailija.id}
             kilpailija={kilpailija} uudetManuaalisetPisteet={uudetManuaalisetPisteet}
             setUudetManuaalisetPisteet={setUudetManuaalisetPisteet} />)}
         </tbody>

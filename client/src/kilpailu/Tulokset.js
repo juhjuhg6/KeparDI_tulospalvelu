@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import axios from 'axios'
 import moment from 'moment'
+import Context from '../Context'
 import Tulos from './Tulos'
 
-function Tulokset({aktiivinenKausi, kilpailu, setKilpailu}) {
+function Tulokset() {
+  const { kilpailu, setKilpailu, aktiivinenKausi } = useContext(Context)
 
   const [pisteetLaskettu, setPisteetLaskettu] = useState(false)
 
@@ -110,7 +112,7 @@ function Tulokset({aktiivinenKausi, kilpailu, setKilpailu}) {
                 </tr>
               </thead>
               <tbody>
-                {sarja.kilpailijat.map(kilpailija => <Tulos key={kilpailija._id} kilpailu={kilpailu}
+                {sarja.kilpailijat.map(kilpailija => <Tulos key={kilpailija._id}
                   kilpailija={kilpailija} sarja={sarja} />)}
               </tbody>
             </table>

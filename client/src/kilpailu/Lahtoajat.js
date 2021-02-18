@@ -4,8 +4,8 @@ import Context from '../Context'
 import Lähtöaika from './Lahtoaika'
 import UusiKilpailija from './UusiKilpailija'
 
-function Lähtöajat({aktiivinenKausi, kilpailu, setKilpailu}) {
-  const { kirjauduttu } = useContext(Context)
+function Lähtöajat() {
+  const { kilpailu, kirjauduttu } = useContext(Context)
 
   const [kilpailijanLisäys, setKilpailijanLisäys] = useState(false)
   const [momentFormat, setMomentFormat] = useState('HH.mm')
@@ -30,8 +30,7 @@ function Lähtöajat({aktiivinenKausi, kilpailu, setKilpailu}) {
       {kirjauduttu
         ? !kilpailijanLisäys
             ? <button onClick={() => setKilpailijanLisäys(true)} className='btn-yellow'>Lisää kilpailija</button>
-            : <UusiKilpailija aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu}
-                setKilpailu={setKilpailu} setKilpailijanLisäys={setKilpailijanLisäys} />
+            : <UusiKilpailija setKilpailijanLisäys={setKilpailijanLisäys} />
         : <></>
       }
       <div className='flex-container'>
@@ -47,8 +46,7 @@ function Lähtöajat({aktiivinenKausi, kilpailu, setKilpailu}) {
               </thead>
               <tbody>
                 {sarja.kilpailijat.map(kilpailija => <Lähtöaika  key={kilpailija._id}
-                  aktiivinenKausi={aktiivinenKausi} kilpailija={kilpailija} kilpailu={kilpailu}
-                  setKilpailu={setKilpailu} sarja={sarja} momentFormat={momentFormat} />)}
+                  kilpailija={kilpailija} sarja={sarja} momentFormat={momentFormat} />)}
               </tbody>
             </table>
           </div>)

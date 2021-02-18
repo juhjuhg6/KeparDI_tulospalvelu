@@ -7,9 +7,8 @@ import SarjojenMuokkaus from './SarjojenMuokkaus'
 import JärjestäjienMuokkaus from './JarjestajienMuokkaus'
 import ManuaalistenPisteidenMuokkaus from './ManuaalistenPisteidenMuokkaus'
 
-function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKausienJaKilpailujenNimet,
-  setKilpailunMuokkaus }) {
-  const { setKirjauduttu } = useContext(Context)
+function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuokkaus }) {
+  const { kilpailu, setKilpailu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
 
   const [muokattava, setMuokattava] = useState(null)
 
@@ -115,17 +114,17 @@ function KilpailunMuokkaus({ aktiivinenKausi, kilpailu, setKilpailu, päivitäKa
         className={muokattava === 'pisteet' ? 'btn-selected' : 'btn-yellow'}>Muokkaa manuaalisia pisteitä</button>
 
       {muokattava === 'sarjat'
-        ? <SarjojenMuokkaus kilpailu={kilpailu} setKilpailu={setKilpailu} aktiivinenKausi={aktiivinenKausi} />
+        ? <SarjojenMuokkaus />
         : <></>
       }
 
       {muokattava === 'järjestäjät'
-        ? <JärjestäjienMuokkaus kilpailu={kilpailu} setKilpailu={setKilpailu} aktiivinenKausi={aktiivinenKausi} />
+        ? <JärjestäjienMuokkaus />
         : <></>
       }
 
       {muokattava === 'pisteet'
-        ? <ManuaalistenPisteidenMuokkaus kilpailu={kilpailu} setKilpailu={setKilpailu} aktiivinenKausi={aktiivinenKausi} />
+        ? <ManuaalistenPisteidenMuokkaus />
         : <></>
       }
     </div>
