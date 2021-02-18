@@ -61,7 +61,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
             {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut.map(kilpailu =>
                 kilpailija.kilpailut[kilpailu.id]
                 ? <td key={kilpailu.id} className='td-pisteet'
-                  style={{ backgroundColor: `rgb(255, ${230 + (20 * (1 - kilpailija.kilpailut[kilpailu.id].pisteet / 1000))}, ${51 + (204 * (1 - kilpailija.kilpailut[kilpailu.id].pisteet / 1000))})` }}>
+                  style={{ backgroundColor: `rgb(255, ${230 + (25 * (1 - kilpailija.kilpailut[kilpailu.id].pisteet / 1000))}, ${51 + (204 * (1 - kilpailija.kilpailut[kilpailu.id].pisteet / 1000))})` }}>
                     {kilpailija.kilpailut[kilpailu.id].pisteet}
                   </td>
                 : <td key={kilpailu.id} className='td-pisteet' style={{backgroundColor: 'white'}}>0</td>
