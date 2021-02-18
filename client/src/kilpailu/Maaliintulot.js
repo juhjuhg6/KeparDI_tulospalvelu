@@ -85,18 +85,24 @@ function Maaliintulot() {
   return (
     <div>
       <p>Uusi maaliintulo:</p>
-      <label htmlFor='nimi'>Nimi:</label>
-      <input ref={nimiInput} id='nimi' className='nimi'/>
-      <label htmlFor='maaliintuloaika'>Maaliintuloaika:</label>
-      <input ref={aikaInput} id='maaliintuloaika' placeholder={aika.format('HH.mm.ss')} className='input-aika'/>
-      <button onClick={asetaMaaliaika} className='btn-yellow'>Nyt</button>
-      <label htmlFor='muuTulos'>Muu tulos:</label>
-      <select ref={muuTulosSelect} id='muuTulos'>
-        <option></option>
-        <option value='DNS'>DNS</option>
-        <option value='DNF'>DNF</option>
-        <option value='DSQ'>DSQ</option>
-      </select>
+      <div>
+        <label htmlFor='nimi'>Nimi:</label>
+        <input ref={nimiInput} id='nimi' className='nimi'/>
+      </div>
+      <div>
+        <label htmlFor='maaliintuloaika'>Maaliintuloaika:</label>
+        <input ref={aikaInput} id='maaliintuloaika' placeholder={aika.format('HH.mm.ss')} className='input-aika'/>
+        <button onClick={asetaMaaliaika} className='btn-yellow'>Nyt</button>
+      </div>
+      <div>
+        <label htmlFor='muuTulos'>Muu tulos:</label>
+        <select ref={muuTulosSelect} id='muuTulos'>
+          <option></option>
+          <option value='DNS'>DNS</option>
+          <option value='DNF'>DNF</option>
+          <option value='DSQ'>DSQ</option>
+        </select>
+      </div>
       <button onClick={lisääMaaliintulo} className='btn-green'>Tallenna uusi maaliintulo</button>
       <div className='flex-container'><div className='table-container'>
         <table>

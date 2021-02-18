@@ -4,7 +4,7 @@ import Context from '../Context'
 
 function Kirjautuminen() {
   const { kirjauduttu, setKirjauduttu } = useContext(Context)
-  
+
   const [kirjautuminen, setKirjautuminen] = useState(false)
 
   const salasanaInput = useRef(null)
@@ -32,6 +32,7 @@ function Kirjautuminen() {
 
   return (
     <div>
+      <br/>
       {kirjauduttu
       ? <button onClick={poistaJwt} className='btn-red'>Kirjaudu ulos</button>
       : kirjautuminen

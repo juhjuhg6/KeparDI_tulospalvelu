@@ -65,15 +65,20 @@ function JärjestäjienMuokkaus() {
         <tbody>
           {kilpailu.jarjestajat.map(järjestäjä => <tr key={järjestäjä._id}>
             <td className='nimi'>{järjestäjä.nimi}</td>
-            <td><button onClick={() => poistaJärjestäjä(järjestäjä._id)} className='btn-red'>Poista järjestäjä</button></td>
+            <td><button onClick={() => poistaJärjestäjä(järjestäjä._id)} className='btn-red'>Poista</button></td>
           </tr>)}
         </tbody>
       </table>
+      <br/>
 
       <h4>Lisää järjestäjä:</h4>
-      <label htmlFor='järjestäjänNimi'>Nimi:</label>
-      <input ref={järjestäjänNimiInput} id='järjestäjänNimi' type='text' className='nimi'/>
-      <button onClick={lisääJärjestäjä} className='btn-green'>Tallenna</button>
+      <div style={{ display: 'inline-block' }}>
+        <label htmlFor='järjestäjänNimi'>Nimi:</label>
+        <input ref={järjestäjänNimiInput} id='järjestäjänNimi' type='text' className='nimi'/>
+      </div>
+      <div style={{ display: 'inline-block' }}>
+        <button onClick={lisääJärjestäjä} className='btn-green'>Tallenna</button>
+      </div>
     </>
   )
 }

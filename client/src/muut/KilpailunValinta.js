@@ -24,16 +24,20 @@ function KilpailunValinta({ kausienJaKilpailujenNimet, setAktiivinenKausi, setAk
 
   return(
     <div>
-      <label htmlFor="valitseKausi">Kausi:</label>
-      <select ref={kausiSelect} name="kausi" id ="valitseKausi" onChange={aktiivinenKausiMuutettu}>
-        {kausienJaKilpailujenNimet.map(kausi => <option key={kausi.id} value={JSON.stringify(kausi)}>{kausi.nimi}</option>)}
-      </select>
-      <label htmlFor="valitseKilpailu">Kilpailu:</label>
-      <select name="kilpailu" id ="valitseKilpailu" onChange={aktiivinenKilpailuMuutettu}>
-        <option value="Kokonaispisteet">Kokonaispisteet</option>
-        {aktiivinenKausi.kilpailut
-        ? aktiivinenKausi.kilpailut.map(kilpailu => <option key={kilpailu.id} value={JSON.stringify(kilpailu)}>{kilpailu.nimi}</option>) : <></>}
-      </select>
+      <div style={{display: 'inline-block'}}>
+        <label htmlFor="valitseKausi">Kausi:</label>
+        <select ref={kausiSelect} name="kausi" id ="valitseKausi" onChange={aktiivinenKausiMuutettu}>
+          {kausienJaKilpailujenNimet.map(kausi => <option key={kausi.id} value={JSON.stringify(kausi)}>{kausi.nimi}</option>)}
+        </select>
+      </div>
+      <div style={{ display: 'inline-block' }}>
+        <label htmlFor="valitseKilpailu">Kilpailu:</label>
+        <select name="kilpailu" id ="valitseKilpailu" onChange={aktiivinenKilpailuMuutettu}>
+          <option value="Kokonaispisteet">Kokonaispisteet</option>
+          {aktiivinenKausi.kilpailut
+          ? aktiivinenKausi.kilpailut.map(kilpailu => <option key={kilpailu.id} value={JSON.stringify(kilpailu)}>{kilpailu.nimi}</option>) : <></>}
+        </select>
+      </div>
     </div>
   )
 }

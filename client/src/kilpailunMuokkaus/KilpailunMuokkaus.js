@@ -10,7 +10,7 @@ import ManuaalistenPisteidenMuokkaus from './ManuaalistenPisteidenMuokkaus'
 function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuokkaus }) {
   const { kilpailu, setKilpailu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
 
-  const [muokattava, setMuokattava] = useState(null)
+  const [muokattava, setMuokattava] = useState('')
 
   const kilpailunNimiInput = useRef(null)
   const pvmInput = useRef(null)
@@ -85,7 +85,7 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
     setKirjauduttu(jwtIsValid())
     
     if (muokattava === asetettava) {
-      setMuokattava(null)
+      setMuokattava('')
     } else {
       setMuokattava(asetettava)
     }
@@ -94,17 +94,7 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
   return (
     <div>
       <button onClick={() => setKilpailunMuokkaus(false)} className='btn-yellow'>Lopeta kilpailun muokkaus</button>
-      <br />
-
-      <label htmlFor='nimi'>Nimi:</label>
-      <input ref={kilpailunNimiInput} id='nimi' type='text' placeholder={kilpailu.nimi} className='nimi' />
-      <label htmlFor='pvm'>Päviämäärä:</label>
-      <input ref={pvmInput} id='pvm' type='text' placeholder={moment(kilpailu.pvm).format('DD.MM.YYYY')}
-      className='input-pvm' />
-      <button onClick={() => tyhjennäTekstit()} className='btn-yellow'>Tyhjennä</button>
-      <button onClick={päivitäKilpailu} className='btn-green'>Tallenna</button><br />
-      <button onClick={poistaKilpailu} className='btn-red'>Poista kilpailu</button>
-      <br />
+      <br /><br/>
 
       <button onClick={() => asetaMuokattava('sarjat')}
         className={muokattava === 'sarjat' ? 'btn-selected' : 'btn-yellow'}>Muokkaa sarjoja</button>
@@ -112,6 +102,27 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
         className={muokattava === 'järjestäjät' ? 'btn-selected' : 'btn-yellow'}>Muokkaa järjestäjiä</button>
       <button onClick={() => asetaMuokattava('pisteet')}
         className={muokattava === 'pisteet' ? 'btn-selected' : 'btn-yellow'}>Muokkaa manuaalisia pisteitä</button>
+      <br/><br/>
+
+      {muokattava === ''
+        ? <>
+        <div style={{ display: 'inline-block' }}>
+          <label htmlFor='nimi'>Nimi:</label>
+          <input ref={kilpailunNimiInput} id='nimi' type='text' placeholder={kilpailu.nimi} className='nimi' />
+        </div>
+        <div style={{ display: 'inline-block' }}>
+          <label htmlFor='pvm'>Päviämäärä:</label>
+          <input ref={pvmInput} id='pvm' type='text' placeholder={moment(kilpailu.pvm).format('DD.MM.YYYY')}
+          className='input-pvm' />
+        </div>
+        <div style={{ display: 'inline-block' }}>
+          <button onClick={() => tyhjennäTekstit()} className='btn-yellow'>Tyhjennä</button>
+          <button onClick={päivitäKilpailu} className='btn-green'>Tallenna</button>
+        </div>
+
+        <br /><br />
+        <button onClick={poistaKilpailu} className='btn-red'>Poista kilpailu</button>
+        </> : <></>}
 
       {muokattava === 'sarjat'
         ? <SarjojenMuokkaus />

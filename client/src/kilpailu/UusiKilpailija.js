@@ -40,12 +40,16 @@ function UusiKilpailija({ setKilpailijanLisäys }) {
 
   return (
     <div>
-      <label htmlFor='nimi'>Nimi:</label>
-      <input ref={nimiInput} type='text' id='nimi' className='nimi'/>
-      <label htmlFor='sarja'>Sarja:</label>
-      <select ref={sarjaSelect} id='sarja'>
-        {kilpailu.sarjat.map(sarja => <option key={sarja._id} value={sarja._id}>{sarja.nimi}</option>)}
-      </select>
+      <div>
+        <label htmlFor='nimi'>Nimi:</label>
+        <input ref={nimiInput} type='text' id='nimi' className='nimi'/>
+      </div>
+      <div>
+        <label htmlFor='sarja'>Sarja:</label>
+        <select ref={sarjaSelect} id='sarja'>
+          {kilpailu.sarjat.map(sarja => <option key={sarja._id} value={sarja._id}>{sarja.nimi}</option>)}
+        </select>
+      </div>
       {tallentaa
       ? 'Talennetaan...'
       : <>

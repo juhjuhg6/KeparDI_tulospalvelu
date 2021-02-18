@@ -37,7 +37,7 @@ select {
   background-color: whitesmoke;
   border-color: #ff9900;
   border-radius: 0.4rem;
-  margin-right: 0.5rem;
+  margin: 0.2rem 0.5rem 0.2rem 0;
 }
 
 input {
@@ -46,8 +46,7 @@ input {
   border: 1px solid;
   border-radius: 0.4rem;
   border-color: #ff9900;
-  margin-right: 0.5rem;
-  margin-bottom: 0.4rem;
+  margin: 0.2rem 0.5rem 0.2rem 0;
 }
 
 input:focus {

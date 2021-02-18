@@ -103,10 +103,10 @@ function SarjojenMuokkaus() {
             {muokattavaSarja !== sarja._id
               ? <>
                 <td className='nimi'>{sarja.nimi}</td>
-                <td>{sarja.lasketaanPisteet ? 'kyllä' : 'ei'}</td>
+                <td>{sarja.lasketaanPisteet ? 'Kyllä' : 'Ei'}</td>
                 <td>
-                  <button onClick={() => setMuokattavaSarja(sarja._id)} className='btn-yellow'>Muokkaa sarjaa</button>
-                  <button onClick={() => poistaSarja(sarja._id)} className='btn-red'>Poista sarja</button>
+                  <button onClick={() => setMuokattavaSarja(sarja._id)} className='btn-yellow'>Muokkaa</button>
+                  <button onClick={() => poistaSarja(sarja._id)} className='btn-red'>Poista</button>
                 </td>
               </> : <>
                 <td><input ref={muokattavanSarjanNimiInput} type='text' placeholder={sarja.nimi}
@@ -124,13 +124,20 @@ function SarjojenMuokkaus() {
           </tr>)}
         </tbody>
       </table>
+      <br/>
 
       <h4>Lisää sarja:</h4>
-      <label htmlFor='sarjanNimi'>Nimi:</label>
-      <input ref={uudenSarjanNimiInput} id='sarjanNimi' type='text' className='nimi' />
-      <input ref={uudenSarjanLasketaanPisteetCheckbox} id='lasketaanPisteet' type='checkbox' defaultChecked={true} />
-      <label htmlFor='lasketaanPisteet'>Lasketaan pisteet</label>
-      <button onClick={lisääSarja} className='btn-green'>Tallenna</button>
+      <div style={{ display: 'inline-block' }}>
+        <label htmlFor='sarjanNimi'>Nimi:</label>
+        <input ref={uudenSarjanNimiInput} id='sarjanNimi' type='text' className='nimi' />
+      </div>
+      <div style={{ display: 'inline-block' }}>
+        <input ref={uudenSarjanLasketaanPisteetCheckbox} id='lasketaanPisteet' type='checkbox' defaultChecked={true} />
+        <label htmlFor='lasketaanPisteet'>Lasketaan pisteet</label>
+      </div>
+      <div style={{ display: 'inline-block' }}>
+        <button onClick={lisääSarja} className='btn-green'>Tallenna</button>
+      </div>
     </div>
   )
 }

@@ -26,7 +26,7 @@ function Kilpailu({ päivitäKausienJaKilpailujenNimet }) {
           {kirjauduttu
           ? <>
             <button onClick={() => setKilpailunMuokkaus(true)} className='btn-yellow'>Muokkaa kilpailua</button>
-            <br/>
+            <br/><br/>
           </> : <></>}
 
           <button onClick={() => setNäytettäväData('lähtöajat')}
@@ -37,6 +37,7 @@ function Kilpailu({ päivitäKausienJaKilpailujenNimet }) {
           : <></>}
           <button onClick={() => setNäytettäväData('tulokset')}
             className={näytettäväData === 'tulokset' ? 'btn-selected' : 'btn-yellow'}>Tulokset</button>
+          <br/><br/>
 
           {näytettäväData === 'lähtöajat' ? <Lähtöajat /> : <></>}
           {näytettäväData === 'maaliintulot' ? <Maaliintulot /> : <></>}

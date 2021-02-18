@@ -63,8 +63,10 @@ function LisääKausiTaiKilpailu({ päivitäKausienJaKilpailujenNimet }) {
           <label htmlFor='pvm'>Päivämäärä:</label>
           <input ref={pvmInput} id='pvm' type='text' placeholder='pp.kk.vvvv' className='input-pvm'/>
         </> : <></>}
-        <button onClick={() => setLisättävä('')} className='btn-yellow'>Peruuta</button>
-        <button onClick={tallenna} className='btn-green'>Tallenna</button>
+        <div>
+          <button onClick={() => setLisättävä('')} className='btn-yellow'>Peruuta</button>
+          <button onClick={tallenna} className='btn-green'>Tallenna</button>
+        </div>
       </>}
     </div>
   )
