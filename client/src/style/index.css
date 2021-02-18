@@ -33,20 +33,22 @@ p {
 }
 
 select {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   background-color: whitesmoke;
   border-color: #ff9900;
   border-radius: 0.4rem;
   margin: 0.2rem 0.5rem 0.2rem 0;
+  padding: 0.1rem 0;
 }
 
 input {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   background-color: whitesmoke;
   border: 1px solid;
   border-radius: 0.4rem;
   border-color: #ff9900;
   margin: 0.2rem 0.5rem 0.2rem 0;
+  padding: 0.1rem 0;
 }
 
 input:focus {
