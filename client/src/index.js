@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import axios from 'axios'
 import './style/index.css'
+import './style/table.css'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('jwt')
 

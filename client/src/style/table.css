@@ -1,0 +1,36 @@
+table {
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  display: block;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.table-container {
+  max-width: 100%;
+}
+
+thead {
+  background-color: #FFCC00;
+}
+
+th {
+  font-weight: 500;
+  border: 2px solid #FFCC00;
+  font-size: 1.6rem;
+  text-align: left;
+  padding: 0.2rem 0.3rem;
+}
+
+tr {
+  height: 3.2rem;
+}
+
+tr:nth-child(even) {
+  background-color: #FFF18D;
+}
+
+td {
+  font-size: 1.6rem;
+  padding: 0px 0.4rem;
+}

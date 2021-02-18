@@ -33,7 +33,7 @@ function Lähtöajat() {
             : <UusiKilpailija setKilpailijanLisäys={setKilpailijanLisäys} />
         : <></>
       }
-      <div className='flex-container'>
+      <div className='flex-container'><div className='table-container'>
         {kilpailu.sarjat
         ? kilpailu.sarjat.map(sarja => <div key={sarja._id}>
             <h4>{sarja.nimi}</h4>
@@ -52,7 +52,7 @@ function Lähtöajat() {
           </div>)
         : <></>}
       </div>
-    </div>
+    </div></div>
   )
 }
 

@@ -96,7 +96,7 @@ function Tulokset() {
   }, [])
 
   return (
-    <div className='flex-container'>
+    <div className='flex-container'><div className='table-container'>
       {!pisteetLaskettu
       ? <p>Pisteitä lasketaan...</p>
       : kilpailu.sarjat.map(sarja =>
@@ -134,7 +134,7 @@ function Tulokset() {
           </tbody>
         </table>
       </> : <></>}
-    </div>
+    </div></div>
   )
 }
 

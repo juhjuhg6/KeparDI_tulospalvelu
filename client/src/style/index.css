@@ -47,6 +47,7 @@ input {
   border-radius: 0.4rem;
   border-color: #ff9900;
   margin-right: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 input:focus {
@@ -72,7 +73,7 @@ input:focus {
 button {
   border: 0px;
   border-radius: 0.5rem;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   padding: 0.3rem 0.6rem;
   margin: 0.4rem 0.4rem 0.4rem 0rem;
 }
@@ -113,37 +114,4 @@ h4 {
   font-size: 1.8rem;
   font-weight: 500;
   margin: 1rem 0rem;
-}
-
-table {
-  border-collapse: collapse;
-  margin-bottom: 1rem;
-}
-
-thead {
-  background-color: #FFCC00;
-}
-
-th {
-  font-weight: 500;
-  border: 2px solid #FFCC00;
-}
-
-tr {
-  height: 3.2rem;
-}
-
-tr:nth-child(even) {
-  background-color: #FFF18D;
-}
-
-th {
-  font-size: 1.6rem;
-  text-align: left;
-  padding: 0.2rem 0.3rem;
-}
-
-td {
-  font-size: 1.6rem;
-  padding: 0px 0.4rem;
 }

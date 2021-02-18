@@ -98,7 +98,7 @@ function Maaliintulot() {
         <option value='DSQ'>DSQ</option>
       </select>
       <button onClick={lisääMaaliintulo} className='btn-green'>Tallenna uusi maaliintulo</button>
-      <div className='flex-container'>
+      <div className='flex-container'><div className='table-container'>
         <table>
           <thead>
             <tr>
@@ -112,7 +112,7 @@ function Maaliintulot() {
               maaliintulo={maaliintulo} />)}
           </tbody>
         </table>
-      </div>
+      </div></div>
     </div>
   )
 }
