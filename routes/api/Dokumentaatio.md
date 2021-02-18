@@ -10,34 +10,34 @@
     * [Kaudet](#kaudet)
         * [Hae kausi](#hae-kausi-1)
         * [Luo uusi kausi](#luo-uusi-kausi)
-        * [Muuta kauden nimeä](#muuta-kauden-nimeä)
-        * [Poista kausi](#poista-kausi)
+        * [Muuta kauden nimeä*](#muuta-kauden-nimeä)
+        * [Poista kausi*](#poista-kausi)
     * [Kilpailut](#kilpailut)
         * [Hae kilpailu](#hae-kilpailu)
-        * [Luo uusi kilpailu](#luo-uusi-kilpailu)
-        * [Muokkaa kilpailua](#muokkaa-kilpailua)
-        * [Poista kilpailu](#poista-kilpailu)
+        * [Luo uusi kilpailu*](#luo-uusi-kilpailu)
+        * [Muokkaa kilpailua*](#muokkaa-kilpailua)
+        * [Poista kilpailu*](#poista-kilpailu)
     * [Sarjat](#sarjat)
-        * [Luo uusi sarja](#luo-uusi-sarja)
-        * [Muokkaa sarjaa](#muokkaa-sarjaa)
-        * [Poista sarja](#poista-sarja)
+        * [Luo uusi sarja*](#luo-uusi-sarja)
+        * [Muokkaa sarjaa*](#muokkaa-sarjaa)
+        * [Poista sarja*](#poista-sarja)
     * [Kilpailijat](#kilpailijat)
-        * [Lisää kilpailija sarjaan](#lisää-kilpailija-sarjaan)
-        * [Muokkaa kilpailijan kilpailudataa](#muokkaa-kilpailijan-kilpailudataa)
-        * [Poista kilpailija kilpailusta](#poista-kilpailija-kilpailusta)
+        * [Lisää kilpailija sarjaan*](#lisää-kilpailija-sarjaan)
+        * [Muokkaa kilpailijan kilpailudataa*](#muokkaa-kilpailijan-kilpailudataa)
+        * [Poista kilpailija kilpailusta*](#poista-kilpailija-kilpailusta)
     * [Maaliintulot](#maaliintulot)
-        * [Lisää maaliintulo](#lisää-maaliintulo)
-        * [Muokkaa maaliintuloa](#muokkaa-maaliintuloa)
-        * [Poista maaliintulo](#poista-maaliintulo)
+        * [Lisää maaliintulo*](#lisää-maaliintulo)
+        * [Muokkaa maaliintuloa*](#muokkaa-maaliintuloa)
+        * [Poista maaliintulo*](#poista-maaliintulo)
     * [Järjestäjät](#järjestäjät)
-        * [Lisää järjestäjä kilpailuun](#lisää-järjestäjä-kilpailuun)
-        * [Poista järjestäjä kilpailusta](#poista-järjestäjä-kilpailusta)
+        * [Lisää järjestäjä kilpailuun*](#lisää-järjestäjä-kilpailuun)
+        * [Poista järjestäjä kilpailusta*](#poista-järjestäjä-kilpailusta)
     * [Pisteet](#pisteet)
-        * [Päivitä kauden kaikkien kilpailujen pisteet](#päivitä-kauden-kaikkien-kilpailujen-pisteet)
-        * [Päivitä kilpailun pisteet](#päivitä-kilpailun-pisteet)
+        * [Hae (ja päivitä) kauden kaikkien kilpailujen pisteet](#hae-ja-päivitä-kauden-kaikkien-kilpailujen-pisteet)
+        * [Hae (ja päivitä) kilpailun pisteet](#hae-ja-päivitä-kilpailun-pisteet)
     * [Manuaaliset pisteet](#manuaaliset-pisteet)
-        * [Aseta manuaaliset pisteet](#aseta-manuaaliset-pisteet)
-        * [Poista kilpailun manuaaliset pisteet](#poista-kilpailun-manuaaliset-pisteet)
+        * [Aseta manuaaliset pisteet*](#aseta-manuaaliset-pisteet)
+        * [Poista kilpailun manuaaliset pisteet*](#poista-kilpailun-manuaaliset-pisteet)
 
 ## Skeemat
 
@@ -131,7 +131,9 @@
 
 Huomautus 1: Jos tieto on pyynnössä merkitty kaarisulkeisiin, se on vapaaehtoinen.
 
-Huomautus 2: Osoitteessa kaksoispisteellä alkavat osat ovat parametreja
+Huomautus 2: Osoitteessa kaksoispisteellä alkavat osat ovat parametreja.
+
+Huomautus 3: * asteriksilla merkityt kyselyt on suojattuja ja vaativat kirjautumisen
 
 ### Kaudet
 ---
@@ -177,7 +179,7 @@ Vastaus:
 Kausi
 ```
 ---
-#### Luo uusi kausi
+#### Luo uusi kausi*
 Pyyntö:
 ```
 POST api/kaudet
@@ -192,7 +194,7 @@ Vastaus:
 Kausi
 ```
 ---
-#### Muuta kauden nimeä
+#### Muuta kauden nimeä*
 Pyyntö:
 ```
 PUT api/kaudet/:kausiId
@@ -207,7 +209,7 @@ Vastaus:
 Kausi
 ```
 ---
-#### Poista kausi
+#### Poista kausi*
 Pyyntö:
 ```
 DELETE api/kaudet/:kausiId
@@ -229,7 +231,7 @@ Vastaus:
 Kilpailu
 ```
 ---
-#### Luo uusi kilpailu
+#### Luo uusi kilpailu*
 Pyyntö:
 ```
 POST api/kilpailut/:kausiId
@@ -245,7 +247,7 @@ Vastaus:
 Kilpailu
 ```
 ---
-#### Muokkaa kilpailua
+#### Muokkaa kilpailua*
 Pyyntö:
 ```
 PUT api/kilpailut/:kausiId/:kilpailuId
@@ -261,7 +263,7 @@ Vastaus:
 Kilpailu
 ```
 ---
-#### Poista kilpailu
+#### Poista kilpailu*
 Pyyntö:
 ```
 DELETE api/kilpailut/:kausiId/:kilpailuId
@@ -273,7 +275,7 @@ Kausi
 ---
 ### Sarjat
 ---
-#### Luo uusi sarja
+#### Luo uusi sarja*
 Pyyntö:
 ```
 POST api/sarjat/:kausiId/:kilpailuId
@@ -289,7 +291,7 @@ Vastaus:
 Kilpailu
 ```
 ---
-#### Muokkaa sarjaa
+#### Muokkaa sarjaa*
 Pyyntö:
 ```
 PUT api/sarjat/:kausiId/:kilpailuId/:sarjaId
@@ -307,7 +309,7 @@ Body:
 }
 ```
 ---
-#### Poista sarja
+#### Poista sarja*
 Pyyntö:
 ```
 DELETE api/sarjat/:kausiId/:kilpailuId/:sarjaId
@@ -319,7 +321,7 @@ Kilpailu
 ---
 ### Kilpailijat
 ---
-#### Lisää kilpailija sarjaan
+#### Lisää kilpailija sarjaan*
 Pyyntö:
 ```
 POST api/kilpailijat/:kausiId/:kilpailuId/:sarjaId
@@ -334,7 +336,7 @@ Vastaus:
 Kilpailu
 ```
 ---
-#### Muokkaa kilpailijan kilpailudataa
+#### Muokkaa kilpailijan kilpailudataa*
 Pyyntö:
 ```
 PUT api/kilpailijat/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId
@@ -351,7 +353,7 @@ Vastaus:
 Kilpailu
 ```
 ---
-#### Poista kilpailija kilpailusta
+#### Poista kilpailija kilpailusta*
 Pyyntö:
 ```
 DELETE api/kilpailijat/:kausiId/:kilpailuId/:sarjaId/:kilpailijId
@@ -363,7 +365,7 @@ Kilpailu
 ---
 ### Maaliintulot
 ---
-#### Lisää maaliintulo
+#### Lisää maaliintulo*
 Pyyntö:
 ```
 POST api/maaliintulot/:kausiId/:kilpailuId
@@ -381,7 +383,7 @@ Vastaus:
 Kilpailu
 ```
 ---
-#### Muokkaa maaliintuloa
+#### Muokkaa maaliintuloa*
 Pyyntö:
 ```
 PUT api/maaliintulot/:kausiId/:kilpailuId/:maaliintuloId
@@ -399,7 +401,7 @@ Vastaus:
 Kilpailu
 ```
 ---
-#### Poista maaliintulo
+#### Poista maaliintulo*
 Pyyntö:
 ```
 DELETE api/maaliintulot/:kausiId/:kilpailuId/:maaliintuloId
@@ -411,7 +413,7 @@ Kilpailu
 ---
 ### Järjestäjät
 ---
-#### Lisää järjestäjä kilpailuun
+#### Lisää järjestäjä kilpailuun*
 Pyyntö:
 ```
 POST api/jarjestajat/:kausiId/:kilpailuId
@@ -426,7 +428,7 @@ Vastaus:
 Kilpailu
 ```
 ---
-#### Poista järjestäjä kilpailusta
+#### Poista järjestäjä kilpailusta*
 Pyyntö:
 ```
 DELETE api/jarjestajat/:kausiId/:kilpailuId/:jarjestajaId
@@ -438,7 +440,7 @@ Kilpailu
 ---
 ### Pisteet
 ---
-#### Päivitä kauden kaikkien kilpailujen pisteet
+#### Hae (ja päivitä) kauden kaikkien kilpailujen pisteet
 Pyyntö:
 ```
 GET api/pisteet/:kausiId
@@ -448,7 +450,7 @@ Vastaus:
 [Kilpailija]
 ```
 ---
-#### Päivitä kilpailun pisteet
+#### Hae (ja päivitä) kilpailun pisteet
 Pyyntö:
 ```
 GET api/pisteet/:kausiId/:kilpailuId
@@ -460,7 +462,7 @@ Kilpailu
 ---
 ### Manuaaliset Pisteet
 ---
-#### Aseta manuaaliset pisteet
+#### Aseta manuaaliset pisteet*
 Pyyntö:
 ```
 POST api/manuaalisetpisteet/:kausiId/:kilpailuId
@@ -477,7 +479,7 @@ Vastaus:
 Kilpailu
 ```
 ---
-#### Poista kilpailun manuaaliset pisteet
+#### Poista kilpailun manuaaliset pisteet*
 Pyyntö:
 ```
 DELETE api/manuaalisetpisteet/:kausiId/:kilpailuId

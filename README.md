@@ -4,7 +4,7 @@ Tämä projekti on luotu [KeparDI](https://webpages.tuni.fi/kepardi)a, eli Tampe
 
 ## Demo
 
-Tulospalvelu ei ole vielä käyttöönottovalmis, mutta aina viimeisimmästä versiosta on vapaasti kokeiltavissa oleva demo osoitteessa https://kepardi-tulospalvelu-demo.herokuapp.com/. Demon ensimmäinen lataus saattaa kestää kymmeniä sekunteja, kun palvelin herää, jos sitä ei ole käytetty viimeisen 30 minuutin aikana.
+Tulospalvelu ei ole vielä käyttöönottovalmis, mutta aina viimeisimmästä versiosta on vapaasti kokeiltavissa oleva demo osoitteessa https://kepardi-tulospalvelu-demo.herokuapp.com/. Demon ensimmäinen lataus saattaa kestää jopa kymmeniä sekunteja, kun palvelin herää. Demon admin salasana kirjautumiseen on `demo-salasana`.
 
 ## Rajapintadokumentaatio
 
@@ -32,17 +32,21 @@ cd KeparDI_tulospalvelu
 npm install
 ```
 
-3. Aseta järjestelmämuuttuja `MONGODB_URI` MongoDB tietokantasi osoitteeksi
-
-4. (valinnainen) Aseta järjestelmämuuttuja `PORT` haluamaksesi porttinumeroksi. Oletusarvona käytetään porttia 3001.
-
-5. Tee clientista tuotantoversio
+3. Tee clientista tuotantoversio
 
 ```bash
 npm run build
 ```
 
-6. Käynnistä palvelin
+4. Aseta järjestelmämuuttujat:
+
+* `NODE_ENV=production`
+* `MONGODB_URI` MongoDB tietokantasi osoitteeksi
+* `JWT_SECRET_KEY` vapaavalintaiseksi merkkijonoksi JSON Web Tokenien luontia varten
+* `ADMIN_PASSWORD` vapaavalintaiseksi salasanaksi, jolla palveluun voi kirjautua
+* `PORT` haluamaksesi porttinumeroksi, oletusarvona käytetään porttia 3001
+
+5. Käynnistä palvelin
 
 ```bash
 npm start
