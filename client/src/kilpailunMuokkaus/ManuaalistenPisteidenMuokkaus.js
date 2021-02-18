@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import axios from 'axios'
-import Context from './Context'
-import jwtIsValid from './helpers/jwtIsValid'
+import Context from '../Context'
+import jwtIsValid from '../helpers/jwtIsValid'
 import ManuaalisetPisteet from './ManuaalisetPisteet.js'
 
 function ManuaalistenPisteidenMuokkaus({ kilpailu, setKilpailu, aktiivinenKausi }) {

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Context from './Context'
 import jwtIsValid from './helpers/jwtIsValid'
-import KilpailunValinta from './KilpailunValinta'
-import Kilpailu from './Kilpailu'
-import LisääKausiTaiKilpailu from './LisaaKausiTaiKilpailu'
-import Kokonaispisteet from './Kokonaispisteet'
-import Kirjautuminen from './Kirjautuminen'
+import KilpailunValinta from './muut/KilpailunValinta'
+import Kilpailu from './kilpailu/Kilpailu'
+import LisääKausiTaiKilpailu from './muut/LisaaKausiTaiKilpailu'
+import Kokonaispisteet from './muut/Kokonaispisteet'
+import Kirjautuminen from './muut/Kirjautuminen'
 
 function App() {
   const [kirjauduttu, setKirjauduttu] = useState(false)

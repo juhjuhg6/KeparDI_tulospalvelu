@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import axios from 'axios'
-import Context from './Context'
-import jwtIsValid from './helpers/jwtIsValid'
+import Context from '../Context'
+import jwtIsValid from '../helpers/jwtIsValid'
 
 function UusiKilpailija({aktiivinenKausi, kilpailu, setKilpailu, setKilpailijanLisäys}) {
   const { setKirjauduttu } = useContext(Context)

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef, useContext } from 'react'
 import axios from 'axios'
 import moment from 'moment'
-import Context from './Context'
-import jwtIsValid from './helpers/jwtIsValid'
+import Context from '../Context'
+import jwtIsValid from '../helpers/jwtIsValid'
 import Maaliintulo from './Maaliintulo.js'
 
 function Maaliintulot({aktiivinenKausi, kilpailu, setKilpailu}) {

@@ -1,8 +1,8 @@
 import React, { useState, useRef, useContext } from 'react'
 import axios from 'axios'
 import moment from 'moment'
-import Context from './Context'
-import jwtIsValid from './helpers/jwtIsValid'
+import Context from '../Context'
+import jwtIsValid from '../helpers/jwtIsValid'
 
 function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja, momentFormat}) {
   const { kirjauduttu, setKirjauduttu } = useContext(Context)

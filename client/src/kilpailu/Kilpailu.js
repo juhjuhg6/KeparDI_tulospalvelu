@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
-import Context from './Context'
-import jwtIsValid from './helpers/jwtIsValid'
+import Context from '../Context'
+import jwtIsValid from '../helpers/jwtIsValid'
 import Lähtöajat from './Lahtoajat'
 import Maaliintulot from './Maaliintulot'
 import Tulokset from './Tulokset'
-import KilpailunMuokkaus from './KilpailunMuokkaus'
+import KilpailunMuokkaus from '../kilpailunMuokkaus/KilpailunMuokkaus'
 
 function Kilpailu({aktiivinenKausi, kilpailu, setKilpailu, päivitäKausienJaKilpailujenNimet}) {
   const { kirjauduttu, setKirjauduttu } = useContext(Context)

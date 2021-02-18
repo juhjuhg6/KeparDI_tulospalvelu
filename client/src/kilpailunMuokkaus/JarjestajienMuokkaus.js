@@ -1,6 +1,6 @@
 import React, { useRef, useContext } from 'react'
-import Context from './Context'
-import jwtIsValid from './helpers/jwtIsValid'
+import Context from '../Context'
+import jwtIsValid from '../helpers/jwtIsValid'
 import axios from 'axios'
 
 function JärjestäjienMuokkaus({ kilpailu, setKilpailu, aktiivinenKausi }) {

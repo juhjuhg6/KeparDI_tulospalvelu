@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import moment from 'moment'
-import Context from './Context'
+import Context from '../Context'
 import Lähtöaika from './Lahtoaika'
 import UusiKilpailija from './UusiKilpailija'
 

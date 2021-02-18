@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext } from 'react'
 import axios from 'axios'
-import Context from './Context'
+import Context from '../Context'
 
 function Kirjautuminen() {
   const { kirjauduttu, setKirjauduttu } = useContext(Context)
