@@ -1,7 +1,11 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import axios from 'axios'
+import Context from './Context'
+import jwtIsValid from './helpers/jwtIsValid'
 
 function SarjojenMuokkaus({ kilpailu, setKilpailu, aktiivinenKausi }) {
+  const { setKirjauduttu } = useContext(Context)
+
   const [muokattavaSarja, setMuokattavaSarja] = useState()
 
   const muokattavanSarjanNimiInput = useRef(null)
@@ -15,11 +19,23 @@ function SarjojenMuokkaus({ kilpailu, setKilpailu, aktiivinenKausi }) {
     uudenSarjanNimiInput.current.value = ''
     uudenSarjanLasketaanPisteetCheckbox.current.checked = true
 
+    if (!jwtIsValid()) {
+      localStorage.removeItem('jwt')
+      axios.defaults.headers['Authorization'] = null
+      setKirjauduttu(false)
+      return
+    }
+
     axios.post(`api/sarjat/${aktiivinenKausi.id}/${kilpailu._id}`, pyyntöBody)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })
       .catch(err => {
+        if (err.response.status === 401) {
+          setKirjauduttu(false)
+          localStorage.removeItem('jwt')
+          axios.defaults.headers.common['Authorization'] = null
+        }
         console.log(err)
       })
   }
@@ -30,21 +46,45 @@ function SarjojenMuokkaus({ kilpailu, setKilpailu, aktiivinenKausi }) {
     if (muokattavanSarjanNimiInput.current.value) pyyntöBody.nimi = muokattavanSarjanNimiInput.current.value
     pyyntöBody.lasketaanPisteet = muokattavanSarjanLasketaanPisteetCheckbox.current.checked
 
+    if (!jwtIsValid()) {
+      localStorage.removeItem('jwt')
+      axios.defaults.headers['Authorization'] = null
+      setKirjauduttu(false)
+      return
+    }
+
     axios.put(`api/sarjat/${aktiivinenKausi.id}/${kilpailu._id}/${sarjaId}`, pyyntöBody)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })
       .catch(err => {
+        if (err.response.status === 401) {
+          setKirjauduttu(false)
+          localStorage.removeItem('jwt')
+          axios.defaults.headers.common['Authorization'] = null
+        }
         console.log(err)
       })
   }
 
   function poistaSarja(sarjaId) {
+    if (!jwtIsValid()) {
+      localStorage.removeItem('jwt')
+      axios.defaults.headers['Authorization'] = null
+      setKirjauduttu(false)
+      return
+    }
+
     axios.delete(`api/sarjat/${aktiivinenKausi.id}/${kilpailu._id}/${sarjaId}`)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })
       .catch(err => {
+        if (err.response.status === 401) {
+          setKirjauduttu(false)
+          localStorage.removeItem('jwt')
+          axios.defaults.headers.common['Authorization'] = null
+        }
         console.log(err)
       })
   }

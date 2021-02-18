@@ -1,8 +1,12 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import axios from 'axios'
 import moment from 'moment'
+import Context from './Context'
+import jwtIsValid from './helpers/jwtIsValid'
 
 function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
+  const { setKirjauduttu } = useContext(Context)
+  
   const [muokkaus, setMuokkaus] = useState(false)
   const [tallentaa, setTallentaa] = useState(false)
 
@@ -27,6 +31,13 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
   }
 
   function muokkaaMaaliaikaa() {
+    if (!jwtIsValid()) {
+      localStorage.removeItem('jwt')
+      axios.defaults.headers['Authorization'] = null
+      setKirjauduttu(false)
+      return
+    }
+
     setTallentaa(true)
     const kilpailija = kilpailu.kaikkiKilpailijat.find(k => k.nimi === nimiInput.current.value)
     let maaliintuloaika
@@ -60,16 +71,33 @@ function Maaliintulo({maaliintulo, aktiivinenKausi, kilpailu, setKilpailu}) {
         setTallentaa(false)
       })
       .catch(err => {
+        if (err.response.status === 401) {
+          setKirjauduttu(false)
+          localStorage.removeItem('jwt')
+          axios.defaults.headers.common['Authorization'] = null
+        }
         console.log(err)
       })
   }
 
   function poistaMaaliaika() {
+    if (!jwtIsValid()) {
+      localStorage.removeItem('jwt')
+      axios.defaults.headers['Authorization'] = null
+      setKirjauduttu(false)
+      return
+    }
+
     axios.delete(`api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}/${maaliintulo._id}`)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })
       .catch(err => {
+        if (err.response.status === 401) {
+          setKirjauduttu(false)
+          localStorage.removeItem('jwt')
+          axios.defaults.headers.common['Authorization'] = null
+        }
         console.log(err)
       })
   }

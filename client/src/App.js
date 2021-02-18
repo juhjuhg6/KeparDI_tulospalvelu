@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import Context from './Context'
+import jwtIsValid from './helpers/jwtIsValid'
 import KilpailunValinta from './KilpailunValinta'
 import Kilpailu from './Kilpailu'
 import LisääKausiTaiKilpailu from './LisaaKausiTaiKilpailu'
 import Kokonaispisteet from './Kokonaispisteet'
+import Kirjautuminen from './Kirjautuminen'
 
 function App() {
+  const [kirjauduttu, setKirjauduttu] = useState(false)
   const [kausienJaKilpailujenNimet, setKausienJaKilpailujenNimet] = useState([])
   const [aktiivinenKausi, setAktiivinenKausi] = useState({})
   const [aktiivinenKilpailu, setAktiivinenKilpailu] = useState()
@@ -14,10 +18,13 @@ function App() {
 
   useEffect(() => {
     päivitäKausienJaKilpailujenNimet()
+    setKirjauduttu(jwtIsValid())
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
+    if (kirjauduttu) setKirjauduttu(jwtIsValid())
+    
     if (!aktiivinenKausi.id) return
 
     if (!aktiivinenKilpailu || !aktiivinenKausi.kilpailut.find(kilpailu => kilpailu.id === aktiivinenKilpailu.id)) {
@@ -27,6 +34,8 @@ function App() {
   }, [aktiivinenKausi])
 
   useEffect(() => {
+    if (kirjauduttu) setKirjauduttu(jwtIsValid())
+
     if (aktiivinenKilpailu === 'Kokonaispisteet') setKilpailuHaettu(false)
     if (!aktiivinenKilpailu || !aktiivinenKausi || !aktiivinenKilpailu.id || !aktiivinenKausi.id) return
     setKilpailuHaettu(false)
@@ -65,15 +74,20 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <Context.Provider value={{kirjauduttu, setKirjauduttu}}>
       <KilpailunValinta
-        kausienJaKilpailujenNimet={kausienJaKilpailujenNimet}
-        aktiivinenKausi={aktiivinenKausi} setAktiivinenKausi={setAktiivinenKausi}
-        setAktiivinenKilpailu={setAktiivinenKilpailu}
-      />
-      <LisääKausiTaiKilpailu aktiivinenKausi={aktiivinenKausi}
-        päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
-      <h2>{aktiivinenKausi.nimi}</h2>
+          kausienJaKilpailujenNimet={kausienJaKilpailujenNimet}
+          aktiivinenKausi={aktiivinenKausi} setAktiivinenKausi={setAktiivinenKausi}
+          setAktiivinenKilpailu={setAktiivinenKilpailu}
+        />
+
+      {kirjauduttu
+        ? <>
+          <LisääKausiTaiKilpailu aktiivinenKausi={aktiivinenKausi}
+            päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
+          <h2>{aktiivinenKausi.nimi}</h2>
+        </> : <></>}
+
       {aktiivinenKilpailu === 'Kokonaispisteet'
       ? <Kokonaispisteet aktiivinenKausi={aktiivinenKausi} kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} />
       : <></>}
@@ -81,7 +95,9 @@ function App() {
       ? <Kilpailu aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu} setKilpailu={setKilpailu}
         päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
       : <></>}
-    </div>
+
+      <Kirjautuminen />
+    </Context.Provider>
   )
 }
 

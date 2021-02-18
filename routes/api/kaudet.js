@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+const authorize = require('../../authorize.js')
 const Kausi = require('../../models/kausi.js')
 
 const handleError = function (err, res, message) {
@@ -43,7 +44,7 @@ router.get('/:kausiId', (req, res) => {
 })
 
 // luo uusi kausi
-router.post('/', (req, res) => {
+router.post('/', authorize, (req, res) => {
   const uusiKausi = new Kausi({nimi: req.body.nimi})
 
   uusiKausi.save((err, kausi) => {
@@ -54,7 +55,7 @@ router.post('/', (req, res) => {
 })
 
 // muuta kauden nimeä
-router.put('/:kausiId', (req, res) => {
+router.put('/:kausiId', authorize, (req, res) => {
   Kausi.findByIdAndUpdate(req.params.kausiId, {nimi} = req.body, {new: true}, (err, kausi) => {
     if (err) return handleError(err, res, 'Virhe muutettaessa kauden nimeä.')
     
@@ -63,7 +64,7 @@ router.put('/:kausiId', (req, res) => {
 })
 
 // poista kausi
-router.delete('/:kausiId', (req, res) => {
+router.delete('/:kausiId', authorize, (req, res) => {
   Kausi.findByIdAndDelete(req.params.kausiId, (err, kausi) => {
     if (err) return handleError(err, res, 'Virhe poistettaessa kautta.')
 

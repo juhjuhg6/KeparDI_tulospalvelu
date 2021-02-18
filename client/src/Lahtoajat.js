@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import moment from 'moment'
+import Context from './Context'
 import Lähtöaika from './Lahtoaika'
 import UusiKilpailija from './UusiKilpailija'
 
 function Lähtöajat({aktiivinenKausi, kilpailu, setKilpailu}) {
+  const { kirjauduttu } = useContext(Context)
+
   const [kilpailijanLisäys, setKilpailijanLisäys] = useState(false)
   const [momentFormat, setMomentFormat] = useState('HH.mm')
   
@@ -24,16 +27,24 @@ function Lähtöajat({aktiivinenKausi, kilpailu, setKilpailu}) {
 
   return (
     <div>
-      {!kilpailijanLisäys
-      ? <button onClick={() => setKilpailijanLisäys(true)} className='btn-yellow'>Lisää kilpailija</button>
-      : <UusiKilpailija aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu}
-          setKilpailu={setKilpailu} setKilpailijanLisäys={setKilpailijanLisäys} />}
+      {kirjauduttu
+        ? !kilpailijanLisäys
+            ? <button onClick={() => setKilpailijanLisäys(true)} className='btn-yellow'>Lisää kilpailija</button>
+            : <UusiKilpailija aktiivinenKausi={aktiivinenKausi} kilpailu={kilpailu}
+                setKilpailu={setKilpailu} setKilpailijanLisäys={setKilpailijanLisäys} />
+        : <></>
+      }
       <div className='flex-container'>
         {kilpailu.sarjat
         ? kilpailu.sarjat.map(sarja => <div key={sarja._id}>
             <h4>{sarja.nimi}</h4>
             <table>
-              <thead><tr><th>Nimi</th><th>Lähtöaika</th><th></th></tr></thead>
+              <thead>
+                <tr>
+                  <th>Nimi</th><th>Lähtöaika</th>
+                  {kirjauduttu ? <th></th> : <></>}
+                </tr>
+              </thead>
               <tbody>
                 {sarja.kilpailijat.map(kilpailija => <Lähtöaika  key={kilpailija._id}
                   aktiivinenKausi={aktiivinenKausi} kilpailija={kilpailija} kilpailu={kilpailu}

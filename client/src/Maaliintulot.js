@@ -1,9 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import axios from 'axios'
 import moment from 'moment'
+import Context from './Context'
+import jwtIsValid from './helpers/jwtIsValid'
 import Maaliintulo from './Maaliintulo.js'
 
 function Maaliintulot({aktiivinenKausi, kilpailu, setKilpailu}) {
+  const { kirjauduttu, setKirjauduttu } = useContext(Context)
+
   const [aika, setAika] = useState(moment())
   const [muuTulosSarake, setMuuTulosSarake] = useState(false)
 
@@ -51,18 +55,32 @@ function Maaliintulot({aktiivinenKausi, kilpailu, setKilpailu}) {
     if (maaliintuloaika) pyyntö.maaliintuloaika = maaliintuloaika
     pyyntö.muuTulos = muuTulosSelect.current.value
 
+    nimiInput.current.value = ''
+    aikaInput.current.value = ''
+    muuTulosSelect.current.value = ''
+
+    if (!jwtIsValid()) {
+      localStorage.removeItem('jwt')
+      axios.defaults.headers['Authorization'] = null
+      setKirjauduttu(false)
+      return
+    }
+
     axios.post(`api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}`, pyyntö)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })
       .catch(err => {
+        if (err.response.status === 401) {
+          setKirjauduttu(false)
+          localStorage.removeItem('jwt')
+          axios.defaults.headers.common['Authorization'] = null
+        }
         console.log(err)
       })
-    
-    nimiInput.current.value = ''
-    aikaInput.current.value = ''
-    muuTulosSelect.current.value = ''
   }
+
+  if (!kirjauduttu) return(<></>)
 
   return (
     <div>

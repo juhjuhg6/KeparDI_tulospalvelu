@@ -1,17 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import axios from 'axios'
+import Context from './Context'
+import jwtIsValid from './helpers/jwtIsValid'
 
 function UusiKilpailija({aktiivinenKausi, kilpailu, setKilpailu, setKilpailijanLisäys}) {
+  const { setKirjauduttu } = useContext(Context)
   const [tallentaa, setTallentaa] = useState(false)
   const nimiInput = useRef(null)
   const sarjaSelect = useRef(null)
 
   useEffect(() => {
+    setKirjauduttu(jwtIsValid())
+
     return () => setKilpailijanLisäys(false)
-  })
+    // eslint-disable-next-line
+  }, [])
 
   function tallennaKilpailija() {
+    if (!jwtIsValid()) {
+      localStorage.removeItem('jwt')
+      axios.defaults.headers['Authorization'] = null
+      setKirjauduttu(false)
+      return
+    }
     if (!nimiInput.current.value) return
+
     setTallentaa(true)
     
     axios.post(`api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarjaSelect.current.value}`,

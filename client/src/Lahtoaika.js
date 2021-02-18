@@ -1,8 +1,12 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import axios from 'axios'
 import moment from 'moment'
+import Context from './Context'
+import jwtIsValid from './helpers/jwtIsValid'
 
 function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja, momentFormat}) {
+  const { kirjauduttu, setKirjauduttu } = useContext(Context)
+
   const [muokkaus, setMuokkaus] = useState(false)
   const [tallentaa, setTallentaa] = useState(false)
 
@@ -17,8 +21,6 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja,
   }
 
   function muokkaaLähtöaikaa() {
-    setTallentaa(true)
-    
     let lähtöaika
     if (aikaInput.current.value) {
       const asetettavaLähtöaika = moment(aikaInput.current.value, 'HH.mm.ss')
@@ -29,6 +31,15 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja,
     } else {
       lähtöaika = null
     }
+
+    if (!jwtIsValid()) {
+      localStorage.removeItem('jwt')
+      axios.defaults.headers['Authorization'] = null
+      setKirjauduttu(false)
+      return
+    }
+
+    setTallentaa(true)
     
     axios.put(`api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarja._id}/${kilpailija._id}`,
       {lahtoaika: lähtöaika})
@@ -38,16 +49,33 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja,
         setTallentaa(false)
       })
       .catch(err => {
+        if (err.response.status === 401) {
+          setKirjauduttu(false)
+          localStorage.removeItem('jwt')
+          axios.defaults.headers.common['Authorization'] = null
+        }
         console.log(err)
       })
   }
 
   function poistaKilpailija() {
+    if (!jwtIsValid()) {
+      localStorage.removeItem('jwt')
+      axios.defaults.headers['Authorization'] = null
+      setKirjauduttu(false)
+      return
+    }
+
     axios.delete(`api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarja._id}/${kilpailija._id}`)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })
       .catch(err => {
+        if (err.response.status === 401) {
+          setKirjauduttu(false)
+          localStorage.removeItem('jwt')
+          axios.defaults.headers.common['Authorization'] = null
+        }
         console.log(err)
       })
   }
@@ -55,12 +83,16 @@ function Lähtöaika({aktiivinenKausi, kilpailija, kilpailu, setKilpailu, sarja,
   return(
     <tr>
       <td className='nimi'>{kilpailija.nimi}</td>
-      {!muokkaus
+      {!muokkaus || !kirjauduttu
       ? <>
       <td>{lähtöaikaStr()}</td>
       <td>
-        <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muuta lähtöaikaa</button>
-        <button onClick={poistaKilpailija} className='btn-red'>Poista</button>
+        {kirjauduttu
+          ? <>
+            <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muuta lähtöaikaa</button>
+            <button onClick={poistaKilpailija} className='btn-red'>Poista</button>
+          </> : <></>
+        }
       </td>
       </> : <>
       <td><input ref={aikaInput} type='text' placeholder={lähtöaikaStr()} className='input-aika' /></td>

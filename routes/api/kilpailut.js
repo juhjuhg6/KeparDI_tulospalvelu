@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+const authorize = require('../../authorize.js')
 const Kausi = require('../../models/kausi.js')
 const Kilpailija = require('../../models/kilpailija.js')
 const lähetäVastaus = require('./vastaus.js')
@@ -24,7 +25,7 @@ router.get('/:kausiId/:kilpailuId', (req, res) => {
 })
 
 // luo uusi kilpailu
-router.post('/:kausiId', (req, res) => {
+router.post('/:kausiId', authorize, (req, res) => {
   Kausi.findById(req.params.kausiId, (err, kausi) => {
     if (err) return handleError(err, res, 'Virhe luotaessa uutta kilpailua.')
     
@@ -44,7 +45,7 @@ router.post('/:kausiId', (req, res) => {
 })
 
 // muokkaa kilpailua
-router.put('/:kausiId/:kilpailuId', (req, res) => {
+router.put('/:kausiId/:kilpailuId', authorize, (req, res) => {
   Kausi.findById(req.params.kausiId, (err, kausi) => {
     if (err) return handleError(err, res, 'Virhe muokatessa kilpailua.')
     
@@ -109,7 +110,7 @@ router.put('/:kausiId/:kilpailuId', (req, res) => {
 })
 
 // poista kilpailu
-router.delete('/:kausiId/:kilpailuId', (req, res) => {
+router.delete('/:kausiId/:kilpailuId', authorize, (req, res) => {
   Kausi.findById(req.params.kausiId, (err, kausi) => {
     if (err) return handleError(err, res, 'Virhe poistettaessa kilpailua.')
 

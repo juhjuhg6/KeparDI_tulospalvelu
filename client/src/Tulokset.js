@@ -4,11 +4,13 @@ import moment from 'moment'
 import Tulos from './Tulos'
 
 function Tulokset({aktiivinenKausi, kilpailu, setKilpailu}) {
+
   const [pisteetLaskettu, setPisteetLaskettu] = useState(false)
 
   const muokattuKilpailu = useRef(null)
 
   useEffect(() => {
+
     axios.get(`api/pisteet/${aktiivinenKausi.id}/${kilpailu._id}`)
       .then(vastaus => {
         const kilpailu = vastaus.data

@@ -1,8 +1,11 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import axios from 'axios'
 import moment from 'moment'
+import Context from './Context'
+import jwtIsValid from './helpers/jwtIsValid'
 
 function LisääKausiTaiKilpailu({aktiivinenKausi, päivitäKausienJaKilpailujenNimet}) {
+  const { setKirjauduttu } = useContext(Context)
   const [lisättävä, setLisättävä] = useState('')
 
   const nimiInput = useRef(null)
@@ -23,16 +26,27 @@ function LisääKausiTaiKilpailu({aktiivinenKausi, päivitäKausienJaKilpailujen
       return
     }
 
+    setLisättävä('')
+
+    if (!jwtIsValid()) {
+      localStorage.removeItem('jwt')
+      axios.defaults.headers['Authorization'] = null
+      setKirjauduttu(false)
+      return
+    }
+
     axios.post(pyyntöUrl, pyyntöBody)
       .then(vastaus => {
         päivitäKausienJaKilpailujenNimet()
       })
       .catch(err => {
+        if (err.response.status === 401) {
+          setKirjauduttu(false)
+          localStorage.removeItem('jwt')
+          axios.defaults.headers.common['Authorization'] = null
+        }
         console.log(err)
       })
-
-    
-    setLisättävä('')
   }
 
   return (
