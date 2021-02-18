@@ -36,7 +36,6 @@ select {
   font-size: 1.4rem;
   background-color: whitesmoke;
   border-color: #ff9900;
-  color: #31343b;
   border-radius: 0.4rem;
   margin-right: 0.5rem;
 }
@@ -44,11 +43,14 @@ select {
 input {
   font-size: 1.4rem;
   background-color: whitesmoke;
-  color: #31343b;
   border: 1px solid;
   border-radius: 0.4rem;
   border-color: #ff9900;
   margin-right: 0.5rem;
+}
+
+input:focus {
+  outline: none;
 }
 
 .input-aika {
@@ -68,12 +70,11 @@ input {
 }
 
 button {
-  color: #31343b;
   border: 0px;
   border-radius: 0.5rem;
   font-size: 1.5rem;
   padding: 0.3rem 0.6rem;
-  margin: 0.4rem 0.4rem 0.3rem 0rem;
+  margin: 0.4rem 0.4rem 0.4rem 0rem;
 }
 
 button:focus {
@@ -121,12 +122,15 @@ table {
 
 thead {
   background-color: #FFCC00;
-  color: #31343b;
 }
 
 th {
   font-weight: 500;
   border: 2px solid #FFCC00;
+}
+
+tr {
+  height: 3.2rem;
 }
 
 tr:nth-child(even) {
@@ -141,5 +145,5 @@ th {
 
 td {
   font-size: 1.6rem;
-  padding: 0px 0.3rem;
+  padding: 0px 0.4rem;
 }
