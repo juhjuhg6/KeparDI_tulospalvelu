@@ -51,18 +51,21 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
           <tr>
             <th>Nimi</th>
             {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut.map(kilpailu =>
-              <th key={kilpailu.id} className='th-kilpailun-nimi'>{kilpailu.nimi}</th>)}
+              <th key={kilpailu.id}><div className='kilpailun-nimi'>{kilpailu.nimi}</div></th>)}
             <th>Kokonaispisteet</th>
           </tr>
         </thead>
         <tbody>
           {pisteet.map(kilpailija => <tr key={kilpailija._id}>
             <td>{kilpailija.nimi}</td>
-            {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut.map(kilpailu => <td key={kilpailu.id}>
-              {kilpailija.kilpailut[kilpailu.id]
-              ? kilpailija.kilpailut[kilpailu.id].pisteet
-              : 0}
-            </td>)}
+            {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut.map(kilpailu =>
+                kilpailija.kilpailut[kilpailu.id]
+                ? <td key={kilpailu.id} className='td-pisteet'
+                  style={{ backgroundColor: `rgb(255, ${230 + (20 * (1 - kilpailija.kilpailut[kilpailu.id].pisteet / 1000))}, ${51 + (204 * (1 - kilpailija.kilpailut[kilpailu.id].pisteet / 1000))})` }}>
+                    {kilpailija.kilpailut[kilpailu.id].pisteet}
+                  </td>
+                : <td key={kilpailu.id} className='td-pisteet' style={{backgroundColor: 'white'}}>0</td>
+            )}
             <td>{kilpailija.kokonaispisteet}</td>
           </tr>)}
         </tbody>

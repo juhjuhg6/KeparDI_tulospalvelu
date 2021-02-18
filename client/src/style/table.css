@@ -34,3 +34,16 @@ td {
   font-size: 1.6rem;
   padding: 0px 0.4rem;
 }
+
+.kilpailun-nimi {
+  width: 5rem;
+  writing-mode: vertical-lr;
+  text-align: left;
+  top: 0px;
+}
+
+.td-pisteet {
+  width: 5rem;
+  border-left: 1px solid silver;
+  border-right: 1px solid silver;
+}
