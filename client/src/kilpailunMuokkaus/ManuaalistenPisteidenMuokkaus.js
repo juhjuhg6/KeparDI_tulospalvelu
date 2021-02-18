@@ -4,7 +4,7 @@ import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 import ManuaalisetPisteet from './ManuaalisetPisteet.js'
 
-function ManuaalistenPisteidenMuokkaus() {
+function ManuaalistenPisteidenMuokkaus({ setMuokattava }) {
   const { kilpailu, setKilpailu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
 
   const [uudetManuaalisetPisteet, setUudetManuaalisetPisteet] = useState({ ...kilpailu.manuaalisetPisteet })
@@ -17,8 +17,11 @@ function ManuaalistenPisteidenMuokkaus() {
       return
     }
 
+    setMuokattava('')
+
     axios.post(`api/manuaalisetpisteet/${aktiivinenKausi.id}/${kilpailu._id}`,
       { manuaalisetPisteet: uudetManuaalisetPisteet })
+
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })
@@ -39,6 +42,8 @@ function ManuaalistenPisteidenMuokkaus() {
       setKirjauduttu(false)
       return
     }
+
+    setMuokattava('')
 
     axios.delete(`api/manuaalisetpisteet/${aktiivinenKausi.id}/${kilpailu._id}`)
       .then(vastaus => {

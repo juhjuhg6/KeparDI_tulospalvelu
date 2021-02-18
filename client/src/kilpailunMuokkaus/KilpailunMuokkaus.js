@@ -135,7 +135,7 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
       }
 
       {muokattava === 'pisteet'
-        ? <ManuaalistenPisteidenMuokkaus />
+        ? <ManuaalistenPisteidenMuokkaus setMuokattava={setMuokattava} />
         : <></>
       }
     </div>
