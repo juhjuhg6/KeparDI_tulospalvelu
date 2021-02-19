@@ -27,11 +27,13 @@ function Lähtöajat() {
 
   return (
     <div>
-      {kirjauduttu
-        ? !kilpailijanLisäys
+      {!kilpailijanLisäys
+        ? kirjauduttu
             ? <button onClick={() => setKilpailijanLisäys(true)} className='btn-yellow'>Lisää kilpailija</button>
-            : <UusiKilpailija setKilpailijanLisäys={setKilpailijanLisäys} />
-        : <></>
+            : kilpailu.ilmoittautuminenDl && moment(kilpailu.ilmoittautuminenDl) > Date.now()
+              ? <button onClick={() => setKilpailijanLisäys(true)} className='btn-green'>Ilmoittaudu</button>
+              : <></>
+        : <UusiKilpailija setKilpailijanLisäys={setKilpailijanLisäys} />
       }
       <div className='flex-container'><div className='table-container'>
         {kilpailu.sarjat

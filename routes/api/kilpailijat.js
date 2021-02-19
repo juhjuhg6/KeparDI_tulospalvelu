@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+const authorize = require('../../authorize.js')
 const Kausi = require('../../models/kausi.js')
 const Kilpailija = require('../../models/kilpailija.js')
 const lähetäVastaus = require('./vastaus.js')
@@ -21,66 +22,68 @@ router.post('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
     const sarja = kilpailu.sarjat.id(req.params.sarjaId)
     if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
 
-    Kilpailija.findOne({nimi: req.body.nimi}, (err, kilpailija) => {
-      if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
+    const lisääKilpailija = function() {
+      Kilpailija.findOne({nimi: req.body.nimi}, (err, kilpailija) => {
+        if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
 
-      if (!kilpailija) {
-        const uusiKilpailija = new Kilpailija(req.body)
-        uusiKilpailija.kilpailut = new Map()
+        if (!kilpailija) {
+          const uusiKilpailija = new Kilpailija(req.body)
+          uusiKilpailija.kilpailut = new Map()
 
-        let kilpailudata = {}
-        if (req.body.kilpailudata) {
-          kilpailudata = req.body.kilpailudata
-        }
-        uusiKilpailija.kilpailut.set(req.params.kilpailuId, kilpailudata)
+          uusiKilpailija.kilpailut.set(req.params.kilpailuId, {})
 
-        uusiKilpailija.save((err, kilpailija) => {
-          if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
+          uusiKilpailija.save((err, kilpailija) => {
+            if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
+
+            sarja.kilpailijat.push(kilpailija._id)
+            kausi.save(err => {
+              if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
+
+              lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
+            })
+          })
+        } else {
+          // tarkistetaan onko kilpailija jo jossain kilpailun sarjassa
+          const kilpailijaJoKilpailussa = function() {
+            let found = false
+            kilpailu.sarjat.forEach(sarja => {
+              if (sarja.kilpailijat.some(k => k === kilpailija._id.toString())) {
+                found = true
+              }
+            })
+            return found
+          }
+          if (kilpailijaJoKilpailussa()) return handleError(err, res, 'Kilpailija on jo kilpailussa.')
 
           sarja.kilpailijat.push(kilpailija._id)
-          kausi.save(err => {
+
+          kilpailija.kilpailut.set(req.params.kilpailuId, {})
+
+          kilpailija.save(err => {
             if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
+            
+            kausi.save(err => {
+              if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
 
-            lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
+              lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
+            })
           })
-        })
-      } else {
-        // tarkistetaan onko kilpailija jo jossain kilpailun sarjassa
-        const kilpailijaJoKilpailussa = function() {
-          let found = false
-          kilpailu.sarjat.forEach(sarja => {
-            if (sarja.kilpailijat.some(k => k === kilpailija._id.toString())) {
-              found = true
-            }
-          })
-          return found
         }
-        if (kilpailijaJoKilpailussa()) return handleError(err, res, 'Kilpailija on jo kilpailussa.')
+      })
+    }
 
-        sarja.kilpailijat.push(kilpailija._id)
-
-        let kilpailudata = {}
-        if (req.body.kilpailudata) {
-          kilpailudata = req.body.kilpailudata
-        }
-        kilpailija.kilpailut.set(req.params.kilpailuId, kilpailudata)
-
-        kilpailija.save(err => {
-          if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
-          
-          kausi.save(err => {
-            if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
-
-            lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
-          })
-        })
-      }
-    })
+    // kilpailija voi ilmoittautua, jos ilmoittautumisaikaa on jäljellä, mutta ilmoittautumisajan
+    // päätyttyä kilpailijan lisäämiseen vaaditaan kirjautuminen
+    if (new Date(kilpailu.ilmoittautuminenDl) < Date.now()) {
+      authorize(req, res, lisääKilpailija)
+    } else {
+      lisääKilpailija()
+    }
   })
 })
 
 // muokkaa kilpailijan kilpailudataa
-router.put('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', (req, res) => {
+router.put('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', authorize, (req, res) => {
   Kilpailija.findById(req.params.kilpailijaId, (err, kilpailija) => {
     if (err) return handleError(err, res, 'Virhe muokattaessa kilpailijan kilpailudataa.')
 
@@ -114,7 +117,7 @@ router.put('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', (req, res) => {
 })
 
 // poista kilpailija kilpailusta
-router.delete('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', (req, res) => {
+router.delete('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', authorize, (req, res) => {
   Kilpailija.findById(req.params.kilpailijaId, (err, kilpailija) => {
     if (err) return handleError(err, res, 'Virhe poistettaessa kilpailijaa kilpailusta.')
 

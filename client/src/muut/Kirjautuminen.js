@@ -25,16 +25,17 @@ function Kirjautuminen() {
     salasanaInput.current.value = ''
   }
 
-  function poistaJwt() {
-    setKirjauduttu(false)
+  function kirjauduUlos() {
+    axios.defaults.headers.common['Authorization'] = null
     localStorage.removeItem('jwt')
+    setKirjauduttu(false)
   }
 
   return (
     <div>
       <br/>
       {kirjauduttu
-      ? <button onClick={poistaJwt} className='btn-red'>Kirjaudu ulos</button>
+      ? <button onClick={kirjauduUlos} className='btn-red'>Kirjaudu ulos</button>
       : kirjautuminen
         ? <>
           <label htmlFor='salasana'>Admin salasana</label>

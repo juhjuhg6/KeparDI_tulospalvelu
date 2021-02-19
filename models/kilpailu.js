@@ -7,6 +7,7 @@ const Maaliintulo = require('./maaliintulo.js')
 const KilpailuSchema = new Schema({
   nimi: {type: String, required: true},
   pvm: {type: Date, required: true},
+  ilmoittautuminenDl: Date,
   sarjat: [Sarja],
   maaliintulot: [Maaliintulo],
   jarjestajat: [String],

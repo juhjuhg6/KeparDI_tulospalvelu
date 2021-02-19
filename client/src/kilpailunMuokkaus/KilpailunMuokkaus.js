@@ -14,6 +14,7 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
 
   const kilpailunNimiInput = useRef(null)
   const pvmInput = useRef(null)
+  const ilmoittautuminenInput = useRef(null)
 
   useEffect(() => {
     return () => setKilpailunMuokkaus(false)
@@ -28,14 +29,16 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
   function tyhjennäTekstit() {
     kilpailunNimiInput.current.value = ''
     pvmInput.current.value = ''
+    ilmoittautuminenInput.current.value = ''
   }
 
   function päivitäKilpailu() {
     let pyyntöBody = {}
     if (kilpailunNimiInput.current.value) pyyntöBody.nimi = kilpailunNimiInput.current.value
     if (pvmInput.current.value) pyyntöBody.pvm = moment(pvmInput.current.value, 'DD.MM.YYYY')
-    kilpailunNimiInput.current.value = ''
-    pvmInput.current.value = ''
+    if (ilmoittautuminenInput.current.value) pyyntöBody.ilmoittautuminenDl =
+      moment(ilmoittautuminenInput.current.value, 'DD.MM.YYYY HH.mm')
+    tyhjennäTekstit()
 
     if (!jwtIsValid()) {
       localStorage.removeItem('jwt')
@@ -115,7 +118,15 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
           <input ref={pvmInput} id='pvm' type='text' placeholder={moment(kilpailu.pvm).format('DD.MM.YYYY')}
           className='input-pvm' />
         </div>
-        <div style={{ display: 'inline-block' }}>
+        <div  style={{ display: 'inline-block' }}>
+          <label htmlFor='ilmoPvm'>Ilmoittautuminen DL:</label>
+          <input ref={ilmoittautuminenInput} id='ilmoPvm' type='text'
+              placeholder={kilpailu.ilmoittautuminenDl
+                ? moment(kilpailu.ilmoittautuminenDl).format('DD.MM.YYYY HH.mm')
+                : 'pp.kk.vvvv hh.mm'}
+              style={{ width: '13rem' }}/>
+        </div>
+        <div>
           <button onClick={() => tyhjennäTekstit()} className='btn-yellow'>Tyhjennä</button>
           <button onClick={päivitäKilpailu} className='btn-green'>Tallenna</button>
         </div>

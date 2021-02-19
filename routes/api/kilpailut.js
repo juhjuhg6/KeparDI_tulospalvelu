@@ -58,6 +58,10 @@ router.put('/:kausiId/:kilpailuId', authorize, (req, res) => {
       }
     }
 
+    if (req.body.ilmoittautuminenDl) {
+      kilpailu.ilmoittautuminenDl = req.body.ilmoittautuminenDl
+    }
+
     const tallenna = function () {
       kausi.save(err => {
         if (err) return handleError(err, res, 'Virhe muokatessa kilpailua.')

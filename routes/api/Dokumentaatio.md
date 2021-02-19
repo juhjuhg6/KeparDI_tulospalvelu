@@ -22,7 +22,7 @@
         * [Muokkaa sarjaa*](#muokkaa-sarjaa)
         * [Poista sarja*](#poista-sarja)
     * [Kilpailijat](#kilpailijat)
-        * [Lisää kilpailija sarjaan*](#lisää-kilpailija-sarjaan)
+        * [Lisää kilpailija sarjaan(*)](#lisää-kilpailija-sarjaan)
         * [Muokkaa kilpailijan kilpailudataa*](#muokkaa-kilpailijan-kilpailudataa)
         * [Poista kilpailija kilpailusta*](#poista-kilpailija-kilpailusta)
     * [Maaliintulot](#maaliintulot)
@@ -321,7 +321,9 @@ Kilpailu
 ---
 ### Kilpailijat
 ---
-#### Lisää kilpailija sarjaan*
+#### Lisää kilpailija sarjaan(*)
+Huomio: Ilmoittautumisen voi tehdä ilman kirjautumista, jos ilmoittautumisaikaa on jäljellä, mutta ilmoittautumisajan päättymisen jälkeen kilpailijan lisäämiseen vaaditaan kirjautuminen.
+
 Pyyntö:
 ```
 POST api/kilpailijat/:kausiId/:kilpailuId/:sarjaId

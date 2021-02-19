@@ -10,6 +10,7 @@ function LisääKausiTaiKilpailu({ päivitäKausienJaKilpailujenNimet }) {
 
   const nimiInput = useRef(null)
   const pvmInput = useRef(null)
+  const ilmoittautuminenInput = useRef(null)
 
   function tallenna() {
     let pyyntöUrl
@@ -21,7 +22,8 @@ function LisääKausiTaiKilpailu({ päivitäKausienJaKilpailujenNimet }) {
     } else if (lisättävä === 'kilpailu') {
       pyyntöUrl = `api/kilpailut/${aktiivinenKausi.id}`
       if (!nimiInput.current.value || !pvmInput.current.value) return
-      pyyntöBody = {nimi: nimiInput.current.value, pvm: moment(pvmInput.current.value, 'DD.MM.YYYY')}
+      pyyntöBody = {nimi: nimiInput.current.value, pvm: moment(pvmInput.current.value, 'DD.MM.YYYY'),
+        ilmoittautuminenDl: moment(ilmoittautuminenInput.current.value, 'DD.MM.YYYY HH.mm')}
     } else {
       return
     }
@@ -60,8 +62,15 @@ function LisääKausiTaiKilpailu({ päivitäKausienJaKilpailujenNimet }) {
         <input ref={nimiInput} id='nimi' type='text' className='nimi'/>
         {lisättävä === 'kilpailu'
         ? <>
-          <label htmlFor='pvm'>Päivämäärä:</label>
-          <input ref={pvmInput} id='pvm' type='text' placeholder='pp.kk.vvvv' className='input-pvm'/>
+          <div style={{ display: 'inline-block' }}>
+            <label htmlFor='pvm'>Päivämäärä:</label>
+            <input ref={pvmInput} id='pvm' type='text' placeholder='pp.kk.vvvv' className='input-pvm'/>
+          </div>
+          <div style={{ display: 'inline-block' }}>
+            <label htmlFor='ilmoPvm'>Ilmoittautuminen DL:</label>
+            <input ref={ilmoittautuminenInput} id='ilmoPvm' type='text' placeholder='pp.kk.vvvv hh.mm'
+              style={{ width: '13rem' }}/>
+          </div>
         </> : <></>}
         <div>
           <button onClick={() => setLisättävä('')} className='btn-yellow'>Peruuta</button>

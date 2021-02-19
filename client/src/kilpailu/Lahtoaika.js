@@ -50,6 +50,8 @@ function Lähtöaika({ kilpailija, sarja, momentFormat }) {
       })
       .catch(err => {
         if (err.response.status === 401) {
+          setMuokkaus(false)
+          setTallentaa(false)
           setKirjauduttu(false)
           localStorage.removeItem('jwt')
           axios.defaults.headers.common['Authorization'] = null

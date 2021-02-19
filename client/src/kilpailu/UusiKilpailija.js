@@ -19,12 +19,6 @@ function UusiKilpailija({ setKilpailijanLisäys }) {
   }, [])
 
   function tallennaKilpailija() {
-    if (!jwtIsValid()) {
-      localStorage.removeItem('jwt')
-      axios.defaults.headers['Authorization'] = null
-      setKirjauduttu(false)
-      return
-    }
     if (!nimiInput.current.value) return
 
     setTallentaa(true)
@@ -36,15 +30,25 @@ function UusiKilpailija({ setKilpailijanLisäys }) {
         setKilpailijanLisäys(false)
         setTallentaa(false)
       })
+      .catch(err => {
+        setKilpailijanLisäys(false)
+        setTallentaa(false)
+        if (err.response.status === 401) {
+          setKirjauduttu(false)
+          localStorage.removeItem('jwt')
+          axios.defaults.headers.common['Authorization'] = null
+        }
+        console.log(err)
+      })
   }
 
   return (
     <div>
-      <div>
+      <div style={{ display: 'inline-block' }}>
         <label htmlFor='nimi'>Nimi:</label>
         <input ref={nimiInput} type='text' id='nimi' className='nimi'/>
       </div>
-      <div>
+      <div style={{ display: 'inline-block' }}>
         <label htmlFor='sarja'>Sarja:</label>
         <select ref={sarjaSelect} id='sarja'>
           {kilpailu.sarjat.map(sarja => <option key={sarja._id} value={sarja._id}>{sarja.nimi}</option>)}
@@ -52,10 +56,10 @@ function UusiKilpailija({ setKilpailijanLisäys }) {
       </div>
       {tallentaa
       ? 'Talennetaan...'
-      : <>
-      <button onClick={() => setKilpailijanLisäys(false)} className='btn-yellow'>Peruuta</button>
-      <button onClick={tallennaKilpailija} className='btn-green'>Tallenna</button>
-      </>}
+      : <div>
+        <button onClick={() => setKilpailijanLisäys(false)} className='btn-yellow'>Peruuta</button>
+        <button onClick={tallennaKilpailija} className='btn-green'>Tallenna</button>
+      </div>}
     </div>
   )
 }
