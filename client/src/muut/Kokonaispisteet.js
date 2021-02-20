@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Context from '../Context'
 
@@ -11,7 +12,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
     let komponenttiKiinnitetty = true
     setPisteet(false)
     if (!aktiivinenKausi) return
-    axios.get(`api/pisteet/${aktiivinenKausi.id}`)
+    axios.get(`/api/pisteet/${aktiivinenKausi.id}`)
       .then(vastaus => {
         if (komponenttiKiinnitetty) {
           valmistelePisteet(vastaus.data)
@@ -51,7 +52,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
           <tr>
             <th>Nimi</th>
             {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut.map(kilpailu =>
-              <th key={kilpailu.id}><div className='kilpailun-nimi'>{kilpailu.nimi}</div></th>)}
+              <th key={kilpailu.id}><Link className='th-kilpailun-nimi'>{kilpailu.nimi}</Link></th>)}
             <th>Kokonaispisteet</th>
           </tr>
         </thead>

@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Context from './Context'
 import jwtIsValid from './helpers/jwtIsValid'
-import KilpailunValinta from './muut/KilpailunValinta'
+import Header from './muut/Header'
 import Kilpailu from './kilpailu/Kilpailu'
 import LisääKausiTaiKilpailu from './muut/LisaaKausiTaiKilpailu'
 import Kokonaispisteet from './muut/Kokonaispisteet'
 import Kirjautuminen from './muut/Kirjautuminen'
 
-function App() {
+function App(props) {
   const [kirjauduttu, setKirjauduttu] = useState(false)
   const [kausienJaKilpailujenNimet, setKausienJaKilpailujenNimet] = useState([])
   const [aktiivinenKausi, setAktiivinenKausi] = useState({})
-  const [aktiivinenKilpailu, setAktiivinenKilpailu] = useState()
   const [kilpailu, setKilpailu] = useState({})
   const [kilpailuHaettu, setKilpailuHaettu] = useState(false)
+  const [valikkoAuki, setValikkoAuki] = useState(false)
 
   useEffect(() => {
     päivitäKausienJaKilpailujenNimet()
@@ -23,50 +23,87 @@ function App() {
   }, [])
 
   useEffect(() => {
+    setKilpailuHaettu(false)
     if (kirjauduttu) setKirjauduttu(jwtIsValid())
-    
-    if (!aktiivinenKausi.id) return
 
-    if (!aktiivinenKilpailu || !aktiivinenKausi.kilpailut.find(kilpailu => kilpailu.id === aktiivinenKilpailu.id)) {
-      setAktiivinenKilpailu('Kokonaispisteet')
+    const kausi = kausienJaKilpailujenNimet.find(k => k.nimi === props.match.params.kausiNimi)
+
+    if (kausi) {
+      setAktiivinenKausi(kausi)
+    } else {
+      if (kausienJaKilpailujenNimet.length) {
+        setAktiivinenKausi(kausienJaKilpailujenNimet[0])
+      }
     }
+
+    // eslint-disable-next-line
+  }, [kausienJaKilpailujenNimet, props.match.params.kausiNimi])
+
+  useEffect(() => {
+    if (!aktiivinenKausi.kilpailut) return
+
+    const uusiKilpailu = aktiivinenKausi.kilpailut.find(k => k.nimi === props.match.params.kilpailuNimi)
+
+    if (uusiKilpailu) {
+      axios.get(`/api/kilpailut/${aktiivinenKausi.id}/${uusiKilpailu.id}`)
+        .then(vastaus => {
+          setKilpailu(vastaus.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    } else {
+      setKilpailu('Kokonaispisteet')
+    }
+
     // eslint-disable-next-line
   }, [aktiivinenKausi])
 
   useEffect(() => {
-    if (kirjauduttu) setKirjauduttu(jwtIsValid())
-
-    if (aktiivinenKilpailu === 'Kokonaispisteet') setKilpailuHaettu(false)
-    if (!aktiivinenKilpailu || !aktiivinenKausi || !aktiivinenKilpailu.id || !aktiivinenKausi.id) return
     setKilpailuHaettu(false)
+    if (!aktiivinenKausi.kilpailut) return
 
-    axios.get(`api/kilpailut/${aktiivinenKausi.id}/${aktiivinenKilpailu.id}`)
-      .then(vastaus => {
-        setKilpailu(vastaus.data)
-        setKilpailuHaettu(true)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-      // eslint-disable-next-line
-  }, [aktiivinenKilpailu])
+    const uusiKilpailu = aktiivinenKausi.kilpailut.find(k => k.nimi === props.match.params.kilpailuNimi)
+
+    if (uusiKilpailu) {
+      axios.get(`/api/kilpailut/${aktiivinenKausi.id}/${uusiKilpailu.id}`)
+        .then(vastaus => {
+          setKilpailu(vastaus.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+
+    // eslint-disable-next-line
+  }, [props.match.params.kilpailuNimi])
+
+  useEffect(() => {
+    if (kilpailu._id) {
+      setKilpailuHaettu(true)
+    }
+  }, [kilpailu])
 
   function päivitäKausienJaKilpailujenNimet() {
     axios.get('/api/kaudet/nimet')
       .then(vastaus => {
-        let nimet = vastaus.data
-        nimet.sort((a, b) => {
+        let kaudet = vastaus.data
+
+        kaudet.sort((a, b) => {
           if (a.nimi < b.nimi) return 1
           if (a.nimi > b.nimi) return -1
           return 0
         })
-        setKausienJaKilpailujenNimet(nimet)
-        if (Object.keys(aktiivinenKausi).length === 0) {
-          setAktiivinenKausi(nimet[0])
-        } else {
-          const päivitettyAktiivinenKausi = nimet.find(kausi => kausi.id === aktiivinenKausi.id)
-          setAktiivinenKausi(päivitettyAktiivinenKausi)
-        }
+        
+        kaudet.forEach(kausi => {
+          kausi.kilpailut.sort((a, b) => {
+            if (new Date(a.pvm) < new Date(b.pvm)) return 1
+            if (new Date(a.pvm) > new Date(b.pvm)) return -1
+            return 0
+          })
+        })
+        
+        setKausienJaKilpailujenNimet(kaudet)
       })
       .catch(err => {
         console.log(err)
@@ -75,25 +112,26 @@ function App() {
 
   return (
     <Context.Provider value={{ kilpailu, setKilpailu, aktiivinenKausi, kirjauduttu, setKirjauduttu }}>
-      <KilpailunValinta
-          kausienJaKilpailujenNimet={kausienJaKilpailujenNimet}
-          setAktiivinenKausi={setAktiivinenKausi}
-          setAktiivinenKilpailu={setAktiivinenKilpailu}
-        />
+      <Header kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} valikkoAuki={valikkoAuki}
+        setValikkoAuki={setValikkoAuki} />
 
-      {kirjauduttu
-        ? <>
-          <LisääKausiTaiKilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
-        </> : <></>}
+      {!valikkoAuki
+      ? <>
+        {kirjauduttu
+          ? <>
+            <LisääKausiTaiKilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
+          </> : <></>}
 
-      {aktiivinenKilpailu === 'Kokonaispisteet'
-      ? <Kokonaispisteet kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} />
-      : <></>}
-      {kilpailuHaettu
-      ? <Kilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
-      : <></>}
+        {kilpailu === 'Kokonaispisteet'
+        ? <Kokonaispisteet kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} />
+        : <></>}
+        {kilpailuHaettu
+        ? <Kilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
+        : <></>}
 
-      <Kirjautuminen />
+        <Kirjautuminen />
+      </> : <></>
+      }
     </Context.Provider>
   )
 }

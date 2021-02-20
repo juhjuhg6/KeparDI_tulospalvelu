@@ -19,7 +19,7 @@ function ManuaalistenPisteidenMuokkaus({ setMuokattava }) {
 
     setMuokattava('')
 
-    axios.post(`api/manuaalisetpisteet/${aktiivinenKausi.id}/${kilpailu._id}`,
+    axios.post(`/api/manuaalisetpisteet/${aktiivinenKausi.id}/${kilpailu._id}`,
       { manuaalisetPisteet: uudetManuaalisetPisteet })
 
       .then(vastaus => {
@@ -45,7 +45,7 @@ function ManuaalistenPisteidenMuokkaus({ setMuokattava }) {
 
     setMuokattava('')
 
-    axios.delete(`api/manuaalisetpisteet/${aktiivinenKausi.id}/${kilpailu._id}`)
+    axios.delete(`/api/manuaalisetpisteet/${aktiivinenKausi.id}/${kilpailu._id}`)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })

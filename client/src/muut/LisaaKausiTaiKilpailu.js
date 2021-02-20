@@ -16,11 +16,11 @@ function LisääKausiTaiKilpailu({ päivitäKausienJaKilpailujenNimet }) {
     let pyyntöUrl
     let pyyntöBody
     if (lisättävä === 'kausi') {
-      pyyntöUrl = 'api/kaudet'
+      pyyntöUrl = '/api/kaudet'
       if (!nimiInput.current.value) return
       pyyntöBody = {nimi: nimiInput.current.value}
     } else if (lisättävä === 'kilpailu') {
-      pyyntöUrl = `api/kilpailut/${aktiivinenKausi.id}`
+      pyyntöUrl = `/api/kilpailut/${aktiivinenKausi.id}`
       if (!nimiInput.current.value || !pvmInput.current.value) return
       pyyntöBody = {nimi: nimiInput.current.value, pvm: moment(pvmInput.current.value, 'DD.MM.YYYY'),
         ilmoittautuminenDl: moment(ilmoittautuminenInput.current.value, 'DD.MM.YYYY HH.mm')}

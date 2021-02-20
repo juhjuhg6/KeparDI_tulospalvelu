@@ -64,7 +64,7 @@ function Maaliintulo({ maaliintulo }) {
     }
     pyyntö.muuTulos = muuTulosSelect.current.value
 
-    axios.put(`api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}/${maaliintulo._id}`, pyyntö)
+    axios.put(`/api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}/${maaliintulo._id}`, pyyntö)
       .then(vastaus => {
         setKilpailu(vastaus.data)
         setMuokkaus(false)
@@ -88,7 +88,7 @@ function Maaliintulo({ maaliintulo }) {
       return
     }
 
-    axios.delete(`api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}/${maaliintulo._id}`)
+    axios.delete(`/api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}/${maaliintulo._id}`)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })

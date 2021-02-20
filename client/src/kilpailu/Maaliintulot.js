@@ -66,7 +66,7 @@ function Maaliintulot() {
       return
     }
 
-    axios.post(`api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}`, pyyntö)
+    axios.post(`/api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}`, pyyntö)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })

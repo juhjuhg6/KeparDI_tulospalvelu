@@ -47,7 +47,7 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
       return
     }
 
-    axios.put(`api/kilpailut/${aktiivinenKausi.id}/${kilpailu._id}`, pyyntöBody)
+    axios.put(`/api/kilpailut/${aktiivinenKausi.id}/${kilpailu._id}`, pyyntöBody)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })
@@ -70,7 +70,7 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
     }
 
     setKilpailunMuokkaus(false)
-    axios.delete(`api/kilpailut/${aktiivinenKausi.id}/${kilpailu._id}`)
+    axios.delete(`/api/kilpailut/${aktiivinenKausi.id}/${kilpailu._id}`)
       .then(vastaus => {
         päivitäKausienJaKilpailujenNimet()
       })

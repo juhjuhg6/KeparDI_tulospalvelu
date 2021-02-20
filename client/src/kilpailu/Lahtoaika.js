@@ -41,7 +41,7 @@ function Lähtöaika({ kilpailija, sarja, momentFormat }) {
 
     setTallentaa(true)
     
-    axios.put(`api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarja._id}/${kilpailija._id}`,
+    axios.put(`/api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarja._id}/${kilpailija._id}`,
       {lahtoaika: lähtöaika})
       .then(vastaus => {
         setKilpailu(vastaus.data)
@@ -68,7 +68,7 @@ function Lähtöaika({ kilpailija, sarja, momentFormat }) {
       return
     }
 
-    axios.delete(`api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarja._id}/${kilpailija._id}`)
+    axios.delete(`/api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarja._id}/${kilpailija._id}`)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })

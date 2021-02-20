@@ -1,0 +1,51 @@
+.header {
+  margin: -2rem -1rem 0rem -1rem;
+  background-color: #313131;
+  color: whitesmoke;
+  padding-bottom: 0.1rem;
+}
+
+h1 {
+  margin-block-start: 1rem;
+  margin-block-end: 0;
+  padding: 1rem;
+  padding-right: 0;
+  display: inline-block;
+}
+
+.btn-menu {
+  background-color: whitesmoke;
+  float: right;
+  margin: 2rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+a {
+  text-decoration: none;
+  color: whitesmoke;
+  display: block;
+  padding: 0.5rem 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  font-size: 1.6rem;
+}
+
+li:hover {
+  background-color: #31343b;
+}
+
+.li-kausi {
+  padding: 0.5rem 0 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.li-kilpailu {
+  padding-left: 5rem;;
+}

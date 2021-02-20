@@ -13,7 +13,7 @@ function Tulokset() {
 
   useEffect(() => {
 
-    axios.get(`api/pisteet/${aktiivinenKausi.id}/${kilpailu._id}`)
+    axios.get(`/api/pisteet/${aktiivinenKausi.id}/${kilpailu._id}`)
       .then(vastaus => {
         const kilpailu = vastaus.data
         setKilpailu(kilpailu)
@@ -118,7 +118,7 @@ function Tulokset() {
             </table>
           </div>)}
 
-      {kilpailu.jarjestajat.length !== 0 && pisteetLaskettu
+      {kilpailu.jarjestajat && kilpailu.jarjestajat.length !== 0 && pisteetLaskettu
       ? <>
         <h4>Järjestäjät</h4>
         <table>

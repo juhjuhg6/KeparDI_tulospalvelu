@@ -19,7 +19,7 @@ function JärjestäjienMuokkaus() {
       return
     }
 
-    axios.post(`api/jarjestajat/${aktiivinenKausi.id}/${kilpailu._id}`, { nimi: nimi })
+    axios.post(`/api/jarjestajat/${aktiivinenKausi.id}/${kilpailu._id}`, { nimi: nimi })
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })
@@ -41,7 +41,7 @@ function JärjestäjienMuokkaus() {
       return
     }
 
-    axios.delete(`api/jarjestajat/${aktiivinenKausi.id}/${kilpailu._id}/${järjestäjäId}`)
+    axios.delete(`/api/jarjestajat/${aktiivinenKausi.id}/${kilpailu._id}/${järjestäjäId}`)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })

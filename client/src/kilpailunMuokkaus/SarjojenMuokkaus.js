@@ -26,7 +26,7 @@ function SarjojenMuokkaus() {
       return
     }
 
-    axios.post(`api/sarjat/${aktiivinenKausi.id}/${kilpailu._id}`, pyyntöBody)
+    axios.post(`/api/sarjat/${aktiivinenKausi.id}/${kilpailu._id}`, pyyntöBody)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })
@@ -53,7 +53,7 @@ function SarjojenMuokkaus() {
       return
     }
 
-    axios.put(`api/sarjat/${aktiivinenKausi.id}/${kilpailu._id}/${sarjaId}`, pyyntöBody)
+    axios.put(`/api/sarjat/${aktiivinenKausi.id}/${kilpailu._id}/${sarjaId}`, pyyntöBody)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })
@@ -75,7 +75,7 @@ function SarjojenMuokkaus() {
       return
     }
 
-    axios.delete(`api/sarjat/${aktiivinenKausi.id}/${kilpailu._id}/${sarjaId}`)
+    axios.delete(`/api/sarjat/${aktiivinenKausi.id}/${kilpailu._id}/${sarjaId}`)
       .then(vastaus => {
         setKilpailu(vastaus.data)
       })

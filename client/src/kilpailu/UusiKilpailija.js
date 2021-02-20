@@ -23,7 +23,7 @@ function UusiKilpailija({ setKilpailijanLisäys }) {
 
     setTallentaa(true)
     
-    axios.post(`api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarjaSelect.current.value}`,
+    axios.post(`/api/kilpailijat/${aktiivinenKausi.id}/${kilpailu._id}/${sarjaSelect.current.value}`,
       {nimi: nimiInput.current.value})
       .then(vastaus => {
         setKilpailu(vastaus.data)
