@@ -40,6 +40,10 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
     valmisteltavatPisteet.sort((a, b) => b.kokonaispisteet - a.kokonaispisteet)
     setPisteet(valmisteltavatPisteet)
   }
+  
+  function soluVäri(pisteet) {
+    return `rgb(255, ${ 230 + (25 * (1 - pisteet / 1000)) }, ${ 51 + (204 * (1 - pisteet / 1000)) })`
+  }
 
   return(
     <div>
@@ -50,14 +54,14 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
       <table>
         <thead>
           <tr>
-            <th>Nimi</th>
+              <th style={{ borderRight: '1px solid silver' }}>Nimi</th>
             {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut.map(kilpailu =>
-              <th key={kilpailu.id}>
-                <Link to={`/${aktiivinenKausi.nimi}/${kilpailu.nimi}`} className='th-kilpailun-nimi'>
+              <th key={kilpailu.id} className='th-kilpailun-nimi'>
+                <Link to={`/${aktiivinenKausi.nimi}/${kilpailu.nimi}`} className='a-kilpailun-nimi'>
                   {kilpailu.nimi}
                 </Link>
               </th>)}
-            <th>Kokonaispisteet</th>
+            <th style={{ borderLeft: '1px solid silver' }}>Kokonaispisteet</th>
           </tr>
         </thead>
         <tbody>
@@ -66,7 +70,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
             {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut.map(kilpailu =>
                 kilpailija.kilpailut[kilpailu.id]
                 ? <td key={kilpailu.id} className='td-pisteet'
-                  style={{ backgroundColor: `rgb(255, ${230 + (25 * (1 - kilpailija.kilpailut[kilpailu.id].pisteet / 1000))}, ${51 + (204 * (1 - kilpailija.kilpailut[kilpailu.id].pisteet / 1000))})` }}>
+                  style={{ backgroundColor: soluVäri(kilpailija.kilpailut[kilpailu.id].pisteet) }}>
                     {kilpailija.kilpailut[kilpailu.id].pisteet}
                   </td>
                 : <td key={kilpailu.id} className='td-pisteet' style={{backgroundColor: 'white'}}>0</td>

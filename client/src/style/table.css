@@ -36,14 +36,17 @@ td {
 }
 
 .th-kilpailun-nimi {
-  width: 5rem;
+  border-left: 1px solid silver;
+  border-right: 1px solid silver;
+}
+
+.a-kilpailun-nimi {
+  display: inline-block;
   writing-mode: vertical-lr;
-  text-align: left;
-  vertical-align: middle;
+  color: #3e434c;
 }
 
 .td-pisteet {
-  width: 5rem;
   border-left: 1px solid silver;
   border-right: 1px solid silver;
 }
