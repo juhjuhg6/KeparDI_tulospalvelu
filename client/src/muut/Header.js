@@ -24,7 +24,7 @@ function Header({ kausienJaKilpailujenNimet, valikkoAuki, setValikkoAuki }) {
       {valikkoAuki
       ? <>
         <ul>
-          {kausienJaKilpailujenNimet.map(kausi => <>
+          {kausienJaKilpailujenNimet.map(kausi => <div key={kausi.id}>
             <li onClick={() => setValittuKausi(kausi.id)} className='li-kausi'
               style={{ color: kausi.id === aktiivinenKausi.id ? '#FFCC00' : 'whitesmoke' }}>
               {kausi.nimi}
@@ -39,18 +39,18 @@ function Header({ kausienJaKilpailujenNimet, valikkoAuki, setValikkoAuki }) {
                     Kokonaispisteet
                   </Link>
                 </li>
-                {kausi.kilpailut.map(k => <>
-                  <li className='li-kilpailu'>
+                {kausi.kilpailut.map(k =>
+                  <li key={k.id} className='li-kilpailu'>
                     <Link to={`/${kausi.nimi}/${k.nimi}`} onClick={() => setValikkoAuki(false)}
                       style={{ color: k.id === kilpailu._id ? '#FFCC00' : 'whitesmoke' }}>
                       {k.nimi}
                     </Link>
                   </li>
-                </>)}
+                )}
               </ul>
             : <></>
           }
-          </>)}
+          </div>)}
         </ul>
       </> : <></>}
     </div>
