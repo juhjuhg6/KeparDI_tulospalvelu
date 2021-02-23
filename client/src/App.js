@@ -81,7 +81,6 @@ function App(props) {
   }, [props.match.params.kilpailuNimi])
 
   useEffect(() => {
-    console.log('k', kilpailu)
     if (kilpailu._id) {
       setKilpailuHaettu(true)
     }
