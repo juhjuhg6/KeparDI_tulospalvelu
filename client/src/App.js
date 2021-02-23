@@ -73,12 +73,15 @@ function App(props) {
         .catch(err => {
           console.log(err)
         })
+    } else {
+      setKilpailu('Kokonaispisteet')
     }
 
     // eslint-disable-next-line
   }, [props.match.params.kilpailuNimi])
 
   useEffect(() => {
+    console.log('k', kilpailu)
     if (kilpailu._id) {
       setKilpailuHaettu(true)
     }
@@ -115,8 +118,7 @@ function App(props) {
       <Header kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} valikkoAuki={valikkoAuki}
         setValikkoAuki={setValikkoAuki} />
 
-      {!valikkoAuki
-      ? <>
+      <div style={valikkoAuki ? {visibility: 'hidden', height: '0'} : {visibility: 'visible'}}>
         {kirjauduttu
           ? <>
             <LisääKausiTaiKilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
@@ -130,8 +132,7 @@ function App(props) {
         : <></>}
 
         <Kirjautuminen />
-      </> : <></>
-      }
+      </div>
     </Context.Provider>
   )
 }

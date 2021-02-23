@@ -52,7 +52,11 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
           <tr>
             <th>Nimi</th>
             {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut.map(kilpailu =>
-              <th key={kilpailu.id}><Link className='th-kilpailun-nimi'>{kilpailu.nimi}</Link></th>)}
+              <th key={kilpailu.id}>
+                <Link to={`/${aktiivinenKausi.nimi}/${kilpailu.nimi}`} className='th-kilpailun-nimi'>
+                  {kilpailu.nimi}
+                </Link>
+              </th>)}
             <th>Kokonaispisteet</th>
           </tr>
         </thead>

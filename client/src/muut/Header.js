@@ -8,9 +8,7 @@ function Header({ kausienJaKilpailujenNimet, valikkoAuki, setValikkoAuki }) {
   const [valittuKausi, setValittuKausi] = useState(aktiivinenKausi.id)
 
   function menuClickHandler() {
-    if (valikkoAuki) {
-      setValittuKausi(aktiivinenKausi.id)
-    }
+    setValittuKausi(aktiivinenKausi.id)
     setValikkoAuki(!valikkoAuki)
   }
 
