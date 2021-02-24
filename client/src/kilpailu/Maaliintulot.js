@@ -114,7 +114,13 @@ function Maaliintulot() {
             </tr>
           </thead>
           <tbody>
-            {kilpailu.maaliintulot.map(maaliintulo => <Maaliintulo key={maaliintulo._id}
+            {kilpailu.maaliintulot.sort((a, b) => {
+              if (!a.maaliintuloaika) return 1
+              if (!b.maaliintuloaika) return -1
+              if (a.maaliintuloaika < b.maaliintuloaika) return -1
+              if (a.maaliintuloaika > b.maaliintuloaika) return 1
+              return 0
+            }).map(maaliintulo => <Maaliintulo key={maaliintulo._id}
               maaliintulo={maaliintulo} />)}
           </tbody>
         </table>

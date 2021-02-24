@@ -47,7 +47,11 @@ function Lähtöajat() {
                 </tr>
               </thead>
               <tbody>
-                {sarja.kilpailijat.map(kilpailija => <Lähtöaika  key={kilpailija._id}
+                {sarja.kilpailijat.sort((a, b) => {
+                  if (a.kilpailut[kilpailu._id].lahtoaika < b.kilpailut[kilpailu._id].lahtoaika) return -1
+                  if (a.kilpailut[kilpailu._id].lahtoaika > b.kilpailut[kilpailu._id].lahtoaika) return 1
+                  return 0
+                }).map(kilpailija => <Lähtöaika  key={kilpailija._id}
                   kilpailija={kilpailija} sarja={sarja} momentFormat={momentFormat} />)}
               </tbody>
             </table>
