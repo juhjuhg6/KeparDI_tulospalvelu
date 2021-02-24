@@ -445,7 +445,7 @@ Kilpailu
 #### Hae (ja päivitä) kauden kaikkien kilpailujen pisteet
 Pyyntö:
 ```
-GET api/pisteet/:kausiId
+GET api/pisteet/:kausiId?pakotaPistelasku={boolean}
 ```
 Vastaus:
 ```
@@ -455,7 +455,7 @@ Vastaus:
 #### Hae (ja päivitä) kilpailun pisteet
 Pyyntö:
 ```
-GET api/pisteet/:kausiId/:kilpailuId
+GET api/pisteet/:kausiId/:kilpailuId?pakotaPistelasku={boolean}
 ```
 Vastaus:
 ```
