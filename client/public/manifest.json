@@ -2,5 +2,6 @@
   "short_name": "KeparDI tulospalvelu",
   "name": "KeparDI tulospalvelu",
   "start_url": ".",
-  "display": "standalone"
+  "display": "standalone",
+  "theme_color": "#FFCC00"
 }
