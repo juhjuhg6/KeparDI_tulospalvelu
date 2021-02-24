@@ -9,8 +9,17 @@ import KilpailunMuokkaus from '../kilpailunMuokkaus/KilpailunMuokkaus'
 function Kilpailu({ päivitäKausienJaKilpailujenNimet }) {
   const { kilpailu, kirjauduttu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
 
-  const [näytettäväData, setNäytettäväData] = useState('lähtöajat')
+  const [näytettäväData, setNäytettäväData] = useState()
   const [kilpailunMuokkaus, setKilpailunMuokkaus] = useState(false)
+
+  useEffect(() => {
+    if (kilpailu.maaliintulot.length !== 0) {
+      setNäytettäväData('tulokset')
+    } else {
+      setNäytettäväData('lähtöajat')
+    }
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     setKirjauduttu(jwtIsValid())
