@@ -39,7 +39,7 @@ function Kirjautuminen() {
       : kirjautuminen
         ? <>
           <label htmlFor='salasana'>Admin salasana</label>
-          <input ref={salasanaInput} id='salasana' type='text' className='nimi'/>
+          <input ref={salasanaInput} id='salasana' type='password' className='nimi'/>
           <button onClick={kirjaudu} className='btn-green'>Kirjaudu</button>
         </>
         : <button onClick={() => setKirjautuminen(true)} className='btn-yellow'>Kirjaudu</button>
