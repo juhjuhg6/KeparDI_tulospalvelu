@@ -19,6 +19,8 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
 
+    kilpailu.tuloksiaMuutettuViimeksi = new Date()
+
     if (kilpailu.sarjat.some(sarja => sarja.nimi === req.body.nimi)) {
       res.status(400).send('Nimi käytetty jo toisessa sarjassa. Valitse toinen nimi.')
       return
@@ -43,6 +45,8 @@ router.put('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
     const sarja = kilpailu.sarjat.id(req.params.sarjaId)
     if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
+
+    kilpailu.tuloksiaMuutettuViimeksi = new Date()
 
     if (req.body.nimi) {
       sarja.nimi = req.body.nimi
@@ -103,6 +107,8 @@ router.delete('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
     const sarja = kilpailu.sarjat.id(req.params.sarjaId)
     if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
+
+    kilpailu.tuloksiaMuutettuViimeksi = new Date()
 
     const poistaSarja = function () {
       sarja.remove()

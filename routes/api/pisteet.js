@@ -17,9 +17,15 @@ const kilpailijanPisteet = function (voittoAika, kilpailijanAika) {
   return pisteet
 }
 
-const päivitäKilpailunPisteet = function (kilpailu, seuraava) {
+const päivitäKilpailunPisteet = function (kilpailu, pakotaPistelasku, seuraava) {
   if (!kilpailu.sarjat.length) {
     return seuraava()
+  }
+
+  if (pakotaPistelasku !== 'true' && kilpailu.tuloksiaMuutettuViimeksi && kilpailu.pisteetPäivitettyViimeksi) {
+    if (kilpailu.tuloksiaMuutettuViimeksi < kilpailu.pisteetPäivitettyViimeksi) {
+      return seuraava()
+    }
   }
 
   const sarjanPisteet = function (i) {
@@ -212,9 +218,13 @@ router.get('/:kausiId', (req, res) => {
       const kilpailu = kausi.kilpailut[i]
       if (kilpailu) {
         i++
-        return päivitäKilpailunPisteet(kilpailu, kilpailunPisteet)
+        päivitäKilpailunPisteet(kilpailu, req.query.pakotaPistelasku, kilpailunPisteet)
+        
+        kilpailu.pisteetPäivitettyViimeksi = new Date()
+      } else {
+        kausi.save()
+        vastaus()
       }
-      return vastaus()
     }
 
     kilpailunPisteet()
@@ -229,7 +239,11 @@ router.get('/:kausiId/:kilpailuId', (req, res) => {
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpiuId.')
 
-    päivitäKilpailunPisteet(kilpailu, () => lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res))
+    päivitäKilpailunPisteet(kilpailu, req.query.pakotaPistelasku, () => lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res))
+
+    kilpailu.pisteetPäivitettyViimeksi = new Date()
+
+    kausi.save()
   })
 })
 

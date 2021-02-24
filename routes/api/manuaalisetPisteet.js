@@ -18,6 +18,8 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
 
+    kilpailu.tuloksiaMuutettuViimeksi = new Date()
+
     kilpailu.manuaalisetPisteet = req.body.manuaalisetPisteet
     
     kausi.save(err => {
@@ -35,6 +37,8 @@ router.delete('/:kausiId/:kilpailuId', (req, res) => {
     
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
+
+    kilpailu.tuloksiaMuutettuViimeksi = new Date()
     
     kilpailu.manuaalisetPisteet = new Map()
 

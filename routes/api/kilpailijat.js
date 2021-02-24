@@ -22,6 +22,8 @@ router.post('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
     const sarja = kilpailu.sarjat.id(req.params.sarjaId)
     if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
 
+    kilpailu.tuloksiaMuutettuViimeksi = new Date()
+
     const lisääKilpailija = function() {
       Kilpailija.findOne({nimi: req.body.nimi}, (err, kilpailija) => {
         if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
@@ -108,6 +110,9 @@ router.put('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', authorize, (req, res)
       const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
       if (!kilpailu) return handleError(err, res, 'Virhe muokattaessa kilpailijan kilpailudataa.')
 
+      kilpailu.tuloksiaMuutettuViimeksi = new Date()
+      kausi.save()
+
       kilpailija.save(err => {
         if (err) return handleError(err, res, 'Virhe muokattaessa kilpailijan kilpailudataa.')
         lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
@@ -133,6 +138,8 @@ router.delete('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', authorize, (req, r
         if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
         const sarja = kilpailu.sarjat.id(req.params.sarjaId)
         if (!sarja) return handleError(err, res, 'Virheellinen sarjaId.')
+
+        kilpailu.tuloksiaMuutettuViimeksi = new Date()
     
         const spliceIndex = sarja.kilpailijat.indexOf(req.params.kilpailijaId)
         if (spliceIndex === -1) return handleError(err, res, 'Virheellinen kilpailijaId.')

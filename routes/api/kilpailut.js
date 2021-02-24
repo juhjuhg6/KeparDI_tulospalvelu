@@ -74,7 +74,18 @@ router.put('/:kausiId/:kilpailuId', authorize, (req, res) => {
       const vanhaPvm = kilpailu.pvm
       kilpailu.pvm = req.body.pvm
 
-      // muutetaan kilpailijoiden lähtöajat vastaamaan uutta päivämäärää
+      // muutetaan maaliintulot vastaamaan uutta päivämäärää
+      kilpailu.maaliintulot.forEach(maaliintulo => {
+        if (maaliintulo.maaliintuloaika) {
+          let uusiPvm = new Date()
+          uusiPvm.setTime(Date.parse(req.body.pvm))
+          let pvmErotus = uusiPvm - vanhaPvm
+
+          maaliintulo.maaliintuloaika = maaliintulo.maaliintuloaika.getTime() + pvmErotus
+        }
+      })
+
+      // muutetaan kilpailijoiden lähtöajat ja maaliajat vastaamaan uutta päivämäärää
       let kilpailijaIdt = []
       kilpailu.sarjat.forEach(sarja => kilpailijaIdt = kilpailijaIdt.concat(sarja.kilpailijat))
 
@@ -92,10 +103,12 @@ router.put('/:kausiId/:kilpailuId', authorize, (req, res) => {
           let pvmErotus = uusiPvm - vanhaPvm
 
           let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
-          if (!kilpailudata.lahtoaika) {
-            päivitäLähtoaika(i+1)
+          if (kilpailudata.lahtoaika) {
+            kilpailudata.lahtoaika = kilpailudata.lahtoaika.getTime() + pvmErotus
           }
-          kilpailudata.lahtoaika = kilpailudata.lahtoaika.getTime() + pvmErotus
+          if (kilpailudata.maaliaika) {
+            kilpailudata.maaliaika = kilpailudata.maaliaika.getTime() + pvmErotus
+          }
           kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
           
           kilpailija.save(err => {

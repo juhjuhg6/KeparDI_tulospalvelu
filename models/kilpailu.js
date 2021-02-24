@@ -11,7 +11,9 @@ const KilpailuSchema = new Schema({
   sarjat: [Sarja],
   maaliintulot: [Maaliintulo],
   jarjestajat: [String],
-  manuaalisetPisteet: {type: Map, of: Number, required: true, default: {}}
+  manuaalisetPisteet: { type: Map, of: Number, required: true, default: {} },
+  tuloksiaMuutettuViimeksi: Date,
+  pisteetPäivitettyViimeksi: Date
 })
 
 module.exports = KilpailuSchema

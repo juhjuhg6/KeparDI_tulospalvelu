@@ -19,6 +19,8 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
     const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
 
+    kilpailu.tuloksiaMuutettuViimeksi = new Date()
+
     if (kilpailu.maaliintulot.some(maaliintulo => maaliintulo.kilpailija === req.body.kilpailija)) {
       return res.status(400).send('Kilpailijalla on jo maaliaika')
     }
@@ -90,6 +92,8 @@ router.put('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
     const maaliintulo = kilpailu.maaliintulot.id(req.params.maaliintuloId)
     if (!maaliintulo) return handleError(err, res, 'Virheellinen maaliintuloId.')
+
+    kilpailu.tuloksiaMuutettuViimeksi = new Date()
 
     // jos kyseisellä kilpailijalla on jo toinen maaliintulo tallennettuna, niin poistetaan
     // kilpailija siitä maaliintulosta
@@ -190,6 +194,8 @@ router.delete('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
     if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
     const maaliintulo = kilpailu.maaliintulot.id(req.params.maaliintuloId)
     if (!maaliintulo) return handleError(err, res, 'Virheellinen maaliintuloId.')
+
+    kilpailu.tuloksiaMuutettuViimeksi = new Date()
 
     const poistaMaaliintulo = function () {
       maaliintulo.remove()
