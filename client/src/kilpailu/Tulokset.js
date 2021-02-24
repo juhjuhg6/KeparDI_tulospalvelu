@@ -3,6 +3,7 @@ import axios from 'axios'
 import moment from 'moment'
 import Context from '../Context'
 import Tulos from './Tulos'
+import PisteidenLataus from '../muut/PisteidenLataus'
 
 function Tulokset() {
   const { kilpailu, setKilpailu, aktiivinenKausi } = useContext(Context)
@@ -102,10 +103,10 @@ function Tulokset() {
   return (
     <div>
       <button onClick={() => haePisteet(true)} className='btn-yellow'>Päivitä pisteet</button>
-      
+
       <div className='flex-container'><div className='table-container'>
         {!pisteetLaskettu
-        ? <p>Pisteitä lasketaan...</p>
+        ? <PisteidenLataus />
         : kilpailu.sarjat.map(sarja =>
             <div key={sarja._id}>
               <h4>{sarja.nimi}</h4>

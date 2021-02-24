@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Context from '../Context'
+import PisteidenLataus from './PisteidenLataus'
 
 function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
   const { aktiivinenKausi } = useContext(Context)
@@ -85,7 +86,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
         </table>
 
         <button onClick={() => haePisteet(true)} className='btn-yellow'>Päivitä pisteet</button>
-      </> : <>Lasketaan pisteitä...</>}
+      </> : <PisteidenLataus />}
     </div>
   )
 }
