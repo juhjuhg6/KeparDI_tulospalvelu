@@ -1,11 +1,23 @@
 import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import Context from '../Context'
+import logo from '../resources/logo_43x40.png'
 
 function Header({ kausienJaKilpailujenNimet, valikkoAuki, setValikkoAuki }) {
   const { kilpailu, aktiivinenKausi } = useContext(Context)
 
   const [valittuKausi, setValittuKausi] = useState(aktiivinenKausi.id)
+
+  const imgStyle = {
+    position: 'absolute',
+    paddingTop: '1.3rem',
+    paddingLeft: '0.3rem'
+  }
+
+  const headerStyle = {
+    marginBottom: valikkoAuki ? '-2rem' : '0',
+    position: 'relative'
+  }
 
   function menuClickHandler() {
     setValittuKausi(aktiivinenKausi.id)
@@ -13,9 +25,19 @@ function Header({ kausienJaKilpailujenNimet, valikkoAuki, setValikkoAuki }) {
   }
 
   return (
-    <div className='header' style={{ marginBottom: valikkoAuki ? '-2rem' : '0' }}>
-      <h1>KeparDI</h1>
-      <h1>Tulospalvelu</h1>
+    <div className='header' style={headerStyle}>
+      <a href='https://webpages.tuni.fi/kepardi' style={{padding: 0}}>
+        <img src={logo} alt='Keijo Kepardi' style={imgStyle} />
+      </a>
+      {window.innerWidth < 352
+      ? <></> :
+        <h1 style={{marginLeft: '4rem'}}>
+          <a href='https://webpages.tuni.fi/kepardi' style={{ padding: 0 }}>KeparDI</a>
+        </h1>
+      }
+      <h1 style={{marginLeft: window.innerWidth < 352 ? '4rem' : 0}}>
+        <Link to='/' style={{padding: 0}}>Tulospalvelu</Link>
+      </h1>
       <button onClick={menuClickHandler} className='btn-menu'>
         {valikkoAuki ? <>Sulje</> : <>Kaudet</>}
       </button>
