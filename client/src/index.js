@@ -7,6 +7,10 @@ import './style/index.css'
 import './style/header.css'
 import './style/table.css'
 
+if (process.env.REACT_APP_BASE_URL) {
+  axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
+}
+
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('jwt')
 
 ReactDOM.render(
