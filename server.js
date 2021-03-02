@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const path = require('path')
+const cors = require('cors')
 
 const authorize = require('./authorize.js')
 
@@ -11,6 +12,7 @@ const app = express()
 const PORT = process.env.PORT || 3001
 
 // middleware
+app.use(cors())
 app.use(express.json())
 
 // yhteys tietokantaan
