@@ -36,7 +36,7 @@ function Header({ kausienJaKilpailujenNimet, valikkoAuki, setValikkoAuki }) {
         </h1>
       }
       <h1 style={{marginLeft: window.innerWidth < 352 ? '4rem' : 0}}>
-        <Link to='/' style={{padding: 0}}>Tulospalvelu</Link>
+        <Link to={`${process.env.PUBLIC_URL}/`} style={{padding: 0}}>Tulospalvelu</Link>
       </h1>
       <button onClick={menuClickHandler} className='btn-menu'>
         {valikkoAuki ? <>Sulje</> : <>Kaudet</>}
@@ -53,7 +53,7 @@ function Header({ kausienJaKilpailujenNimet, valikkoAuki, setValikkoAuki }) {
             ?
               <ul>
                 <li className='li-kilpailu'>
-                  <Link to={`/${kausi.nimi}/Kokonaispisteet`} onClick={() => setValikkoAuki(false)}
+                  <Link to={`${process.env.PUBLIC_URL}/${kausi.nimi}/Kokonaispisteet`} onClick={() => setValikkoAuki(false)}
                     style={{ color: kilpailu === 'Kokonaispisteet' &&
                     kausi.id === aktiivinenKausi.id ? '#FFCC00' : 'whitesmoke' }}>
                     Kokonaispisteet
@@ -61,7 +61,7 @@ function Header({ kausienJaKilpailujenNimet, valikkoAuki, setValikkoAuki }) {
                 </li>
                 {kausi.kilpailut.map(k =>
                   <li key={k.id} className='li-kilpailu'>
-                    <Link to={`/${kausi.nimi}/${k.nimi}`} onClick={() => setValikkoAuki(false)}
+                    <Link to={`${process.env.PUBLIC_URL}/${kausi.nimi}/${k.nimi}`} onClick={() => setValikkoAuki(false)}
                       style={{ color: k.id === kilpailu._id ? '#FFCC00' : 'whitesmoke' }}>
                       {k.nimi}
                     </Link>
