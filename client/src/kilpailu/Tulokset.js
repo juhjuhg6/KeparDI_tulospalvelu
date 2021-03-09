@@ -9,11 +9,14 @@ function Tulokset() {
   const { kilpailu, setKilpailu, aktiivinenKausi } = useContext(Context)
 
   const [pisteetLaskettu, setPisteetLaskettu] = useState(false)
+  const [komponenttiKiinnitetty, setKomponenttiKiinnitetty] = useState(true)
 
   const muokattuKilpailu = useRef(null)
 
   useEffect(() => {
     haePisteet(false)
+
+    return (() => setKomponenttiKiinnitetty(false))
     // eslint-disable-next-line
   }, [])
 
@@ -21,6 +24,8 @@ function Tulokset() {
     setPisteetLaskettu(false)
     axios.get(`/api/pisteet/${aktiivinenKausi.id}/${kilpailu._id}`, {params: {pakotaPistelasku}})
       .then(vastaus => {
+        if (!komponenttiKiinnitetty) return
+        
         const kilpailu = vastaus.data
         setKilpailu(kilpailu)
 
