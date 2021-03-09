@@ -4,7 +4,7 @@ Tämä projekti on luotu [KeparDI](https://webpages.tuni.fi/kepardi)a, eli Tampe
 
 ## Demo
 
-Tulospalvelu ei ole vielä käyttöönottovalmis, mutta aina viimeisimmästä versiosta on vapaasti kokeiltavissa oleva demo osoitteessa https://kepardi-tulospalvelu-demo.herokuapp.com/. Demon ensimmäinen lataus saattaa kestää jopa kymmeniä sekunteja, kun palvelin herää. Demon admin salasana kirjautumiseen on `demo-salasana`.
+Viimeisimmästä versiosta on vapaasti kokeiltavissa oleva demo osoitteessa https://kepardi-tulospalvelu-demo.herokuapp.com/. Demon ensimmäinen lataus saattaa kestää jopa kymmeniä sekunteja, kun palvelin herää. Demon admin salasana kirjautumiseen on `demo-salasana`.
 
 ## Rajapintadokumentaatio
 
