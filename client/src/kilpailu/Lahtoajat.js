@@ -3,11 +3,13 @@ import moment from 'moment'
 import Context from '../Context'
 import Lähtöaika from './Lahtoaika'
 import UusiKilpailija from './UusiKilpailija'
+import LähtöaikojenAsetus from './LahtoaikojenAsetus'
 
 function Lähtöajat() {
   const { kilpailu, kirjauduttu } = useContext(Context)
 
   const [kilpailijanLisäys, setKilpailijanLisäys] = useState(false)
+  const [lähtöaikojenMuokkaus, setLähtöaikojenMuokkaus] = useState(false)
   const [momentFormat, setMomentFormat] = useState('HH.mm')
   
   useEffect(() => {
@@ -27,13 +29,18 @@ function Lähtöajat() {
 
   return (
     <div>
-      {!kilpailijanLisäys
+      {!kilpailijanLisäys && !lähtöaikojenMuokkaus
         ? kirjauduttu
-            ? <button onClick={() => setKilpailijanLisäys(true)} className='btn-yellow'>Lisää kilpailija</button>
+            ? <>
+                <button onClick={() => setKilpailijanLisäys(true)} className='btn-yellow'>Lisää kilpailija</button>
+                <button onClick={() => setLähtöaikojenMuokkaus(true)} className='btn-yellow'>Arvo lähtöajat</button>
+              </>
             : kilpailu.ilmoittautuminenDl && moment(kilpailu.ilmoittautuminenDl) > Date.now()
               ? <button onClick={() => setKilpailijanLisäys(true)} className='btn-green'>Ilmoittaudu</button>
               : <></>
-        : <UusiKilpailija setKilpailijanLisäys={setKilpailijanLisäys} />
+        : kilpailijanLisäys
+            ? <UusiKilpailija setKilpailijanLisäys={setKilpailijanLisäys} />
+            : <LähtöaikojenAsetus setLähtöaikojenMuokkaus={setLähtöaikojenMuokkaus} />
       }
       <div className='flex-container'><div className='table-container'>
         {kilpailu.sarjat

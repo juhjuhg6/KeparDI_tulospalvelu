@@ -20,6 +20,7 @@
     * [Sarjat](#sarjat)
         * [Luo uusi sarja*](#luo-uusi-sarja)
         * [Muokkaa sarjaa*](#muokkaa-sarjaa)
+        * [Arvo ja aseta lähtöajat sarjan kilpailijoille*](#arvo-ja-aseta-lähtöajat-sarjan-kilpailijoille)
         * [Poista sarja*](#poista-sarja)
     * [Kilpailijat](#kilpailijat)
         * [Lisää kilpailija sarjaan(*)](#lisää-kilpailija-sarjaan)
@@ -307,6 +308,26 @@ Body:
     ]),
     ("lasketaanPisteet": boolean)
 }
+```
+Vastaus:
+```
+Kilpailu
+```
+---
+#### Arvo ja aseta lähtöajat sarjan kilpailijoille*
+Pyyntö:
+```
+PUT api/sarjat/lahtoajat/:kausiId/:kilpailuId/:sarjaId
+
+Body:
+{
+    "ensimmäinenLähtöaika": string (ISO 8601),
+    ("lähtöväli": number (millisekunti))
+}
+```
+Vastaus:
+```
+Kilpailu
 ```
 ---
 #### Poista sarja*

@@ -11,6 +11,14 @@ const handleError = function (err, res, message) {
   res.status(500).send(message)
 }
 
+const sekoitaLista = function (lista) {
+  for (let i = lista.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [lista[i], lista[j]] = [lista[j], lista[i]]
+  }
+  return lista
+}
+
 // luo uusi sarja
 router.post('/:kausiId/:kilpailuId', (req, res) => {
   Kausi.findById(req.params.kausiId, (err, kausi) => {
@@ -95,6 +103,55 @@ router.put('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
     } else {
       tallennaSarja()
     }
+  })
+})
+
+// arvo ja aseta lähtöajat sarjalle
+router.put('/lahtoajat/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
+  Kausi.findById(req.params.kausiId, (err, kausi) => {
+    if (err) return handleError(err, res, 'Virhe asetettaessa lähtöaikoja.')
+
+    if (!req.body.ensimmäinenLähtöaika) {
+      return handleError(err, res, 'Ensimmäistä lähtöaikaa ei ole määritetty.')
+    }
+
+    const kilpailu = kausi.kilpailut.id(req.params.kilpailuId)
+    if (!kilpailu) return handleError(err, res, 'Virheellinen kilpailuId.')
+    const sarja = kilpailu.sarjat.id(req.params.sarjaId)
+    if (!sarja) return handelError(err, res, 'Virheellinen sarjaId.')
+
+    kilpailu.tuloksiaMuutettuViimeksi = new Date()
+
+    Kilpailija.find({ '_id': { $in: sarja.kilpailijat } }, (err, kilpailijat) => {
+      if (err) return handleError(err, res, 'Virhe asetettaessa lähtöaikoja.')
+
+      const ensimmäinenLähtöaika = Date.parse(req.body.ensimmäinenLähtöaika)
+      const lähtöväli = parseInt(req.body.lähtöväli)
+
+      kilpailijat = sekoitaLista(kilpailijat)
+
+      let promises = []
+
+      for (let i = 0; i < kilpailijat.length; i++) {
+        const kilpailija = kilpailijat[i]
+
+        let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
+        kilpailudata.lahtoaika = new Date(ensimmäinenLähtöaika + i * lähtöväli || ensimmäinenLähtöaika)
+        kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+
+        promises.push(kilpailija.save())
+      }
+
+      Promise.all(promises)
+        .then(() => {
+          kausi.save(err => {
+            if (err) return handleError(err, res, 'Virhe asetettaessa lähtöaikoja.')
+
+            lähetäVastaus(JSON.parse(JSON.stringify(kilpailu)), res)
+          })
+        })
+        .catch(err => handleError(err, res, 'Virhe asetettaessa lähtöaikoja.'))
+    })
   })
 })
 
