@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 import Lähtöajat from './Lahtoajat'
@@ -28,7 +29,11 @@ function Kilpailu({ päivitäKausienJaKilpailujenNimet }) {
 
   return(
     <div>
-      <h3>{aktiivinenKausi.nimi}</h3>
+      <h3>
+        <Link to={`${process.env.PUBLIC_URL}/${aktiivinenKausi.nimi}`} style={{color: '#3e434c'}}>
+          {aktiivinenKausi.nimi}
+        </Link>
+      </h3>
       <h3>{kilpailu.nimi}</h3>
 
       {!kilpailunMuokkaus
