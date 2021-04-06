@@ -144,6 +144,7 @@ router.delete('/:kausiId/:kilpailuId/:sarjaId/:kilpailijaId', authorize, (req, r
         const spliceIndex = sarja.kilpailijat.indexOf(req.params.kilpailijaId)
         if (spliceIndex === -1) return handleError(err, res, 'Virheellinen kilpailijaId.')
         sarja.kilpailijat.splice(spliceIndex, 1)
+        kilpailu.maaliintulot = kilpailu.maaliintulot.filter(maaliintulo => maaliintulo.kilpailija !== kilpailija._id.toString())
     
         kausi.save(err => {
           if (err) return handleError(err, res, 'Virhe poistettaessa kilpailijaa kilpailusta.')
