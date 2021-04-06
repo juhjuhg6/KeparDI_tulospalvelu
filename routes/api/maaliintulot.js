@@ -214,6 +214,7 @@ router.delete('/:kausiId/:kilpailuId/:maaliintuloId', (req, res) => {
 
         let kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
         kilpailudata.maaliaika = null
+        kilpailudata.muuTulos = null
         kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
 
         kilpailija.save((err, kilpailija) => {
