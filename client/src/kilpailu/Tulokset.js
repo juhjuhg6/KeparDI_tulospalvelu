@@ -57,6 +57,9 @@ function Tulokset() {
             let edellinenSija
 
             sarja.kilpailijat.forEach(kilpailija => {
+              if (!kilpailija.kilpailut[kilpailu._id].maaliaika || !kilpailija.kilpailut[kilpailu._id].lahtoaika) {
+                return
+              }
               i++
               const kilpailijanAika = moment(kilpailija.kilpailut[kilpailu._id].maaliaika) -
                 moment(kilpailija.kilpailut[kilpailu._id].lahtoaika)
@@ -125,8 +128,13 @@ function Tulokset() {
                   </tr>
                 </thead>
                 <tbody>
-                  {sarja.kilpailijat.map(kilpailija => <Tulos key={kilpailija._id}
-                    kilpailija={kilpailija} sarja={sarja} />)}
+                  {sarja.kilpailijat.map(kilpailija => {
+                    return (
+                      Object.keys(kilpailu.manuaalisetPisteet).length !== 0 || (kilpailija.kilpailut[kilpailu._id].lahtoaika &&
+                      (kilpailija.kilpailut[kilpailu._id].maaliaika || kilpailija.kilpailut[kilpailu._id].muuTulos))
+                      ? <Tulos key={kilpailija._id} kilpailija={kilpailija} sarja={sarja} />
+                      : <></>)
+                  })}
                 </tbody>
               </table>
             </div>)}
