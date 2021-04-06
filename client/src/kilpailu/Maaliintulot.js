@@ -4,6 +4,7 @@ import moment from 'moment'
 import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 import Maaliintulo from './Maaliintulo.js'
+import UusiKilpailija from './UusiKilpailija'
 
 function Maaliintulot() {
   const { kilpailu, setKilpailu, aktiivinenKausi, kirjauduttu, setKirjauduttu } = useContext(Context)
@@ -14,6 +15,7 @@ function Maaliintulot() {
   const nimiInput = useRef(null)
   const aikaInput = useRef(null)
   const muuTulosSelect = useRef(null)
+  const kilpailijaLista = useRef(null)
 
   useEffect(() => {
     const ajastin = setInterval(() => setAika(moment()), 1000)
@@ -80,6 +82,22 @@ function Maaliintulot() {
       })
   }
 
+  function päivitäKilpailijaLista() {
+    const kilpailijat = kilpailijaLista.current.getElementsByTagName('li')
+    for (const kilpailija of kilpailijat) {
+      const filter = nimiInput.current.value.toLowerCase()
+      if (kilpailija.textContent.toLowerCase().indexOf(filter) > -1) {
+        kilpailija.style.display = 'block'
+      } else {
+        kilpailija.style.display = 'none'
+      }
+    }
+  }
+
+  function joo(e) {
+    nimiInput.current.value = e.target.textContent
+  }
+
   if (!kirjauduttu) return(<></>)
 
   return (
@@ -87,7 +105,14 @@ function Maaliintulot() {
       <p>Uusi maaliintulo:</p>
       <div>
         <label htmlFor='nimi'>Nimi:</label>
-        <input ref={nimiInput} id='nimi' className='nimi'/>
+        <div className='maaliintulo-nimi-input-container'>
+          <input ref={nimiInput} id='nimi' className='nimi maaliintulo-nimi-input'
+            onChange={() => päivitäKilpailijaLista()} onClick={() => päivitäKilpailijaLista()}/>
+          <ul ref={kilpailijaLista} className='input-dropdown'>
+            {kilpailu.kaikkiKilpailijat.map(kilpailija => <li key={kilpailija.id}
+              className='input-dropdown-item' onClick={(e) => joo(e)}>{kilpailija.nimi}</li>)}
+          </ul>
+        </div>
       </div>
       <div>
         <label htmlFor='maaliintuloaika'>Maaliintuloaika:</label>

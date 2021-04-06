@@ -6,6 +6,7 @@ import axios from 'axios'
 import './style/index.css'
 import './style/header.css'
 import './style/table.css'
+import './style/maaliintulo.css'
 
 if (process.env.PUBLIC_URL) {
   axios.defaults.baseURL = process.env.PUBLIC_URL

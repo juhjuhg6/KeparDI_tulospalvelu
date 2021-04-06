@@ -1,0 +1,40 @@
+.maaliintulo-nimi-input-container {
+  position: relative;
+  display: inline-block;
+}
+
+.maaliintulo-nimi-input:focus + .input-dropdown {
+  display: block;
+}
+
+.input-dropdown {
+  display: none;
+  position: absolute;
+  margin: 0;
+  width: 15rem;
+  max-height: 15rem;
+  overflow: auto;
+  white-space: nowrap;
+  bottom: -12.5rem;
+  transform: translateY(-15rem);
+  background-color: white;
+  border: 1px solid;
+  border-radius: 0.4rem;
+  border-color: #ff9900;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.input-dropdown:active {
+  display: block;
+}
+
+.input-dropdown-item {
+  position: relative;
+  padding: 0 0.5rem;
+  overflow: hidden;
+}
+
+.input-dropdown-item:hover {
+  background-color: white;
+}
