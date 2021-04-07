@@ -13,12 +13,14 @@ h1 {
   display: inline-block;
 }
 
-.btn-menu {
-  background-color: whitesmoke;
-  float: right;
-  margin: 2rem;
-  font-size: 1.6rem;
-  font-weight: bold;
+.menu-icon-container {
+  display: inline-block;
+}
+
+.menu-icon {
+  top: 0.4rem;
+  right: 0.8rem;
+  cursor: pointer;
 }
 
 a {

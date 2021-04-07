@@ -4,9 +4,7 @@ import Context from './Context'
 import jwtIsValid from './helpers/jwtIsValid'
 import Header from './muut/Header'
 import Kilpailu from './kilpailu/Kilpailu'
-import LisääKausiTaiKilpailu from './muut/LisaaKausiTaiKilpailu'
 import Kokonaispisteet from './muut/Kokonaispisteet'
-import Kirjautuminen from './muut/Kirjautuminen'
 
 function App(props) {
   const [kirjauduttu, setKirjauduttu] = useState(false)
@@ -115,22 +113,15 @@ function App(props) {
   return (
     <Context.Provider value={{ kilpailu, setKilpailu, aktiivinenKausi, kirjauduttu, setKirjauduttu }}>
       <Header kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} valikkoAuki={valikkoAuki}
-        setValikkoAuki={setValikkoAuki} />
+        setValikkoAuki={setValikkoAuki} päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
 
       <div style={valikkoAuki ? {visibility: 'hidden', height: '0'} : {visibility: 'visible'}}>
-        {kirjauduttu
-          ? <>
-            <LisääKausiTaiKilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
-          </> : <></>}
-
         {kilpailu === 'Kokonaispisteet'
         ? <Kokonaispisteet kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} />
         : <></>}
         {kilpailuHaettu
         ? <Kilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
         : <></>}
-
-        <Kirjautuminen />
       </div>
     </Context.Provider>
   )
