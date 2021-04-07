@@ -4,7 +4,6 @@ import moment from 'moment'
 import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 import Maaliintulo from './Maaliintulo.js'
-import UusiKilpailija from './UusiKilpailija'
 
 function Maaliintulot() {
   const { kilpailu, setKilpailu, aktiivinenKausi, kirjauduttu, setKirjauduttu } = useContext(Context)
