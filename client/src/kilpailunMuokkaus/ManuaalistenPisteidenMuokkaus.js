@@ -8,6 +8,7 @@ function ManuaalistenPisteidenMuokkaus({ setMuokattava }) {
   const { kilpailu, setKilpailu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
 
   const [uudetManuaalisetPisteet, setUudetManuaalisetPisteet] = useState({ ...kilpailu.manuaalisetPisteet })
+  const [vahvistaPoisto, setVahvistaPoisto] = useState(false)
 
   function asetaManuaalisetPisteet() {
     if (!jwtIsValid()) {
@@ -73,8 +74,15 @@ function ManuaalistenPisteidenMuokkaus({ setMuokattava }) {
         </tbody>
       </table>
 
-      <button onClick={poistaManuaalisetPisteet} className='btn-red'>Poista kaikki manuaaliset pisteet</button>
-      <button onClick={asetaManuaalisetPisteet} className='btn-green'>Tallenna</button>
+      {!vahvistaPoisto
+        ? <>
+          <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista kaikki manuaaliset pisteet</button>
+          <button onClick={asetaManuaalisetPisteet} className='btn-green'>Tallenna</button>
+        </> : <>
+          <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
+          <button onClick={poistaManuaalisetPisteet} className='btn-red'>Poista kaikki manuaaliset pisteet</button>
+        </>
+      }
     </>
   )
 }

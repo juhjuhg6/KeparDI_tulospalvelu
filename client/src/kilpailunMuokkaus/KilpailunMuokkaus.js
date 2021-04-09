@@ -11,6 +11,7 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
   const { kilpailu, setKilpailu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
 
   const [muokattava, setMuokattava] = useState('')
+  const [vahvistaPoisto, setVahvistaPoisto] = useState(false)
 
   const kilpailunNimiInput = useRef(null)
   const pvmInput = useRef(null)
@@ -132,7 +133,13 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
         </div>
 
         <br /><br />
-        <button onClick={poistaKilpailu} className='btn-red'>Poista kilpailu</button>
+        {!vahvistaPoisto
+          ? <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista kilpailu</button>
+          : <>
+            <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
+            <button onClick={poistaKilpailu} className='btn-red'>Vahvista kilpailun poistaminen</button>
+          </>
+        }
         </> : <></>}
 
       {muokattava === 'sarjat'

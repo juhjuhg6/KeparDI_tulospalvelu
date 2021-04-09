@@ -9,6 +9,8 @@ function Lähtöaika({ kilpailija, sarja, momentFormat }) {
 
   const [muokkaus, setMuokkaus] = useState(false)
   const [tallentaa, setTallentaa] = useState(false)
+  const [vahvistaPoisto, setVahvistaPoisto] = useState(false)
+  const [poistetaan, setPoistetaan] = useState(false)
 
   const aikaInput = useRef(null)
 
@@ -61,6 +63,8 @@ function Lähtöaika({ kilpailija, sarja, momentFormat }) {
   }
 
   function poistaKilpailija() {
+    setPoistetaan(true)
+    
     if (!jwtIsValid()) {
       localStorage.removeItem('jwt')
       axios.defaults.headers['Authorization'] = null
@@ -90,10 +94,18 @@ function Lähtöaika({ kilpailija, sarja, momentFormat }) {
       <td>{lähtöaikaStr()}</td>
       <td>
         {kirjauduttu
-          ? <>
-            <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muuta lähtöaikaa</button>
-            <button onClick={poistaKilpailija} className='btn-red'>Poista</button>
-          </> : <></>
+          ? !vahvistaPoisto
+            ? <>
+              <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muuta lähtöaikaa</button>
+              <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista</button>
+            </>
+            : !poistetaan
+              ? <>
+                <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
+                <button onClick={poistaKilpailija} className='btn-red'>Vahvista poisto</button>
+              </>
+              : 'Poistetaan...'
+          : <></>
         }
       </td>
       </> : <>

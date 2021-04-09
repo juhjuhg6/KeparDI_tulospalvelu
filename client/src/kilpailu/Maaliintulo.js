@@ -9,6 +9,8 @@ function Maaliintulo({ maaliintulo }) {
   
   const [muokkaus, setMuokkaus] = useState(false)
   const [tallentaa, setTallentaa] = useState(false)
+  const [vahvistaPoisto, setVahvistaPoisto] = useState(false)
+  const [poistetaan, setPoistetaan] = useState(false)
 
   const nimiInput = useRef(null)
   const aikaInput = useRef(null)
@@ -81,6 +83,8 @@ function Maaliintulo({ maaliintulo }) {
   }
 
   function poistaMaaliaika() {
+    setPoistetaan(true)
+
     if (!jwtIsValid()) {
       localStorage.removeItem('jwt')
       axios.defaults.headers['Authorization'] = null
@@ -114,8 +118,18 @@ function Maaliintulo({ maaliintulo }) {
       <td>{maaliaikaStr()}</td>
       <td>{maaliintulo.muuTulos}</td>
       <td>
-        <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muokkaa</button>
-        <button onClick={poistaMaaliaika} className='btn-red'>Poista</button>
+        {!vahvistaPoisto
+          ? <>
+            <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muokkaa</button>
+            <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista</button>
+          </>
+          : !poistetaan
+            ? <>
+              <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
+              <button onClick={poistaMaaliaika} className='btn-red'>Vahvista poisto</button>
+            </>
+            : 'Poistetaan...'
+        }
       </td>
       </> : <>
       <td><input ref={nimiInput} type='text' defaultValue={maaliintulo.kilpailija

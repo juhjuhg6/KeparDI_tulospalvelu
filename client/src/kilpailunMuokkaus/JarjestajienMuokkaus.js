@@ -1,10 +1,13 @@
-import React, { useRef, useContext } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 import axios from 'axios'
 
 function JärjestäjienMuokkaus() {
   const { kilpailu, setKilpailu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
+
+  const [vahvistaPoisto, setVahvistaPoisto] = useState() //poistettavan järjestäjän id
+  const [poistetaan, setPoistetaan] = useState() //poistettavan järjestäjän id
 
   const järjestäjänNimiInput = useRef(null)
 
@@ -34,6 +37,8 @@ function JärjestäjienMuokkaus() {
   }
 
   function poistaJärjestäjä(järjestäjäId) {
+    setPoistetaan(järjestäjäId)
+
     if (!jwtIsValid()) {
       localStorage.removeItem('jwt')
       axios.defaults.headers['Authorization'] = null
@@ -44,6 +49,8 @@ function JärjestäjienMuokkaus() {
     axios.delete(`/api/jarjestajat/${aktiivinenKausi.id}/${kilpailu._id}/${järjestäjäId}`)
       .then(vastaus => {
         setKilpailu(vastaus.data)
+        setPoistetaan(null)
+        setVahvistaPoisto(null)
       })
       .catch(err => {
         if (err.response.status === 401) {
@@ -65,7 +72,17 @@ function JärjestäjienMuokkaus() {
         <tbody>
           {kilpailu.jarjestajat.map(järjestäjä => <tr key={järjestäjä._id}>
             <td className='nimi'>{järjestäjä.nimi}</td>
-            <td><button onClick={() => poistaJärjestäjä(järjestäjä._id)} className='btn-red'>Poista</button></td>
+            <td>
+              {vahvistaPoisto !== järjestäjä._id
+                ? <button onClick={() => setVahvistaPoisto(järjestäjä._id)} className='btn-red'>Poista</button>
+                : poistetaan !== järjestäjä._id
+                  ? <>
+                    <button onClick={() => setVahvistaPoisto(null)} className='btn-yellow'>Peruuta</button>
+                    <button onClick={() => poistaJärjestäjä(järjestäjä._id)} className='btn-red'>Vahvista poisto</button>
+                  </>
+                  : 'Poistetaan...'
+              }
+            </td>
           </tr>)}
         </tbody>
       </table>

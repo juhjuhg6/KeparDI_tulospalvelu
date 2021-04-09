@@ -7,6 +7,8 @@ function SarjojenMuokkaus() {
   const { kilpailu, setKilpailu, aktiivinenKausi, setKirjauduttu } = useContext(Context)
 
   const [muokattavaSarja, setMuokattavaSarja] = useState()
+  const [vahvistaPoisto, setVahvistaPoisto] = useState() //poistettavan sarjan id
+  const [poistetaan, setPoistetaan] = useState() //poistettavan sarjan id
 
   const muokattavanSarjanNimiInput = useRef(null)
   const muokattavanSarjanLasketaanPisteetCheckbox = useRef(null)
@@ -68,6 +70,8 @@ function SarjojenMuokkaus() {
   }
 
   function poistaSarja(sarjaId) {
+    setPoistetaan(sarjaId)
+
     if (!jwtIsValid()) {
       localStorage.removeItem('jwt')
       axios.defaults.headers['Authorization'] = null
@@ -78,6 +82,8 @@ function SarjojenMuokkaus() {
     axios.delete(`/api/sarjat/${aktiivinenKausi.id}/${kilpailu._id}/${sarjaId}`)
       .then(vastaus => {
         setKilpailu(vastaus.data)
+        setPoistetaan(null)
+        setVahvistaPoisto(null)
       })
       .catch(err => {
         if (err.response.status === 401) {
@@ -105,8 +111,18 @@ function SarjojenMuokkaus() {
                 <td className='nimi'>{sarja.nimi}</td>
                 <td>{sarja.lasketaanPisteet ? 'Kyllä' : 'Ei'}</td>
                 <td>
-                  <button onClick={() => setMuokattavaSarja(sarja._id)} className='btn-yellow'>Muokkaa</button>
-                  <button onClick={() => poistaSarja(sarja._id)} className='btn-red'>Poista</button>
+                  {vahvistaPoisto !== sarja._id
+                    ? <>
+                      <button onClick={() => setMuokattavaSarja(sarja._id)} className='btn-yellow'>Muokkaa</button>
+                      <button onClick={() => setVahvistaPoisto(sarja._id)} className='btn-red'>Poista</button>
+                    </>
+                    : poistetaan !== sarja._id
+                      ? <>
+                          <button onClick={() => setVahvistaPoisto(null)} className='btn-yellow'>Peruuta</button>
+                          <button onClick={() => poistaSarja(sarja._id)} className='btn-red'>Vahvista poisto</button>
+                        </>
+                      : 'Poistetaan...'
+                  }
                 </td>
               </> : <>
                 <td><input ref={muokattavanSarjanNimiInput} type='text' placeholder={sarja.nimi}
