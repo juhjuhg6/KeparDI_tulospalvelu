@@ -90,35 +90,45 @@ function Lähtöaika({ kilpailija, sarja, momentFormat }) {
     <tr>
       <td className='nimi'>{kilpailija.nimi}</td>
       {!muokkaus || !kirjauduttu
-      ? <>
-      <td>{lähtöaikaStr()}</td>
-      <td>
-        {kirjauduttu
-          ? !vahvistaPoisto
-            ? <>
-              <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muuta lähtöaikaa</button>
-              <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista</button>
-            </>
-            : !poistetaan
-              ? <>
-                <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
-                <button onClick={poistaKilpailija} className='btn-red'>Vahvista poisto</button>
-              </>
-              : 'Poistetaan...'
-          : <></>
-        }
-      </td>
-      </> : <>
-      <td><input ref={aikaInput} type='text' placeholder={lähtöaikaStr()} className='input-aika' /></td>
-      <td>
-        {tallentaa
-        ? 'Tallennetaan...'
-        : <>
-        <button onClick={() => setMuokkaus(false)} className='btn-yellow'>Peruuta</button>
-        <button onClick={muokkaaLähtöaikaa} className='btn-green'>Tallenna</button>
-        </>}
-      </td>
-      </>}
+        ?
+          <>
+            <td>{lähtöaikaStr()}</td>
+            <td>
+              {kirjauduttu &&
+                !vahvistaPoisto
+                  ?
+                    <>
+                      <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muuta lähtöaikaa</button>
+                      <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista</button>
+                    </>
+                  :
+                    !poistetaan
+                      ?
+                        <>
+                          <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
+                          <button onClick={poistaKilpailija} className='btn-red'>Vahvista poisto</button>
+                        </>
+                      :
+                        'Poistetaan...'
+              }
+            </td>
+          </>
+        :
+          <>
+            <td><input ref={aikaInput} type='text' placeholder={lähtöaikaStr()} className='input-aika' /></td>
+            <td>
+              {tallentaa
+                ?
+                  'Tallennetaan...'
+                :
+                  <>
+                    <button onClick={() => setMuokkaus(false)} className='btn-yellow'>Peruuta</button>
+                    <button onClick={muokkaaLähtöaikaa} className='btn-green'>Tallenna</button>
+                  </>
+              }
+            </td>
+          </>
+      }
     </tr>
   )
 }

@@ -116,12 +116,12 @@ function App(props) {
         setValikkoAuki={setValikkoAuki} päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
 
       <div style={valikkoAuki ? {visibility: 'hidden', height: '0'} : {visibility: 'visible'}}>
-        {kilpailu === 'Kokonaispisteet'
-        ? <Kokonaispisteet kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} />
-        : <></>}
-        {kilpailuHaettu
-        ? <Kilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
-        : <></>}
+        {kilpailu === 'Kokonaispisteet' &&
+          <Kokonaispisteet kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} />
+        }
+        {kilpailuHaettu &&
+          <Kilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
+        }
       </div>
     </Context.Provider>
   )

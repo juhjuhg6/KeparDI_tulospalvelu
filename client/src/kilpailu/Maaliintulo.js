@@ -109,49 +109,61 @@ function Maaliintulo({ maaliintulo }) {
   return (
     <tr>
       {!muokkaus
-      ? <>
-      <td className='nimi'>
-        {maaliintulo.kilpailija 
-          ? kilpailijanNimi(maaliintulo.kilpailija)
-          : maaliintulo.nimi}
-      </td>
-      <td>{maaliaikaStr()}</td>
-      <td>{maaliintulo.muuTulos}</td>
-      <td>
-        {!vahvistaPoisto
-          ? <>
-            <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muokkaa</button>
-            <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista</button>
+        ?
+          <>
+            <td className='nimi'>
+              {maaliintulo.kilpailija 
+                ? kilpailijanNimi(maaliintulo.kilpailija)
+                : maaliintulo.nimi}
+            </td>
+            <td>{maaliaikaStr()}</td>
+            <td>{maaliintulo.muuTulos}</td>
+            <td>
+              {!vahvistaPoisto
+                ?
+                  <>
+                    <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muokkaa</button>
+                    <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista</button>
+                  </>
+                :
+                  !poistetaan
+                    ?
+                      <>
+                        <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
+                        <button onClick={poistaMaaliaika} className='btn-red'>Vahvista poisto</button>
+                      </>
+                    :
+                      'Poistetaan...'
+              }
+            </td>
           </>
-          : !poistetaan
-            ? <>
-              <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
-              <button onClick={poistaMaaliaika} className='btn-red'>Vahvista poisto</button>
-            </>
-            : 'Poistetaan...'
-        }
-      </td>
-      </> : <>
-      <td><input ref={nimiInput} type='text' defaultValue={maaliintulo.kilpailija
-        ? kilpailijanNimi(maaliintulo.kilpailija) : maaliintulo.nimi} className='nimi' /></td>
-      <td><input ref={aikaInput} type='text' defaultValue={maaliaikaStr()} className='input-aika' /></td>
-      <td>
-        <select ref={muuTulosSelect} id='muuTulos' defaultValue={maaliintulo.muuTulos}>
-          <option></option>
-          <option value='DNS'>DNS</option>
-          <option value='DNF'>DNF</option>
-          <option value='DSQ'>DSQ</option>
-        </select>
-      </td>
-      <td>
-        {tallentaa
-        ? 'Tallennetaan...'
-        : <>
-        <button onClick={() => setMuokkaus(false)} className='btn-yellow'>Peruuta</button>
-        <button onClick={muokkaaMaaliaikaa} className='btn-green'>Tallenna</button>
-        </>}
-      </td>
-      </>}
+        :
+          <>
+            <td><input ref={nimiInput} type='text'
+              defaultValue={maaliintulo.kilpailija ? kilpailijanNimi(maaliintulo.kilpailija) : maaliintulo.nimi}
+              className='nimi' /></td>
+            <td><input ref={aikaInput} type='text' defaultValue={maaliaikaStr()} className='input-aika' /></td>
+            <td>
+              <select ref={muuTulosSelect} id='muuTulos' defaultValue={maaliintulo.muuTulos}>
+                <option></option>
+                <option value='DNS'>DNS</option>
+                <option value='DNF'>DNF</option>
+                <option value='DSQ'>DSQ</option>
+              </select>
+            </td>
+            <td>
+              {tallentaa
+                ?
+                  'Tallennetaan...'
+                :
+                  <>
+                    <button onClick={() => setMuokkaus(false)} className='btn-yellow'>Peruuta</button>
+                    <button onClick={muokkaaMaaliaikaa} className='btn-green'>Tallenna</button>
+                  </>
+              }
+            </td>
+          </>
+      }
     </tr>
   )
 }

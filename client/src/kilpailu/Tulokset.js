@@ -114,17 +114,16 @@ function Tulokset() {
 
       <div className='flex-container'><div className='table-container'>
         {!pisteetLaskettu
-        ? <PisteidenLataus />
-        : kilpailu.sarjat.map(sarja =>
-            <div key={sarja._id}>
+          ?
+            <PisteidenLataus />
+          :
+            kilpailu.sarjat.map(sarja => <div key={sarja._id}>
               <h4>{sarja.nimi}</h4>
               <table>
                 <thead>
                   <tr>
                     <th>Sija</th><th>Nimi</th><th>Aika</th><th>Ero</th>
-                    {sarja.lasketaanPisteet
-                    ? <th>Pisteet</th>
-                    : <></>}
+                    {sarja.lasketaanPisteet && <th>Pisteet</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -132,29 +131,32 @@ function Tulokset() {
                     return (
                       Object.keys(kilpailu.manuaalisetPisteet).length !== 0 || (kilpailija.kilpailut[kilpailu._id].lahtoaika &&
                       (kilpailija.kilpailut[kilpailu._id].maaliaika || kilpailija.kilpailut[kilpailu._id].muuTulos))
-                      ? <Tulos key={kilpailija._id} kilpailija={kilpailija} sarja={sarja} />
-                      : <></>)
+                        ? <Tulos key={kilpailija._id} kilpailija={kilpailija} sarja={sarja} />
+                        : <></>
+                    )
                   })}
                 </tbody>
               </table>
-            </div>)}
+            </div>)
+        }
 
-        {kilpailu.jarjestajat && kilpailu.jarjestajat.length !== 0 && pisteetLaskettu
-        ? <>
-          <h4>Järjestäjät</h4>
-          <table>
-            <thead>
-              <tr><th>Nimi</th><th>Pisteet</th></tr>
-            </thead>
-            <tbody>
-              {muokattuKilpailu.current.jarjestajat.map(järjestäjä => 
-                <tr key={järjestäjä._id}>
-                  <td className='td-tulokset nimi'>{järjestäjä.nimi}</td><td>{järjestäjä.kilpailut[kilpailu._id].pisteet}</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </> : <></>}
+        {(kilpailu.jarjestajat && kilpailu.jarjestajat.length !== 0 && pisteetLaskettu) &&
+          <>
+            <h4>Järjestäjät</h4>
+            <table>
+              <thead>
+                <tr><th>Nimi</th><th>Pisteet</th></tr>
+              </thead>
+              <tbody>
+                {muokattuKilpailu.current.jarjestajat.map(järjestäjä => 
+                  <tr key={järjestäjä._id}>
+                    <td className='td-tulokset nimi'>{järjestäjä.nimi}</td><td>{järjestäjä.kilpailut[kilpailu._id].pisteet}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </>
+        }
       </div></div>
     </div>
   )

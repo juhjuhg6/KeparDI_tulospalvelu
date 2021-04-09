@@ -74,13 +74,17 @@ function JärjestäjienMuokkaus() {
             <td className='nimi'>{järjestäjä.nimi}</td>
             <td>
               {vahvistaPoisto !== järjestäjä._id
-                ? <button onClick={() => setVahvistaPoisto(järjestäjä._id)} className='btn-red'>Poista</button>
-                : poistetaan !== järjestäjä._id
-                  ? <>
-                    <button onClick={() => setVahvistaPoisto(null)} className='btn-yellow'>Peruuta</button>
-                    <button onClick={() => poistaJärjestäjä(järjestäjä._id)} className='btn-red'>Vahvista poisto</button>
-                  </>
-                  : 'Poistetaan...'
+                ? 
+                  <button onClick={() => setVahvistaPoisto(järjestäjä._id)} className='btn-red'>Poista</button>
+                :
+                  poistetaan !== järjestäjä._id
+                    ?
+                      <>
+                        <button onClick={() => setVahvistaPoisto(null)} className='btn-yellow'>Peruuta</button>
+                        <button onClick={() => poistaJärjestäjä(järjestäjä._id)} className='btn-red'>Vahvista poisto</button>
+                      </>
+                    :
+                      'Poistetaan...'
               }
             </td>
           </tr>)}

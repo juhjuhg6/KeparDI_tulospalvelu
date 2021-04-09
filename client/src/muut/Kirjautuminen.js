@@ -35,14 +35,18 @@ function Kirjautuminen() {
     <div>
       <br/>
       {kirjauduttu
-      ? <button onClick={kirjauduUlos} className='btn-red'>Kirjaudu ulos</button>
-      : kirjautuminen
-        ? <>
-          <label htmlFor='salasana'>Admin salasana</label>
-          <input ref={salasanaInput} id='salasana' type='password' className='nimi'/>
-          <button onClick={kirjaudu} className='btn-green'>Kirjaudu</button>
-        </>
-        : <button onClick={() => setKirjautuminen(true)} className='btn-yellow'>Kirjaudu</button>
+        ?
+          <button onClick={kirjauduUlos} className='btn-red'>Kirjaudu ulos</button>
+        :
+          kirjautuminen
+            ?
+              <>
+                <label htmlFor='salasana'>Admin salasana</label>
+                <input ref={salasanaInput} id='salasana' type='password' className='nimi'/>
+                <button onClick={kirjaudu} className='btn-green'>Kirjaudu</button>
+              </>
+            :
+              <button onClick={() => setKirjautuminen(true)} className='btn-yellow'>Kirjaudu</button>
       }
     </div>
   )

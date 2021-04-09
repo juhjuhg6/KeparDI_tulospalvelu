@@ -37,31 +37,33 @@ function Kilpailu({ päivitäKausienJaKilpailujenNimet }) {
       <h3>{kilpailu.nimi}</h3>
 
       {!kilpailunMuokkaus
-        ? <>
-          {kirjauduttu
-          ? <>
-            <button onClick={() => setKilpailunMuokkaus(true)} className='btn-yellow'>Muokkaa kilpailua</button>
+        ?
+          <>
+            {kirjauduttu &&
+              <>
+                <button onClick={() => setKilpailunMuokkaus(true)} className='btn-yellow'>Muokkaa kilpailua</button>
+                <br/><br/>
+              </>
+            }
+
+            <button onClick={() => setNäytettäväData('lähtöajat')}
+            className={näytettäväData === 'lähtöajat' ? 'btn-selected' : 'btn-yellow'}>Lähtöajat</button>
+            {kirjauduttu &&
+              <button onClick={() => setNäytettäväData('maaliintulot')}
+                className={näytettäväData === 'maaliintulot' ? 'btn-selected' : 'btn-yellow'}>Ajanotto</button>
+            }
+            <button onClick={() => setNäytettäväData('tulokset')}
+              className={näytettäväData === 'tulokset' ? 'btn-selected' : 'btn-yellow'}>Tulokset</button>
             <br/><br/>
-          </> : <></>}
 
-          <button onClick={() => setNäytettäväData('lähtöajat')}
-          className={näytettäväData === 'lähtöajat' ? 'btn-selected' : 'btn-yellow'}>Lähtöajat</button>
-          {kirjauduttu
-          ? <button onClick={() => setNäytettäväData('maaliintulot')}
-              className={näytettäväData === 'maaliintulot' ? 'btn-selected' : 'btn-yellow'}>Ajanotto</button>
-          : <></>}
-          <button onClick={() => setNäytettäväData('tulokset')}
-            className={näytettäväData === 'tulokset' ? 'btn-selected' : 'btn-yellow'}>Tulokset</button>
-          <br/><br/>
-
-          {näytettäväData === 'lähtöajat' ? <Lähtöajat /> : <></>}
-          {näytettäväData === 'maaliintulot' ? <Maaliintulot /> : <></>}
-          {näytettäväData === 'tulokset' ? <Tulokset /> : <></>}
-        </> : 
-          kirjauduttu
-          ? <KilpailunMuokkaus päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet}
+            {näytettäväData === 'lähtöajat' && <Lähtöajat />}
+            {näytettäväData === 'maaliintulot' && <Maaliintulot />}
+            {näytettäväData === 'tulokset' && <Tulokset />}
+          </>
+        :
+          kirjauduttu &&
+            <KilpailunMuokkaus päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet}
               kilpailunMuokkaus={kilpailunMuokkaus} setKilpailunMuokkaus={setKilpailunMuokkaus} />
-          : <></>
       }
     </div>
   )

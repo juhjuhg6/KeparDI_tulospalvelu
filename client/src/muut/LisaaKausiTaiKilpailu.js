@@ -54,29 +54,34 @@ function LisääKausiTaiKilpailu({ päivitäKausienJaKilpailujenNimet }) {
   return (
     <div>
       {!lisättävä
-      ? <>
-        <button onClick={() => setLisättävä('kausi')} className='btn-yellow'>Lisää kausi</button>
-        <button onClick={() => setLisättävä('kilpailu')} className='btn-yellow'>Lisää kilpailu</button>
-      </> : <>
-        <label htmlFor='nimi'>Nimi:</label>
-        <input ref={nimiInput} id='nimi' type='text' className='nimi'/>
-        {lisättävä === 'kilpailu'
-        ? <>
-          <div style={{ display: 'inline-block' }}>
-            <label htmlFor='pvm'>Päivämäärä:</label>
-            <input ref={pvmInput} id='pvm' type='text' placeholder='pp.kk.vvvv' className='input-pvm'/>
-          </div>
-          <div style={{ display: 'inline-block' }}>
-            <label htmlFor='ilmoPvm'>Ilmoittautuminen DL:</label>
-            <input ref={ilmoittautuminenInput} id='ilmoPvm' type='text' placeholder='pp.kk.vvvv hh.mm'
-              style={{ width: '13rem' }}/>
-          </div>
-        </> : <></>}
-        <div>
-          <button onClick={() => setLisättävä('')} className='btn-yellow'>Peruuta</button>
-          <button onClick={tallenna} className='btn-green'>Tallenna</button>
-        </div>
-      </>}
+        ?
+          <>
+            <button onClick={() => setLisättävä('kausi')} className='btn-yellow'>Lisää kausi</button>
+            <button onClick={() => setLisättävä('kilpailu')} className='btn-yellow'>Lisää kilpailu</button>
+          </>
+        :
+          <>
+            <label htmlFor='nimi'>Nimi:</label>
+            <input ref={nimiInput} id='nimi' type='text' className='nimi'/>
+            {lisättävä === 'kilpailu' &&
+              <>
+                <div style={{ display: 'inline-block' }}>
+                  <label htmlFor='pvm'>Päivämäärä:</label>
+                  <input ref={pvmInput} id='pvm' type='text' placeholder='pp.kk.vvvv' className='input-pvm'/>
+                </div>
+                <div style={{ display: 'inline-block' }}>
+                  <label htmlFor='ilmoPvm'>Ilmoittautuminen DL:</label>
+                  <input ref={ilmoittautuminenInput} id='ilmoPvm' type='text' placeholder='pp.kk.vvvv hh.mm'
+                    style={{ width: '13rem' }}/>
+                </div>
+              </>
+            }
+            <div>
+              <button onClick={() => setLisättävä('')} className='btn-yellow'>Peruuta</button>
+              <button onClick={tallenna} className='btn-green'>Tallenna</button>
+            </div>
+          </>
+      }
     </div>
   )
 }

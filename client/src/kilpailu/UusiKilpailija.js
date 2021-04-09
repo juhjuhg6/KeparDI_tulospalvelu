@@ -55,11 +55,14 @@ function UusiKilpailija({ setKilpailijanLisäys }) {
         </select>
       </div>
       {tallentaa
-      ? 'Talennetaan...'
-      : <div>
-        <button onClick={() => setKilpailijanLisäys(false)} className='btn-yellow'>Peruuta</button>
-        <button onClick={tallennaKilpailija} className='btn-green'>Tallenna</button>
-      </div>}
+        ?
+          'Talennetaan...'
+        :
+          <div>
+            <button onClick={() => setKilpailijanLisäys(false)} className='btn-yellow'>Peruuta</button>
+            <button onClick={tallennaKilpailija} className='btn-green'>Tallenna</button>
+          </div>
+      }
     </div>
   )
 }

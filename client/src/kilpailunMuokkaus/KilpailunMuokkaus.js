@@ -108,54 +108,46 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
         className={muokattava === 'pisteet' ? 'btn-selected' : 'btn-yellow'}>Muokkaa manuaalisia pisteitä</button>
       <br/><br/>
 
-      {muokattava === ''
-        ? <>
-        <div style={{ display: 'inline-block' }}>
-          <label htmlFor='nimi'>Nimi:</label>
-          <input ref={kilpailunNimiInput} id='nimi' type='text' placeholder={kilpailu.nimi} className='nimi' />
-        </div>
-        <div style={{ display: 'inline-block' }}>
-          <label htmlFor='pvm'>Päviämäärä:</label>
-          <input ref={pvmInput} id='pvm' type='text' placeholder={moment(kilpailu.pvm).format('DD.MM.YYYY')}
-          className='input-pvm' />
-        </div>
-        <div  style={{ display: 'inline-block' }}>
-          <label htmlFor='ilmoPvm'>Ilmoittautuminen DL:</label>
-          <input ref={ilmoittautuminenInput} id='ilmoPvm' type='text'
-              placeholder={kilpailu.ilmoittautuminenDl
-                ? moment(kilpailu.ilmoittautuminenDl).format('DD.MM.YYYY HH.mm')
-                : 'pp.kk.vvvv hh.mm'}
-              style={{ width: '13rem' }}/>
-        </div>
-        <div>
-          <button onClick={() => tyhjennäTekstit()} className='btn-yellow'>Tyhjennä</button>
-          <button onClick={päivitäKilpailu} className='btn-green'>Tallenna</button>
-        </div>
+      {muokattava === '' &&
+        <>
+          <div style={{ display: 'inline-block' }}>
+            <label htmlFor='nimi'>Nimi:</label>
+            <input ref={kilpailunNimiInput} id='nimi' type='text' placeholder={kilpailu.nimi} className='nimi' />
+          </div>
+          <div style={{ display: 'inline-block' }}>
+            <label htmlFor='pvm'>Päviämäärä:</label>
+            <input ref={pvmInput} id='pvm' type='text' placeholder={moment(kilpailu.pvm).format('DD.MM.YYYY')}
+            className='input-pvm' />
+          </div>
+          <div  style={{ display: 'inline-block' }}>
+            <label htmlFor='ilmoPvm'>Ilmoittautuminen DL:</label>
+            <input ref={ilmoittautuminenInput} id='ilmoPvm' type='text'
+                placeholder={kilpailu.ilmoittautuminenDl
+                  ? moment(kilpailu.ilmoittautuminenDl).format('DD.MM.YYYY HH.mm')
+                  : 'pp.kk.vvvv hh.mm'}
+                style={{ width: '13rem' }}/>
+          </div>
+          <div>
+            <button onClick={() => tyhjennäTekstit()} className='btn-yellow'>Tyhjennä</button>
+            <button onClick={päivitäKilpailu} className='btn-green'>Tallenna</button>
+          </div>
 
-        <br /><br />
-        {!vahvistaPoisto
-          ? <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista kilpailu</button>
-          : <>
-            <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
-            <button onClick={poistaKilpailu} className='btn-red'>Vahvista kilpailun poistaminen</button>
-          </>
-        }
-        </> : <></>}
-
-      {muokattava === 'sarjat'
-        ? <SarjojenMuokkaus />
-        : <></>
+          <br /><br />
+          {!vahvistaPoisto
+            ?
+              <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista kilpailu</button>
+            :
+              <>
+                <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
+                <button onClick={poistaKilpailu} className='btn-red'>Vahvista kilpailun poistaminen</button>
+              </>
+          }
+        </>
       }
 
-      {muokattava === 'järjestäjät'
-        ? <JärjestäjienMuokkaus />
-        : <></>
-      }
-
-      {muokattava === 'pisteet'
-        ? <ManuaalistenPisteidenMuokkaus setMuokattava={setMuokattava} />
-        : <></>
-      }
+      {muokattava === 'sarjat' && <SarjojenMuokkaus />}
+      {muokattava === 'järjestäjät' && <JärjestäjienMuokkaus />}
+      {muokattava === 'pisteet' && <ManuaalistenPisteidenMuokkaus setMuokattava={setMuokattava} />}
     </div>
   )
 }

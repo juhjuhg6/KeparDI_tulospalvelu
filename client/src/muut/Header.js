@@ -32,8 +32,7 @@ function Header({ kausienJaKilpailujenNimet, valikkoAuki, setValikkoAuki, päivi
       <a href='https://webpages.tuni.fi/kepardi' style={{padding: 0}}>
         <img src={logo} alt='Keijo Kepardi' style={imgStyle} />
       </a>
-      {window.innerWidth < 290
-      ? <></> :
+      {window.innerWidth > 290 &&
         <h1 style={{marginLeft: '4rem'}}>
           <a href='https://webpages.tuni.fi/kepardi' style={{ padding: 0 }}>KeparDI</a>
         </h1>
@@ -44,45 +43,43 @@ function Header({ kausienJaKilpailujenNimet, valikkoAuki, setValikkoAuki, päivi
       <div className='menu-icon-container'>
         <img src={menuIcon} alt='Valikko' className='menu-icon' style={imgStyle} onClick={menuClickHandler} />
       </div>
-      {valikkoAuki
-      ? <>
-        {kirjauduttu
-          ? <>
+      {valikkoAuki &&
+        <>
+          {kirjauduttu &&
             <LisääKausiTaiKilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
-          </> : <></>}
+          }
 
-        <ul>
-          {kausienJaKilpailujenNimet.map(kausi => <div key={kausi.id}>
-            <li onClick={() => setValittuKausi(kausi.id)} className='li-kausi'
-              style={{ color: kausi.id === aktiivinenKausi.id ? '#FFCC00' : 'whitesmoke' }}>
-              {kausi.nimi}
-            </li>
-            {kausi.id === valittuKausi
-            ?
-              <ul>
-                <li className='li-kilpailu'>
-                  <Link to={`${process.env.PUBLIC_URL}/${kausi.nimi}/Kokonaispisteet`} onClick={() => setValikkoAuki(false)}
-                    style={{ color: kilpailu === 'Kokonaispisteet' &&
-                    kausi.id === aktiivinenKausi.id ? '#FFCC00' : 'whitesmoke' }}>
-                    Kokonaispisteet
-                  </Link>
-                </li>
-                {kausi.kilpailut.map(k =>
-                  <li key={k.id} className='li-kilpailu'>
-                    <Link to={`${process.env.PUBLIC_URL}/${kausi.nimi}/${k.nimi}`} onClick={() => setValikkoAuki(false)}
-                      style={{ color: k.id === kilpailu._id ? '#FFCC00' : 'whitesmoke' }}>
-                      {k.nimi}
+          <ul>
+            {kausienJaKilpailujenNimet.map(kausi => <div key={kausi.id}>
+              <li onClick={() => setValittuKausi(kausi.id)} className='li-kausi'
+                style={{ color: kausi.id === aktiivinenKausi.id ? '#FFCC00' : 'whitesmoke' }}>
+                {kausi.nimi}
+              </li>
+              {kausi.id === valittuKausi &&
+                <ul>
+                  <li className='li-kilpailu'>
+                    <Link to={`${process.env.PUBLIC_URL}/${kausi.nimi}/Kokonaispisteet`} onClick={() => setValikkoAuki(false)}
+                      style={{ color: kilpailu === 'Kokonaispisteet' &&
+                      kausi.id === aktiivinenKausi.id ? '#FFCC00' : 'whitesmoke' }}>
+                      Kokonaispisteet
                     </Link>
                   </li>
-                )}
-              </ul>
-            : <></>
-          }
-          </div>)}
-        </ul>
+                  {kausi.kilpailut.map(k =>
+                    <li key={k.id} className='li-kilpailu'>
+                      <Link to={`${process.env.PUBLIC_URL}/${kausi.nimi}/${k.nimi}`} onClick={() => setValikkoAuki(false)}
+                        style={{ color: k.id === kilpailu._id ? '#FFCC00' : 'whitesmoke' }}>
+                        {k.nimi}
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              }
+            </div>)}
+          </ul>
 
           <Kirjautuminen />
-      </> : <></>}
+        </>
+      }
     </div>
   )
 }

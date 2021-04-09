@@ -107,36 +107,44 @@ function SarjojenMuokkaus() {
         <tbody>
           {kilpailu.sarjat.map(sarja => <tr key={sarja._id}>
             {muokattavaSarja !== sarja._id
-              ? <>
-                <td className='nimi'>{sarja.nimi}</td>
-                <td>{sarja.lasketaanPisteet ? 'Kyllä' : 'Ei'}</td>
-                <td>
-                  {vahvistaPoisto !== sarja._id
-                    ? <>
-                      <button onClick={() => setMuokattavaSarja(sarja._id)} className='btn-yellow'>Muokkaa</button>
-                      <button onClick={() => setVahvistaPoisto(sarja._id)} className='btn-red'>Poista</button>
-                    </>
-                    : poistetaan !== sarja._id
-                      ? <>
-                          <button onClick={() => setVahvistaPoisto(null)} className='btn-yellow'>Peruuta</button>
-                          <button onClick={() => poistaSarja(sarja._id)} className='btn-red'>Vahvista poisto</button>
+              ?
+                <>
+                  <td className='nimi'>{sarja.nimi}</td>
+                  <td>{sarja.lasketaanPisteet ? 'Kyllä' : 'Ei'}</td>
+                  <td>
+                    {vahvistaPoisto !== sarja._id
+                      ?
+                        <>
+                          <button onClick={() => setMuokattavaSarja(sarja._id)} className='btn-yellow'>Muokkaa</button>
+                          <button onClick={() => setVahvistaPoisto(sarja._id)} className='btn-red'>Poista</button>
                         </>
-                      : 'Poistetaan...'
-                  }
-                </td>
-              </> : <>
-                <td><input ref={muokattavanSarjanNimiInput} type='text' placeholder={sarja.nimi}
-                  className='nimi' /></td>
-                <td>
-                  <input ref={muokattavanSarjanLasketaanPisteetCheckbox} type='checkbox' id='muokattavanLasketaanPisteet'
-                    defaultChecked={sarja.lasketaanPisteet} />
-                  <label htmlFor='muokattavanLasketaanPisteet'>Lasketaan pisteet</label>
-                </td>
-                <td>
-                  <button onClick={() => setMuokattavaSarja(null)} className='btn-yellow'>Peruuta</button>
-                  <button onClick={() => muokkaaSarjaa(sarja._id)} className='btn-green'>Tallenna</button>
-                </td>
-              </>}
+                      :
+                        poistetaan !== sarja._id
+                          ?
+                            <>
+                              <button onClick={() => setVahvistaPoisto(null)} className='btn-yellow'>Peruuta</button>
+                              <button onClick={() => poistaSarja(sarja._id)} className='btn-red'>Vahvista poisto</button>
+                            </>
+                          :
+                            'Poistetaan...'
+                    }
+                  </td>
+                </>
+              :
+                <>
+                  <td><input ref={muokattavanSarjanNimiInput} type='text' placeholder={sarja.nimi}
+                    className='nimi' /></td>
+                  <td>
+                    <input ref={muokattavanSarjanLasketaanPisteetCheckbox} type='checkbox' id='muokattavanLasketaanPisteet'
+                      defaultChecked={sarja.lasketaanPisteet} />
+                    <label htmlFor='muokattavanLasketaanPisteet'>Lasketaan pisteet</label>
+                  </td>
+                  <td>
+                    <button onClick={() => setMuokattavaSarja(null)} className='btn-yellow'>Peruuta</button>
+                    <button onClick={() => muokkaaSarjaa(sarja._id)} className='btn-green'>Tallenna</button>
+                  </td>
+                </>
+            }
           </tr>)}
         </tbody>
       </table>

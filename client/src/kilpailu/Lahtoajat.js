@@ -30,27 +30,30 @@ function Lähtöajat() {
   return (
     <div>
       {!kilpailijanLisäys && !lähtöaikojenMuokkaus
-        ? kirjauduttu
-            ? <>
+        ?
+          kirjauduttu
+            ?
+              <>
                 <button onClick={() => setKilpailijanLisäys(true)} className='btn-yellow'>Lisää kilpailija</button>
                 <button onClick={() => setLähtöaikojenMuokkaus(true)} className='btn-yellow'>Arvo lähtöajat</button>
               </>
-            : kilpailu.ilmoittautuminenDl && moment(kilpailu.ilmoittautuminenDl) > Date.now()
-              ? <button onClick={() => setKilpailijanLisäys(true)} className='btn-green'>Ilmoittaudu</button>
-              : <></>
-        : kilpailijanLisäys
+            :
+              (kilpailu.ilmoittautuminenDl && moment(kilpailu.ilmoittautuminenDl) > Date.now()) &&
+                <button onClick={() => setKilpailijanLisäys(true)} className='btn-green'>Ilmoittaudu</button>
+        :
+          kilpailijanLisäys
             ? <UusiKilpailija setKilpailijanLisäys={setKilpailijanLisäys} />
             : <LähtöaikojenAsetus setLähtöaikojenMuokkaus={setLähtöaikojenMuokkaus} />
       }
       <div className='flex-container'><div className='table-container'>
-        {kilpailu.sarjat
-        ? kilpailu.sarjat.map(sarja => <div key={sarja._id}>
+        {kilpailu.sarjat &&
+          kilpailu.sarjat.map(sarja => <div key={sarja._id}>
             <h4>{sarja.nimi}</h4>
             <table>
               <thead>
                 <tr>
                   <th>Nimi</th><th>Lähtöaika</th>
-                  {kirjauduttu ? <th></th> : <></>}
+                  {kirjauduttu && <th></th>}
                 </tr>
               </thead>
               <tbody>
@@ -63,7 +66,7 @@ function Lähtöajat() {
               </tbody>
             </table>
           </div>)
-        : <></>}
+        }
       </div>
     </div></div>
   )

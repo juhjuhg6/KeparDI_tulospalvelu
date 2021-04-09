@@ -62,7 +62,7 @@ function ManuaalistenPisteidenMuokkaus({ setMuokattava }) {
 
   return (
     <>
-    <h4>Manuaaliset pisteet</h4>
+      <h4>Manuaaliset pisteet</h4>
       <table>
         <thead>
           <tr><th>Nimi</th><th>Pisteet</th><th></th></tr>
@@ -75,13 +75,16 @@ function ManuaalistenPisteidenMuokkaus({ setMuokattava }) {
       </table>
 
       {!vahvistaPoisto
-        ? <>
-          <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista kaikki manuaaliset pisteet</button>
-          <button onClick={asetaManuaalisetPisteet} className='btn-green'>Tallenna</button>
-        </> : <>
-          <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
-          <button onClick={poistaManuaalisetPisteet} className='btn-red'>Poista kaikki manuaaliset pisteet</button>
-        </>
+        ?
+          <>
+            <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista kaikki manuaaliset pisteet</button>
+            <button onClick={asetaManuaalisetPisteet} className='btn-green'>Tallenna</button>
+          </>
+        :
+          <>
+            <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
+            <button onClick={poistaManuaalisetPisteet} className='btn-red'>Poista kaikki manuaaliset pisteet</button>
+          </>
       }
     </>
   )
