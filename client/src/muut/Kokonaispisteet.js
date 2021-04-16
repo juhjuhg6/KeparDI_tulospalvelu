@@ -11,6 +11,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
   const [komponenttiKiinnitetty, setKomponenttiKiinnitetty] = useState(true)
 
   useEffect(() => {
+    setKomponenttiKiinnitetty(true)
     haePisteet(false)
     
     return () => setKomponenttiKiinnitetty(false)
@@ -61,12 +62,13 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
               <thead>
                 <tr>
                   <th style={{ borderRight: '1px solid silver' }}>Nimi</th>
-                  {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut.map(kilpailu =>
-                    <th key={kilpailu.id} className='th-kilpailun-nimi'>
-                      <Link to={`${process.env.PUBLIC_URL}/${aktiivinenKausi.nimi}/${kilpailu.nimi}`} className='a-kilpailun-nimi'>
-                        {kilpailu.nimi}
-                      </Link>
-                    </th>
+                  {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id)
+                    .kilpailut.slice().reverse().map(kilpailu =>
+                      <th key={kilpailu.id} className='th-kilpailun-nimi'>
+                        <Link to={`${process.env.PUBLIC_URL}/${aktiivinenKausi.nimi}/${kilpailu.nimi}`} className='a-kilpailun-nimi'>
+                          {kilpailu.nimi}
+                        </Link>
+                      </th>
                   )}
                   <th style={{ borderLeft: '1px solid silver' }}>Kokonaispisteet</th>
                 </tr>
@@ -74,15 +76,16 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
               <tbody>
                 {pisteet.map(kilpailija => <tr key={kilpailija._id}>
                   <td>{kilpailija.nimi}</td>
-                  {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut.map(kilpailu =>
-                    kilpailija.kilpailut[kilpailu.id]
-                      ?
-                        <td key={kilpailu.id} className='td-pisteet'
-                          style={{ backgroundColor: soluVäri(kilpailija.kilpailut[kilpailu.id].pisteet) }}>
-                          {kilpailija.kilpailut[kilpailu.id].pisteet}
-                        </td>
-                      :
-                        <td key={kilpailu.id} className='td-pisteet' style={{backgroundColor: 'white'}}>0</td>
+                  {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id)
+                    .kilpailut.slice().reverse().map(kilpailu =>
+                      kilpailija.kilpailut[kilpailu.id]
+                        ?
+                          <td key={kilpailu.id} className='td-pisteet'
+                            style={{ backgroundColor: soluVäri(kilpailija.kilpailut[kilpailu.id].pisteet) }}>
+                            {kilpailija.kilpailut[kilpailu.id].pisteet}
+                          </td>
+                        :
+                          <td key={kilpailu.id} className='td-pisteet' style={{backgroundColor: 'white'}}>0</td>
                   )}
                   <td>{kilpailija.kokonaispisteet}</td>
                 </tr>)}
