@@ -94,22 +94,25 @@ function Lähtöaika({ kilpailija, sarja, momentFormat }) {
           <>
             <td>{lähtöaikaStr()}</td>
             <td>
-              {kirjauduttu &&
-                !vahvistaPoisto
-                  ?
-                    <>
-                      <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muuta lähtöaikaa</button>
-                      <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista</button>
-                    </>
-                  :
-                    !poistetaan
-                      ?
-                        <>
-                          <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
-                          <button onClick={poistaKilpailija} className='btn-red'>Vahvista poisto</button>
-                        </>
-                      :
-                        'Poistetaan...'
+              {kirjauduttu
+                ?
+                  !vahvistaPoisto
+                    ?
+                      <>
+                        <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muuta lähtöaikaa</button>
+                        <button onClick={() => setVahvistaPoisto(true)} className='btn-red'>Poista</button>
+                      </>
+                    :
+                      !poistetaan
+                        ?
+                          <>
+                            <button onClick={() => setVahvistaPoisto(false)} className='btn-yellow'>Peruuta</button>
+                            <button onClick={poistaKilpailija} className='btn-red'>Vahvista poisto</button>
+                          </>
+                        :
+                          'Poistetaan...'
+                :
+                  <></>
               }
             </td>
           </>
