@@ -93,10 +93,9 @@ function Lähtöaika({ kilpailija, sarja, momentFormat }) {
         ?
           <>
             <td>{lähtöaikaStr()}</td>
-            <td>
-              {kirjauduttu
-                ?
-                  !vahvistaPoisto
+              {kirjauduttu &&
+                <td>
+                  {!vahvistaPoisto
                     ?
                       <>
                         <button onClick={() => setMuokkaus(true)} className='btn-yellow'>Muuta lähtöaikaa</button>
@@ -111,10 +110,9 @@ function Lähtöaika({ kilpailija, sarja, momentFormat }) {
                           </>
                         :
                           'Poistetaan...'
-                :
-                  <></>
+                  }
+                </td>
               }
-            </td>
           </>
         :
           <>
