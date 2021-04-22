@@ -71,7 +71,9 @@ function Lähtöajat() {
             </div></div>
           </>
         :
-          <p>Lisää ainakin yksi sarja kilpailuun painamalla:<br/><i>Muokkaa kilpailua</i> {'>'} <i>Muokkaa sarjoja</i>.</p>
+          kirjauduttu && 
+            <p>Lisää ainakin yksi sarja kilpailuun painamalla:<br/>
+            <i>Muokkaa kilpailua</i> {'>'} <i>Muokkaa sarjoja</i>.</p>
       }
     </div>
   )
