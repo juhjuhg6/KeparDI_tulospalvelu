@@ -25,7 +25,7 @@ mongoose
 // login
 app.post('/login', (req, res) => {
   if (req.body.salasana === process.env.ADMIN_PASSWORD) {
-    const token = jwt.sign({}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'})
+    const token = jwt.sign({}, process.env.JWT_SECRET_KEY, {expiresIn: '16h'})
 
     res.send({token: token})
   } else {
