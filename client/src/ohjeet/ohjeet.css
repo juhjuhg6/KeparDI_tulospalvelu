@@ -1,0 +1,12 @@
+.ohje-otsikko {
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.ohjeteksti p {
+  padding: 0.3rem;
+}

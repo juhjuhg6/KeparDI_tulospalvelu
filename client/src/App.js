@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import { Route } from 'react-router-dom'
 import axios from 'axios'
 import Context from './Context'
 import jwtIsValid from './helpers/jwtIsValid'
 import Header from './muut/Header'
 import Kilpailu from './kilpailu/Kilpailu'
 import Kokonaispisteet from './muut/Kokonaispisteet'
+import Ohjeet from './ohjeet/Ohjeet'
 
 function App(props) {
   const [kirjauduttu, setKirjauduttu] = useState(false)
@@ -115,14 +117,18 @@ function App(props) {
       <Header kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} valikkoAuki={valikkoAuki}
         setValikkoAuki={setValikkoAuki} päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
 
-      <div style={valikkoAuki ? {visibility: 'hidden', height: '0'} : {visibility: 'visible'}}>
-        {kilpailu === 'Kokonaispisteet' &&
-          <Kokonaispisteet kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} />
-        }
-        {kilpailuHaettu &&
-          <Kilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
-        }
-      </div>
+      {!valikkoAuki && <Route path={`${process.env.PUBLIC_URL}/ohjeet`} component={Ohjeet} />}
+
+      {props.match.params.kausiNimi !== 'ohjeet' &&
+        <div style={valikkoAuki ? {visibility: 'hidden', height: '0'} : {visibility: 'visible'}}>
+          {kilpailu === 'Kokonaispisteet' &&
+            <Kokonaispisteet kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} />
+          }
+          {kilpailuHaettu &&
+            <Kilpailu päivitäKausienJaKilpailujenNimet={päivitäKausienJaKilpailujenNimet} />
+          }
+        </div>
+      }
     </Context.Provider>
   )
 }

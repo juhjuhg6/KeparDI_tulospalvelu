@@ -77,6 +77,11 @@ function Header({ kausienJaKilpailujenNimet, valikkoAuki, setValikkoAuki, päivi
             </div>)}
           </ul>
 
+          {kirjauduttu &&
+            <button className='btn-yellow' onClick={() => setValikkoAuki(false)}>
+              <Link to={`${process.env.PUBLIC_URL}/ohjeet`} style={{ color: 'black', padding: 0}}>Ohjeet</Link>
+            </button>
+          }
           <Kirjautuminen />
         </>
       }
