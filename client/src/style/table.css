@@ -50,3 +50,13 @@ td {
   border-left: 1px solid silver;
   border-right: 1px solid silver;
 }
+
+.tr-pisteet {
+  border-top: 1px solid rgba(0, 0, 0, 0);
+  border-bottom: 1px solid rgba(0, 0, 0, 0);
+}
+
+.tr-pisteet:hover td {
+  border-top: 1px solid silver;
+  border-bottom: 1px solid silver;
+}

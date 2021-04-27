@@ -74,7 +74,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
                 </tr>
               </thead>
               <tbody>
-                {pisteet.map(kilpailija => <tr key={kilpailija._id}>
+                {pisteet.map(kilpailija => <tr key={kilpailija._id} className='tr-pisteet'>
                   <td>{kilpailija.nimi}</td>
                   {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id)
                     .kilpailut.slice().reverse().map(kilpailu =>
