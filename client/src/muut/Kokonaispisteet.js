@@ -70,7 +70,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
       <h3>Kokonaispisteet</h3>
       {pisteet
         ?
-          <div className='flex-container'>
+          <>
             <table>
               <thead>
                 <tr>
@@ -108,7 +108,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
             </table>
 
             <button onClick={() => haePisteet(true)} className='btn-yellow'>Päivitä pisteet</button>
-          </div>
+          </>
         :
           <PisteidenLataus />
       }
