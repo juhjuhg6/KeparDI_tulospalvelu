@@ -44,6 +44,19 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
       kilpailija.kokonaispisteet = kokonaispisteet
     })
     valmisteltavatPisteet.sort((a, b) => b.kokonaispisteet - a.kokonaispisteet)
+
+    // lisää sijanumerot
+    valmisteltavatPisteet[0].sija = 1
+    for (let i = 1; i < valmisteltavatPisteet.length; i++) {
+      let kilpailija = valmisteltavatPisteet[i]
+      let edellinenKilpailija = valmisteltavatPisteet[i-1]
+      if (kilpailija.kokonaispisteet !== edellinenKilpailija.kokonaispisteet) {
+        kilpailija.sija = i + 1
+      } else {
+        kilpailija.sija = edellinenKilpailija.sija
+      }
+    }
+
     setPisteet(valmisteltavatPisteet)
   }
 
@@ -61,6 +74,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
             <table>
               <thead>
                 <tr>
+                  <th>Sija</th>
                   <th style={{ borderRight: '1px solid silver' }}>Nimi</th>
                   {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id)
                     .kilpailut.slice().reverse().map(kilpailu =>
@@ -75,6 +89,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
               </thead>
               <tbody>
                 {pisteet.map(kilpailija => <tr key={kilpailija._id} className='tr-pisteet'>
+                  <td>{kilpailija.sija}.</td>
                   <td>{kilpailija.nimi}</td>
                   {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id)
                     .kilpailut.slice().reverse().map(kilpailu =>
