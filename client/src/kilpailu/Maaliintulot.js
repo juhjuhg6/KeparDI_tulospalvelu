@@ -97,6 +97,12 @@ function Maaliintulot() {
     nimiInput.current.value = e.target.textContent
   }
 
+  function kilpailijanNimi(kilpailijaId) {
+    const kilpailija = kilpailu.kaikkiKilpailijat.find(k => k.id === kilpailijaId)
+    if (kilpailija) return kilpailija.nimi
+    return null
+  }
+
   if (!kirjauduttu) return(<></>)
 
   return (
@@ -139,10 +145,10 @@ function Maaliintulot() {
           </thead>
           <tbody>
             {kilpailu.maaliintulot.sort((a, b) => {
-              if (!a.maaliintuloaika) return 1
-              if (!b.maaliintuloaika) return -1
-              if (a.maaliintuloaika < b.maaliintuloaika) return -1
-              if (a.maaliintuloaika > b.maaliintuloaika) return 1
+              if (!a.kilpailija) return 1
+              if (!b.kilpailija) return -1
+              if (kilpailijanNimi(a.kilpailija) < kilpailijanNimi(b.kilpailija)) return -1
+              if (kilpailijanNimi(a.kilpailija) > kilpailijanNimi(b.kilpailija)) return 1
               return 0
             }).map(maaliintulo => <Maaliintulo key={maaliintulo._id}
               maaliintulo={maaliintulo} />)}

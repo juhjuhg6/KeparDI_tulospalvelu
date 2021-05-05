@@ -82,6 +82,37 @@ function Maaliintulo({ maaliintulo }) {
       })
   }
 
+  function asetaMaaliintuloaika() {
+    if (!jwtIsValid()) {
+      localStorage.removeItem('jwt')
+      axios.defaults.headers['Authorization'] = null
+      setKirjauduttu(false)
+      return
+    }
+
+    setTallentaa(true)
+
+    const asetettavaMaaliintuloaika = moment()
+    maaliintulo.maaliintuloaika = moment(kilpailu.pvm)
+    maaliintulo.maaliintuloaika.hours(asetettavaMaaliintuloaika.hours())
+    maaliintulo.maaliintuloaika.minutes(asetettavaMaaliintuloaika.minutes())
+    maaliintulo.maaliintuloaika.seconds(asetettavaMaaliintuloaika.seconds())
+
+    axios.put(`/api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}/${maaliintulo._id}`, maaliintulo)
+      .then(vastaus => {
+        setKilpailu(vastaus.data)
+        setTallentaa(false)
+      })
+      .catch(err => {
+        if (err.response.status === 401) {
+          setKirjauduttu(false)
+          localStorage.removeItem('jwt')
+          axios.defaults.headers.common['Authorization'] = null
+        }
+        console.log(err)
+      })
+  }
+
   function poistaMaaliaika() {
     setPoistetaan(true)
 
@@ -116,7 +147,16 @@ function Maaliintulo({ maaliintulo }) {
                 ? kilpailijanNimi(maaliintulo.kilpailija)
                 : maaliintulo.nimi}
             </td>
-            <td>{maaliaikaStr()}</td>
+            <td>
+              {maaliintulo.maaliintuloaika
+                ?
+                  maaliaikaStr()
+                :
+                  !tallentaa
+                    ? <button onClick={asetaMaaliintuloaika} className='btn-green'>Maalissa</button>
+                    : 'Tallentaa...'
+              }
+            </td>
             <td>{maaliintulo.muuTulos}</td>
             <td>
               {!vahvistaPoisto
@@ -142,7 +182,10 @@ function Maaliintulo({ maaliintulo }) {
             <td><input ref={nimiInput} type='text'
               defaultValue={maaliintulo.kilpailija ? kilpailijanNimi(maaliintulo.kilpailija) : maaliintulo.nimi}
               className='nimi' /></td>
-            <td><input ref={aikaInput} type='text' defaultValue={maaliaikaStr()} className='input-aika' /></td>
+            <td>
+              <input ref={aikaInput} type='text' defaultValue={maaliaikaStr()} className='input-aika' />
+              <button onClick={() => aikaInput.current.value = moment().format('HH.mm.ss')} className='btn-yellow'>Nyt</button>
+            </td>
             <td>
               <select ref={muuTulosSelect} id='muuTulos' defaultValue={maaliintulo.muuTulos}>
                 <option></option>
