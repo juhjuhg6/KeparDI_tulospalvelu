@@ -93,12 +93,13 @@ function Maaliintulo({ maaliintulo }) {
     setTallentaa(true)
 
     const asetettavaMaaliintuloaika = moment()
-    maaliintulo.maaliintuloaika = moment(kilpailu.pvm)
-    maaliintulo.maaliintuloaika.hours(asetettavaMaaliintuloaika.hours())
-    maaliintulo.maaliintuloaika.minutes(asetettavaMaaliintuloaika.minutes())
-    maaliintulo.maaliintuloaika.seconds(asetettavaMaaliintuloaika.seconds())
+    let pyyntö = JSON.parse(JSON.stringify(maaliintulo))
+    pyyntö.maaliintuloaika = moment(kilpailu.pvm)
+    pyyntö.maaliintuloaika.hours(asetettavaMaaliintuloaika.hours())
+    pyyntö.maaliintuloaika.minutes(asetettavaMaaliintuloaika.minutes())
+    pyyntö.maaliintuloaika.seconds(asetettavaMaaliintuloaika.seconds())
 
-    axios.put(`/api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}/${maaliintulo._id}`, maaliintulo)
+    axios.put(`/api/maaliintulot/${aktiivinenKausi.id}/${kilpailu._id}/${maaliintulo._id}`, pyyntö)
       .then(vastaus => {
         setKilpailu(vastaus.data)
         setTallentaa(false)
