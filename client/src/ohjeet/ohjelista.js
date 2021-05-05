@@ -90,18 +90,20 @@ export const ohjelista = [
         Ajanotto tapahtuu kilpailun <i>Ajanotto</i> -välilehdellä.
       </p>
       <p>
-        Maaliintuloon syötetään kilpailijan nimi ja se ajanhetki, jolloin kilpailija saapuu maaliin.
+        Painamalla <i>Maalissa</i> -painiketta kyseisen kilpailijan maaliintuloajaksi asetetaan ajanhetki,
+        jolloin painiketta painettiin. Ajanotto kannattaa siis tehdä niin, että painaa kilpailijan
+        kohdalta <i>Maalissa</i> -painiketta sillä hetkellä, kun kilpailija ylittää maaliviivan.
       </p>
       <p>
-        <i>Nyt</i> -painike asettaa maaliintuloajaksi sen hetken, jolloin painiketta painetaan.
+        <i>Muokkaa</i> -painikkeesta pääsee muokkaamaan kilpailijan maaliintuloaikaa. <i>Nyt</i> -painike
+        asettaa maaliintuloajaksi sen hetken, jolloin painiketta painetaan. <i>Muu tulos</i> -kohtaan
+        voi asettaa DNS/DNF/DSQ tulosken.
       </p>
       <p>
-        Maaliintulon voi tallentaa myös ilman nimeä, jos on vaikka tilanne, että monta kilpailijaa
-        tulee samanaikaisesti maaliin, eikä ehdi kirjoittamaan nimiä. Nimet voi lisätä sitten
-        muokkaamalla kyseistä maaliintuloa sen kohdalta.
-      </p>
-      <p>
-        <i>Muu tulos</i> -kohtaan voi asettaa DNS/DNF/DSQ tulosken.
+        Vaihtoehtoisesti maaliintulon voi kirjata myös <i>Lisää maaliintulo</i> -painikkeesta syöttämällä
+        nimen ja tuloksen. Tätä voi myös käyttää, jos jostain syystä täytyy tallentaa maaliintulo
+        kilpailijalle, joka ei ole lähtölistassa. Maaliintulon voi tallentaa tästä tarvittaessa myös ilman
+        nimeä, jolloin nimen voi syöttää jälkikäteen kyseisen maaliintuloajan kohdalle.
       </p>
     </>
   },
