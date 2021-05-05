@@ -21,8 +21,10 @@ router.post('/:kausiId/:kilpailuId', (req, res) => {
 
     kilpailu.tuloksiaMuutettuViimeksi = new Date()
 
-    if (kilpailu.maaliintulot.some(maaliintulo => maaliintulo.kilpailija === req.body.kilpailija)) {
-      return res.status(400).send('Kilpailijalla on jo maaliaika')
+    // poistetaan kilpailijan edellinen maaliintulo jos sellainen löytyy
+    const kilpailijanEdellinenMaaliintuloIndex = kilpailu.maaliintulot.findIndex(maaliintulo => maaliintulo.kilpailija === req.body.kilpailija)
+    if (kilpailijanEdellinenMaaliintuloIndex >= 0) {
+      kilpailu.maaliintulot.splice(kilpailijanEdellinenMaaliintuloIndex, 1)
     }
 
     if (req.body.kilpailija) {

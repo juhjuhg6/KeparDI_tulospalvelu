@@ -38,6 +38,9 @@ router.post('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
             if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
 
             sarja.kilpailijat.push(kilpailija._id)
+            // lisätään kilpailijalle maaliintulo ilman aikaa valmiiksi
+            kilpailu.maaliintulot.push({ kilpailija: kilpailija._id })
+
             kausi.save(err => {
               if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
 
@@ -58,6 +61,8 @@ router.post('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
           if (kilpailijaJoKilpailussa()) return handleError(err, res, 'Kilpailija on jo kilpailussa.')
 
           sarja.kilpailijat.push(kilpailija._id)
+          // lisätään kilpailijalle maaliintulo ilman aikaa valmiiksi
+          kilpailu.maaliintulot.push({ kilpailija: kilpailija._id })
 
           kilpailija.kilpailut.set(req.params.kilpailuId, {})
 
