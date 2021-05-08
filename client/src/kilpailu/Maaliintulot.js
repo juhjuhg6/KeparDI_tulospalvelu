@@ -23,10 +23,12 @@ function Maaliintulot() {
 
   useEffect(() => {
     if (syötäUusiMaaliintulo === true) {
-      ajastin.current.value = setInterval(() => setAika(moment()), 1000)
+      ajastin.current = setInterval(() => setAika(moment()), 1000)
     } else {
-      clearInterval(ajastin.current.value)
+      clearInterval(ajastin.current)
     }
+
+    return () => clearInterval(ajastin.current)
   }, [syötäUusiMaaliintulo])
   
   useEffect(() => {
