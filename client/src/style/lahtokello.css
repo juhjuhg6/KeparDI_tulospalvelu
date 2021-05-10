@@ -1,0 +1,36 @@
+.ulompi-div {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sisempi-div {
+  flex: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.taulukko-container {
+  overflow: auto;
+}
+
+.sisempi-div tr {
+  background-color: black;
+}
+
+.sisempi-div th {
+  border: none;
+}
+
+.aika {
+  font-size: min(10vw, 80px);
+  font-weight: bold;
+}
+
+.seuraavaan-lähtöön {
+  font-size: min(30vw, 240px);
+  font-weight: bold;
+}

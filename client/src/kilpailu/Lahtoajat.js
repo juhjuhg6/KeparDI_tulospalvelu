@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 import Context from '../Context'
 import Lähtöaika from './Lahtoaika'
@@ -6,7 +7,7 @@ import UusiKilpailija from './UusiKilpailija'
 import LähtöaikojenAsetus from './LahtoaikojenAsetus'
 
 function Lähtöajat() {
-  const { kilpailu, kirjauduttu } = useContext(Context)
+  const { kilpailu, aktiivinenKausi, kirjauduttu } = useContext(Context)
 
   const [kilpailijanLisäys, setKilpailijanLisäys] = useState(false)
   const [lähtöaikojenMuokkaus, setLähtöaikojenMuokkaus] = useState(false)
@@ -39,6 +40,10 @@ function Lähtöajat() {
                     <>
                       <button onClick={() => setKilpailijanLisäys(true)} className='btn-yellow'>Lisää kilpailija</button>
                       <button onClick={() => setLähtöaikojenMuokkaus(true)} className='btn-yellow'>Arvo lähtöajat</button>
+                      <button onClick={() => setLähtöaikojenMuokkaus(true)} className='btn-yellow'>
+                        <Link to={`${process.env.PUBLIC_URL}/${aktiivinenKausi.id}/${kilpailu._id}/lähtökello`}
+                          style={{color: 'black', padding: 0}}>Lähtökello</Link>
+                      </button>
                     </>
                   :
                     (kilpailu.ilmoittautuminenDl && moment(kilpailu.ilmoittautuminenDl) > Date.now()) &&
