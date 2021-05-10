@@ -32,6 +32,7 @@ function Lähtökello(props) {
 
         uudetKilpailijat = uudetKilpailijat.map(kilpailija => {
           let muokattuKilpailija = {}
+          muokattuKilpailija._id = kilpailija._id
           muokattuKilpailija.nimi = kilpailija.nimi
           muokattuKilpailija.lähtöaika =
             moment(kilpailija.kilpailut[props.match.params.kilpailuId].lahtoaika)
