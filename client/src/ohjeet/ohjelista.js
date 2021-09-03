@@ -39,6 +39,8 @@ export const ohjelista = [
         Kilpailulle vaaditaan nimi ja kilpailun päivämäärä. Kilpailuun voi lisätä halutessaan
         ilmoittautumisen deadlinen, jota ennen kilpailijat voivat ilmoittautua kilpailuun itse. Jos
         ilmoittautumisen deadlinen jättää tyhjäksi, kilpailijat eivät voi ilmoittautua itse.
+        Cup-osakilpailu -valinta määrittää kuuluuko kyseinen kilpailu KeparDI-cupiin, eli lasketaanko
+        siitä cup-pisteet.
       </p>
     </>
   },

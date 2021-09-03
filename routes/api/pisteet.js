@@ -27,6 +27,22 @@ const päivitäKilpailunPisteet = function (kilpailu, pakotaPistelasku, seuraava
       return seuraava()
     }
   }
+  if (!kilpailu.cupOsakilpailu) {
+    // poistetaan pisteet kaikilta kilpailijoilta
+    kilpailu.sarjat.forEach(sarja => {
+      Kilpailija.find({ '_id': { $in: sarja.kilpailijat } }, (err, kilpailijat) => {
+        kilpailijat.forEach(kilpailija => {
+          const kilpailudata = kilpailija.kilpailut.get(kilpailu._id.toString())
+          kilpailudata.pisteet = 0
+          kilpailija.kilpailut.set(kilpailu._id.toString(), kilpailudata)
+          kilpailija.save(err => {
+            if (err) return handleError(err, res, 'Virhe muutettaessa kilpailijan pisteitä.')
+          })
+        })
+      })
+    })
+    return seuraava()
+  }
 
   const sarjanPisteet = function (i) {
     const sarja = kilpailu.sarjat[i]

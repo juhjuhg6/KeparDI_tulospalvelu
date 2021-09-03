@@ -16,6 +16,7 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
   const kilpailunNimiInput = useRef(null)
   const pvmInput = useRef(null)
   const ilmoittautuminenInput = useRef(null)
+  const cupOsakilpailuInput = useRef(null)
 
   useEffect(() => {
     return () => setKilpailunMuokkaus(false)
@@ -40,6 +41,7 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
     if (ilmoittautuminenInput.current.value) pyyntöBody.ilmoittautuminenDl =
       moment(ilmoittautuminenInput.current.value, 'DD.MM.YYYY HH.mm')
     tyhjennäTekstit()
+    pyyntöBody.cupOsakilpailu = cupOsakilpailuInput.current.checked
 
     if (!jwtIsValid()) {
       localStorage.removeItem('jwt')
@@ -51,6 +53,7 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
     axios.put(`/api/kilpailut/${aktiivinenKausi.id}/${kilpailu._id}`, pyyntöBody)
       .then(vastaus => {
         setKilpailu(vastaus.data)
+        päivitäKausienJaKilpailujenNimet()
       })
       .catch(err => {
         if (err.response.status === 401) {
@@ -126,6 +129,11 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
                   ? moment(kilpailu.ilmoittautuminenDl).format('DD.MM.YYYY HH.mm')
                   : 'pp.kk.vvvv hh.mm'}
                 style={{ width: '13rem' }}/>
+          </div>
+          <div  style={{ display: 'inline-block' }}>
+            <label htmlFor='cupOsakilpailuCheckbox'>Cup-osakilpailu:</label>
+            <input ref={cupOsakilpailuInput} id='cupOsakilpailuCheckbox' type='checkbox'
+              defaultChecked={kilpailu.cupOsakilpailu}/>
           </div>
           <div>
             <button onClick={() => tyhjennäTekstit()} className='btn-yellow'>Tyhjennä</button>

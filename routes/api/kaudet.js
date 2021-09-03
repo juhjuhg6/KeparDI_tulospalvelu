@@ -27,7 +27,8 @@ router.get('/nimet', (req, res) => {
     let kausienNimet = []
     kaudet.forEach(kausi => {
       let kilpailut = []
-      kausi.kilpailut.forEach(kilpailu => kilpailut.push({id: kilpailu._id, nimi: kilpailu.nimi, pvm: kilpailu.pvm}))
+      kausi.kilpailut.forEach(kilpailu => kilpailut.push({id: kilpailu._id, nimi: kilpailu.nimi, pvm: kilpailu.pvm,
+                                                          cupOsakilpailu: kilpailu.cupOsakilpailu}))
       kausienNimet.push({id: kausi._id, nimi: kausi.nimi, kilpailut: kilpailut})
     })
     res.json(kausienNimet)

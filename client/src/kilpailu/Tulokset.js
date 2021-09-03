@@ -123,7 +123,7 @@ function Tulokset() {
                 <thead>
                   <tr>
                     <th>Sija</th><th>Nimi</th><th>Aika</th><th>Ero</th>
-                    {sarja.lasketaanPisteet && <th>Pisteet</th>}
+                    {kilpailu.cupOsakilpailu && sarja.lasketaanPisteet && <th>Pisteet</th>}
                   </tr>
                 </thead>
                 <tbody>

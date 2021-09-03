@@ -8,6 +8,7 @@ const KilpailuSchema = new Schema({
   nimi: {type: String, required: true},
   pvm: {type: Date, required: true},
   ilmoittautuminenDl: Date,
+  cupOsakilpailu: {type: Boolean, default: true},
   sarjat: [Sarja],
   maaliintulot: [Maaliintulo],
   jarjestajat: [String],

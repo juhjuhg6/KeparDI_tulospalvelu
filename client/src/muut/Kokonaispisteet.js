@@ -33,9 +33,9 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
   }
 
   function valmistelePisteet(valmisteltavatPisteet) {
+    const kilpailut = kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut
     valmisteltavatPisteet.forEach(kilpailija => {
       let kokonaispisteet = 0
-      const kilpailut = kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id).kilpailut
       for (const kilpailu in kilpailija.kilpailut) {
         if (kilpailut.some(k => k.id === kilpailu)) {
           kokonaispisteet += kilpailija.kilpailut[kilpailu].pisteet
@@ -78,11 +78,12 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
                   <th style={{ borderRight: '1px solid silver' }}>Nimi</th>
                   {kausienJaKilpailujenNimet.find(kausi => kausi.id === aktiivinenKausi.id)
                     .kilpailut.slice().reverse().map(kilpailu =>
-                      <th key={kilpailu.id} className='th-kilpailun-nimi'>
-                        <Link to={`${process.env.PUBLIC_URL}/${aktiivinenKausi.nimi}/${kilpailu.nimi}`} className='a-kilpailun-nimi'>
-                          {kilpailu.nimi}
-                        </Link>
-                      </th>
+                      kilpailu.cupOsakilpailu &&
+                        <th key={kilpailu.id} className='th-kilpailun-nimi'>
+                          <Link to={`${process.env.PUBLIC_URL}/${aktiivinenKausi.nimi}/${kilpailu.nimi}`} className='a-kilpailun-nimi'>
+                            {kilpailu.nimi}
+                          </Link>
+                        </th>
                   )}
                   <th style={{ borderLeft: '1px solid silver' }}>Kokonaispisteet</th>
                 </tr>
@@ -95,11 +96,13 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
                     .kilpailut.slice().reverse().map(kilpailu =>
                       kilpailija.kilpailut[kilpailu.id]
                         ?
+                          kilpailu.cupOsakilpailu &&
                           <td key={kilpailu.id} className='td-pisteet'
                             style={{ backgroundColor: soluVäri(kilpailija.kilpailut[kilpailu.id].pisteet) }}>
                             {kilpailija.kilpailut[kilpailu.id].pisteet}
                           </td>
                         :
+                          kilpailu.cupOsakilpailu &&
                           <td key={kilpailu.id} className='td-pisteet' style={{backgroundColor: 'white'}}>0</td>
                   )}
                   <td>{kilpailija.kokonaispisteet}</td>

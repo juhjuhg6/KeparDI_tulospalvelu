@@ -11,6 +11,7 @@ function LisääKausiTaiKilpailu({ päivitäKausienJaKilpailujenNimet }) {
   const nimiInput = useRef(null)
   const pvmInput = useRef(null)
   const ilmoittautuminenInput = useRef(null)
+  const cupOsakilpailuInput = useRef(null)
 
   function tallenna() {
     let pyyntöUrl
@@ -23,7 +24,8 @@ function LisääKausiTaiKilpailu({ päivitäKausienJaKilpailujenNimet }) {
       pyyntöUrl = `/api/kilpailut/${aktiivinenKausi.id}`
       if (!nimiInput.current.value || !pvmInput.current.value) return
       pyyntöBody = {nimi: nimiInput.current.value, pvm: moment(pvmInput.current.value, 'DD.MM.YYYY'),
-        ilmoittautuminenDl: moment(ilmoittautuminenInput.current.value, 'DD.MM.YYYY HH.mm')}
+        ilmoittautuminenDl: moment(ilmoittautuminenInput.current.value, 'DD.MM.YYYY HH.mm'),
+        cupOsakilpailu: cupOsakilpailuInput.current.checked}
     } else {
       return
     }
@@ -73,6 +75,11 @@ function LisääKausiTaiKilpailu({ päivitäKausienJaKilpailujenNimet }) {
                   <label htmlFor='ilmoPvm'>Ilmoittautuminen DL:</label>
                   <input ref={ilmoittautuminenInput} id='ilmoPvm' type='text' placeholder='pp.kk.vvvv hh.mm'
                     style={{ width: '13rem' }}/>
+                </div>
+                <div style={{ display: 'inline-block' }}>
+                  <label htmlFor='cupOsakilpailuCheckbox'>Cup-osakilpailu:</label>
+                  <input ref={cupOsakilpailuInput} id='cupOsakilpailuCheckbox' type='checkbox'
+                    defaultChecked={true}/>
                 </div>
               </>
             }

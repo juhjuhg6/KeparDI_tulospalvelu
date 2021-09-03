@@ -82,6 +82,7 @@
     "_id": string,
     "nimi": string,
     "pvm": string (ISO 8601),
+    "cupOsakilpailu": boolean,
     "sarjat": [
         {
             "_id": string,
@@ -240,7 +241,9 @@ POST api/kilpailut/:kausiId
 Body:
 {
     "nimi": string,
-    "pvm": string (ISO 8601)
+    "pvm": string (ISO 8601),
+    ("ilmoittautuminenDl": string (ISO 8601)),
+    "cupOsakilpailu": boolean
 }
 ```
 Vastaus:
@@ -256,7 +259,8 @@ PUT api/kilpailut/:kausiId/:kilpailuId
 Body:
 {
     ("nimi": string),
-    ("pvm": string (ISO 8601))
+    ("pvm": string (ISO 8601)),
+    ("cupOsakilpailu": boolean)
 }
 ```
 Vastaus:

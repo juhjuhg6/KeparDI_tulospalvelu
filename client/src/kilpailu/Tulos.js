@@ -33,7 +33,8 @@ function Tulos({ kilpailija, sarja }) {
             <td></td>
           </>
       }
-      {sarja.lasketaanPisteet && <td>{kilpailija.kilpailut[kilpailu._id].pisteet}</td>}
+      {kilpailu.cupOsakilpailu && sarja.lasketaanPisteet &&
+        <td>{kilpailija.kilpailut[kilpailu._id].pisteet}</td>}
     </tr>
   )
 }
