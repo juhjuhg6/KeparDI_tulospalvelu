@@ -53,7 +53,7 @@ function App(props) {
           console.log(err)
         })
     } else {
-      setKilpailu('Kokonaispisteet')
+      setKilpailu('KeparDI-cup pisteet')
     }
 
     // eslint-disable-next-line
@@ -74,7 +74,7 @@ function App(props) {
           console.log(err)
         })
     } else {
-      setKilpailu('Kokonaispisteet')
+      setKilpailu('KeparDI-cup pisteet')
     }
 
     // eslint-disable-next-line
@@ -121,7 +121,7 @@ function App(props) {
 
       {props.match.params.kausiNimi !== 'ohjeet' &&
         <div style={valikkoAuki ? {visibility: 'hidden', height: '0'} : {visibility: 'visible'}}>
-          {kilpailu === 'Kokonaispisteet' &&
+          {kilpailu === 'KeparDI-cup pisteet' &&
             <Kokonaispisteet kausienJaKilpailujenNimet={kausienJaKilpailujenNimet} />
           }
           {kilpailuHaettu &&

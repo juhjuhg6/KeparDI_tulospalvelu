@@ -67,7 +67,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
   return(
     <div>
       <h3>{aktiivinenKausi.nimi}</h3>
-      <h3>Kokonaispisteet</h3>
+      <h3>KeparDI-cup pisteet</h3>
       {pisteet
         ?
           <>
@@ -85,7 +85,7 @@ function Kokonaispisteet({ kausienJaKilpailujenNimet }) {
                           </Link>
                         </th>
                   )}
-                  <th style={{ borderLeft: '1px solid silver' }}>Kokonaispisteet</th>
+                  <th style={{ borderLeft: '1px solid silver' }}>KeparDI-cup pisteet</th>
                 </tr>
               </thead>
               <tbody>

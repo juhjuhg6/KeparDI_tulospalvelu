@@ -58,10 +58,10 @@ function Header({ kausienJaKilpailujenNimet, valikkoAuki, setValikkoAuki, päivi
               {kausi.id === valittuKausi &&
                 <ul>
                   <li className='li-kilpailu'>
-                    <Link to={`${process.env.PUBLIC_URL}/${kausi.nimi}/Kokonaispisteet`} onClick={() => setValikkoAuki(false)}
-                      style={{ color: kilpailu === 'Kokonaispisteet' &&
+                    <Link to={`${process.env.PUBLIC_URL}/${kausi.nimi}/KeparDI-cup_pisteet`} onClick={() => setValikkoAuki(false)}
+                      style={{ color: kilpailu === 'KeparDI-cup pisteet' &&
                       kausi.id === aktiivinenKausi.id ? '#FFCC00' : 'whitesmoke' }}>
-                      Kokonaispisteet
+                      KeparDI-cup pisteet
                     </Link>
                   </li>
                   {kausi.kilpailut.map(k =>
