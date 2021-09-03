@@ -18,7 +18,7 @@ app.use(express.json())
 // yhteys tietokantaan
 const db = process.env.MONGODB_URI
 mongoose
-  .connect(db, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false })
+  .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Yhdistetty tietokantaan.'))
   .catch(err => console.log(`Virhe tietokantaan yhdistämisessä: ${err}`))
 
