@@ -14,7 +14,7 @@ function Kilpailu({ päivitäKausienJaKilpailujenNimet }) {
   const [kilpailunMuokkaus, setKilpailunMuokkaus] = useState(false)
 
   useEffect(() => {
-    if (kilpailu.maaliintulot.length !== 0) {
+    if (kilpailu.maaliintulot.some(maaliintulo => 'maaliintuloaika' in maaliintulo)) {
       setNäytettäväData('tulokset')
     } else {
       setNäytettäväData('lähtöajat')
