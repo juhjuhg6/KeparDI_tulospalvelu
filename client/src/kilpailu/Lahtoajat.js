@@ -47,7 +47,10 @@ function Lähtöajat() {
                     </>
                   :
                     (kilpailu.ilmoittautuminenDl && moment(kilpailu.ilmoittautuminenDl) > Date.now()) &&
-                      <button onClick={() => setKilpailijanLisäys(true)} className='btn-green'>Ilmoittaudu</button>
+                      <div>
+                        <button onClick={() => setKilpailijanLisäys(true)} className='btn-green'>Ilmoittaudu</button>
+                        <label>Ilmoittautuminen päättyy {moment(kilpailu.ilmoittautuminenDl).format('DD.MM.YYYY')} klo {moment(kilpailu.ilmoittautuminenDl).format('HH.mm')}.</label>
+                      </div>
               :
                 kilpailijanLisäys
                   ? <UusiKilpailija setKilpailijanLisäys={setKilpailijanLisäys} />
