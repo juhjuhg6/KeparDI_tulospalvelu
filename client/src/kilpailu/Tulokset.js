@@ -110,8 +110,6 @@ function Tulokset() {
 
   return (
     <div>
-      <button onClick={() => haePisteet(true)} className='btn-yellow'>Päivitä pisteet</button>
-
       <div className='flex-container'><div className='table-container'>
         {!pisteetLaskettu
           ?
@@ -158,6 +156,8 @@ function Tulokset() {
           </>
         }
       </div></div>
+
+      <button onClick={() => haePisteet(true)} className='btn-yellow'>Päivitä pisteet</button>
     </div>
   )
 }
