@@ -113,3 +113,9 @@ h4 {
   font-size: 1.8rem;
   margin: 1rem 0rem;
 }
+
+#kilpailupäivämäärä {
+  font-size: 1.4rem;
+  margin: 0 0 0.5rem 0;
+  color: grey;
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 import Context from '../Context'
 import jwtIsValid from '../helpers/jwtIsValid'
 import Lähtöajat from './Lahtoajat'
@@ -35,6 +36,7 @@ function Kilpailu({ päivitäKausienJaKilpailujenNimet }) {
         </Link>
       </h3>
       <h3>{kilpailu.nimi}</h3>
+      <h5 id="kilpailupäivämäärä">{moment(kilpailu.pvm).format('DD.MM.YYYY')}</h5>
 
       {!kilpailunMuokkaus
         ?
