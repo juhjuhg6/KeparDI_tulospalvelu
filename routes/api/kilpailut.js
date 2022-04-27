@@ -67,6 +67,10 @@ router.put('/:kausiId/:kilpailuId', authorize, (req, res) => {
       kilpailu.tuloksiaMuutettuViimeksi = new Date()
     }
 
+    if (typeof req.body.sijoituksetPisteidenPerusteella === 'boolean') {
+      kilpailu.sijoituksetPisteidenPerusteella = req.body.sijoituksetPisteidenPerusteella
+    }
+
     const tallenna = function () {
       kausi.save(err => {
         if (err) return handleError(err, res, 'Virhe muokatessa kilpailua.')

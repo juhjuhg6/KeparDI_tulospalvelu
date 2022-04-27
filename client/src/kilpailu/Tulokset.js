@@ -30,7 +30,7 @@ function Tulokset() {
         setKilpailu(kilpailu)
 
         kilpailu.sarjat.forEach(sarja => {
-          if (Object.keys(kilpailu.manuaalisetPisteet).length === 0) {
+          if (!kilpailu.sijoituksetPisteidenPerusteella) {
             sarja.kilpailijat.sort((a, b) => {
               if (a.kilpailut[kilpailu._id].muuTulos) return 1
               if (b.kilpailut[kilpailu._id].muuTulos) return -1
@@ -52,7 +52,7 @@ function Tulokset() {
         kilpailu.sarjat.forEach(sarja => {
           let i = 0
 
-          if (Object.keys(kilpailu.manuaalisetPisteet).length === 0) {
+          if (!kilpailu.sijoituksetPisteidenPerusteella) {
             let edellinenAika
             let edellinenSija
 
@@ -83,6 +83,17 @@ function Tulokset() {
 
             sarja.kilpailijat.forEach(kilpailija => {
               i++
+
+              const kilpailijanAika = moment(kilpailija.kilpailut[kilpailu._id].maaliaika) -
+                moment(kilpailija.kilpailut[kilpailu._id].lahtoaika)
+              kilpailija.aika = kilpailijanAika
+              if (i == 1) {
+                sarja.voittoaika = kilpailijanAika
+              }
+              if (kilpailijanAika < sarja.voittoaika) {
+                sarja.voittoaika = kilpailijanAika
+              }
+
               const pisteet = kilpailija.kilpailut[kilpailu._id].pisteet
               if (i === 1) {
                 kilpailija.sija = i

@@ -17,6 +17,7 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
   const pvmInput = useRef(null)
   const ilmoittautuminenInput = useRef(null)
   const cupOsakilpailuInput = useRef(null)
+  const sijoituksetPisteidenPerusteellaInput = useRef(null)
 
   useEffect(() => {
     return () => setKilpailunMuokkaus(false)
@@ -42,6 +43,7 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
       moment(ilmoittautuminenInput.current.value, 'DD.MM.YYYY HH.mm')
     tyhjennäTekstit()
     pyyntöBody.cupOsakilpailu = cupOsakilpailuInput.current.checked
+    pyyntöBody.sijoituksetPisteidenPerusteella = sijoituksetPisteidenPerusteellaInput.current.checked
 
     if (!jwtIsValid()) {
       localStorage.removeItem('jwt')
@@ -118,12 +120,12 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
             <input ref={kilpailunNimiInput} id='nimi' type='text' placeholder={kilpailu.nimi} className='nimi' />
           </div>
           <div style={{ display: 'inline-block' }}>
-            <label htmlFor='pvm'>Päviämäärä:</label>
+            <label htmlFor='pvm'>| Päviämäärä:</label>
             <input ref={pvmInput} id='pvm' type='text' placeholder={moment(kilpailu.pvm).format('DD.MM.YYYY')}
             className='input-pvm' />
           </div>
           <div  style={{ display: 'inline-block' }}>
-            <label htmlFor='ilmoPvm'>Ilmoittautuminen DL:</label>
+            <label htmlFor='ilmoPvm'>| Ilmoittautuminen DL:</label>
             <input ref={ilmoittautuminenInput} id='ilmoPvm' type='text'
                 placeholder={kilpailu.ilmoittautuminenDl
                   ? moment(kilpailu.ilmoittautuminenDl).format('DD.MM.YYYY HH.mm')
@@ -131,9 +133,14 @@ function KilpailunMuokkaus({ päivitäKausienJaKilpailujenNimet, setKilpailunMuo
                 style={{ width: '13rem' }}/>
           </div>
           <div  style={{ display: 'inline-block' }}>
-            <label htmlFor='cupOsakilpailuCheckbox'>Cup-osakilpailu:</label>
+            <label htmlFor='cupOsakilpailuCheckbox'>| Cup-osakilpailu:</label>
             <input ref={cupOsakilpailuInput} id='cupOsakilpailuCheckbox' type='checkbox'
               defaultChecked={kilpailu.cupOsakilpailu}/>
+          </div>
+          <div  style={{ display: 'inline-block' }}>
+            <label htmlFor='sijoituksetPisteidenPerusteellaCheckbox'>| Sijoitukset pisteiden perusteella:</label>
+            <input ref={sijoituksetPisteidenPerusteellaInput} id='sijoituksetPisteidenPerusteellaCheckbox'
+              type='checkbox' defaultChecked={kilpailu.sijoituksetPisteidenPerusteella}/>
           </div>
           <div>
             <button onClick={() => tyhjennäTekstit()} className='btn-yellow'>Tyhjennä</button>
