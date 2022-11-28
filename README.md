@@ -2,10 +2,6 @@
 
 Tämä projekti on luotu [KeparDI](https://webpages.tuni.fi/kepardi)a, eli Tampereen yliopiston suunnistuskerhoa varten. Palvelua käytetään kilpailujen ajanottoon ja lisäksi palvelu laskee [KeparDI-cup](https://webpages.tuni.fi/kepardi/kepardi-cup/)in osakilpailuista cup-pisteet kilpailijoille.
 
-## Demo
-
-Viimeisimmästä versiosta on vapaasti kokeiltavissa oleva demo osoitteessa https://kepardi-tulospalvelu-demo.herokuapp.com/. Demon ensimmäinen lataus saattaa kestää jopa kymmeniä sekunteja, kun palvelin herää. Demon admin salasana kirjautumiseen on `demo-salasana`.
-
 ## Rajapintadokumentaatio
 
 Tietokannan rajapinnan dokumentaatio läytyy [täältä](https://github.com/juhjuhg6/KeparDI_tulospalvelu/blob/master/routes/api/Dokumentaatio.md).
