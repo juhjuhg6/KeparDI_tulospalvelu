@@ -154,6 +154,11 @@ const päivitäJärjestäjienPisteet = function (kilpailu, seuraava) {
 
         let kilpailudata = järjestäjä.kilpailut.get(kilpailu._id.toString())
 
+        if (kilpailudata === undefined) {
+          järjestäjä.kilpailut.set(kilpailu._id.toString(), {})
+          kilpailudata = järjestäjä.kilpailut.get(kilpailu._id.toString())
+        }
+
         if (kilpailu.manuaalisetPisteet.get(järjestäjä._id.toString())) {
           kilpailudata.pisteet = kilpailu.manuaalisetPisteet.get(järjestäjä._id.toString())
         } else {
