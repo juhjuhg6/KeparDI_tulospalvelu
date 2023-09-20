@@ -24,6 +24,9 @@ router.post('/:kausiId/:kilpailuId/:sarjaId', (req, res) => {
 
     kilpailu.tuloksiaMuutettuViimeksi = new Date()
 
+    // poistetaan välilyönnit yms nimen alusta ja lopusta
+    req.body.nimi = req.body.nimi.trim()
+
     const lisääKilpailija = function() {
       Kilpailija.findOne({nimi: req.body.nimi}, (err, kilpailija) => {
         if (err) return handleError(err, res, 'Virhe lisättäessä kilpailijaa.')
